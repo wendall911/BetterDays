@@ -1,0 +1,17 @@
+# gradle
+build
+.gradle
+libs
+run
+
+# Eclipse
+.classpath
+.project
+.settings
+bin
+
+# IntelliJ
+.idea
+
+#mappings
+mappings/mcp

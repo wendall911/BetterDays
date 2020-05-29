@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+
+[[mods]]
+  modId="${modid}"
+  displayName="Better Days"
+  description="Extends the length of days to something sensible."
+  version="${mod_version}"
+  displayURL="https://github.com/wendall911/BetterDays"
+  updateJSONURL="https://raw.githubusercontent.com/wendall911/BetterDays/1.15.2/files/updates.json"
+  authors="${mod_author}"
+  credits="ashar42"
+  logoFile="assets/betterdays/textures/gui/logo.png"
+
+[[dependencies.betterdays]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.betterdays]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="SERVER"
