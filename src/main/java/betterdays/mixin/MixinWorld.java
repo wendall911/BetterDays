@@ -61,8 +61,8 @@ public abstract class MixinWorld {
             if (lastDayTicks == 0L) {
                 lastDayTicks = dayTicks;
             }
-            else if (dayTicks - lastDayTicks > 5 || dayTicks - lastDayTicks < 0) {
-                // time set xxx was called, or laaaaggggy
+            else if (dayTicks - lastDayTicks > 50 || dayTicks - lastDayTicks < 0) {
+                // Catch if /time set XXX was called
                 segmentStartTime = -1L;
             }
 
@@ -71,6 +71,7 @@ public abstract class MixinWorld {
             now = Util.getMillis();
 
             if (segmentStartTime == -1L || dayTicks == segmentStart) {
+
                 segmentStartTime = now;
                 segmentTime = 0L;
                 segmentTicks = 0L;
@@ -80,7 +81,7 @@ public abstract class MixinWorld {
                     if (duration > 999L) {
                         String durationString = DurationFormatUtils.formatDuration(duration, "H:mm:ss", true);
                         String msg = String.format("%s dayTime: %d, dayTicks: %d Tick Since Change: %d", durationString, dayTime, dayTicks, segmentTicks);
-                        BetterDays.logger.info(msg);
+                        BetterDays.logger.debug(msg);
                         checkTime = Util.getMillis();
                     }
                 }
