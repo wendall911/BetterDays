@@ -1,11 +1,19 @@
 package betterdays.config;
 
+import betterdays.util.PacketHandlerHelper;
+
 import java.util.Arrays;
 import java.util.List;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class TimeConfig {
 
@@ -77,7 +85,15 @@ public class TimeConfig {
         updateOption(TimeOption.DAY_QUARTER_LENGTH, dayQuarterLength);
         updateOption(TimeOption.SUNSET_QUARTER_LENGTH, sunsetQuarterLength);
         updateOption(TimeOption.NIGHT_QUARTER_LENGTH, nightQuarterLength);
-    }
+
+		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+		if (currentServer == null) return;
+
+		PlayerList players = currentServer.getPlayerList();
+		for (PlayerEntity player : players.getPlayers()) {
+            PacketHandlerHelper.sendServerConfigValues((ServerPlayerEntity)player);
+		}
+	}
 
     public static void addOption(ISyncedOption option, ForgeConfigSpec.ConfigValue<?> value) {
         SyncedConfig.addOption(option, String.valueOf(value.get()));
