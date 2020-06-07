@@ -1,11 +1,12 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/betterdays",
   "1.15.2": {
+    "0.1.0.1": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.2",
     "0.1.0.1": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.1",
     "0.1.0.0": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.0"
   },
   "promos": {
-    "1.15.2-latest": "0.1.0.1",
-    "1.15.2-recommended": "0.1.0.1"
+    "1.15.2-latest": "0.1.0.2",
+    "1.15.2-recommended": "0.1.0.2"
   }
 }
