@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import betterdays.config.TimeConfig;
 import betterdays.config.TimeOption;
 import betterdays.config.SyncedConfig;
 

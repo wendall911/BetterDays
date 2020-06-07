@@ -30,11 +30,10 @@ public class ConfigUpdate {
 
         public static void handle(final ConfigUpdate message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-                BetterDays.logger.info("Got update!");
+                BetterDays.logger.info("Applying config updates from server.");
                 for (String key : message.data.getAllKeys()) {
                     SyncedConfig.SyncedConfigOption entry = SyncedConfig.getEntry(key);
                     entry.value = message.data.getString(key);
-                    BetterDays.logger.info("Updated: %s", key);
                 }
             });
             ctx.get().setPacketHandled(true);
