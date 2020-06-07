@@ -1,0 +1,1 @@
+MixinConnector: betterdays.mixin.Connector

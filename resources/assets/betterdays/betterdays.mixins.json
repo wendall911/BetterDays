@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "betterdays.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "betterdays.refmap.json",
+  "mixins": [
+    "MixinWorld"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

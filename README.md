@@ -1,9 +1,9 @@
 # Better Days [![Project](http://cf.way2muchnoise.eu/full_386604_downloads.svg)](https://minecraft.curseforge.com/projects/386604)
 ![Minecraft](http://cf.way2muchnoise.eu/versions/386604.svg)
-![Forge](https://img.shields.io/badge/Forge-14.23.5.2823+|31.2.0+-green.svg?longCache=true&style=flat)
+![Forge](https://img.shields.io/badge/31.2.0+-green.svg?longCache=true&style=flat)
 ![MIT](https://img.shields.io/badge/license-MIT-blue.svg?longCache=true&style=flat)
 
-A Minecraft 1.12.2+ mod to designed to extend the length of the crazy short minecraft day.
+A Minecraft 1.15.2+ mod to designed to extend the length of the crazy short minecraft day.
 
 Download latest:
 

@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {url='https://dist.creeper.host/Sponge/maven'}
         jcenter()
         maven {
             name = 'gradle plugins'
@@ -13,17 +14,21 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
         classpath 'se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.64'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 apply plugin: 'com.matthewprenger.cursegradle'
 
 repositories {
     mavenLocal()
+    maven {url='https://dist.creeper.host/Sponge/maven'}
 }
 
 group = 'com.github.wendall911.betterdays'
@@ -37,20 +42,30 @@ minecraft {
     mappings channel: 'snapshot', version: mappings_version
 
     runs {
-        client = {
-            workingDirectory = project.file("run").canonicalPath
-            source sourceSets.main
+        client {
+            workingDirectory project.file("run").canonicalPath
+
+            mods {
+                betterdays {
+                    source sourceSets.main
+                }
+            }
         }
-        server = {
-            workingDirectory = project.file("run").canonicalPath
-            source sourceSets.main
+        server {
+            workingDirectory project.file("run").canonicalPath
+
+            mods {
+                betterdays {
+                    source sourceSets.main
+                }
+            }
         }
     }    
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly fg.deobf("com.github.glitchfiend.biomesoplenty:SereneSeasons:${minecraft_version}-${serene_seasons_version}:universal")
+    compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
 }
 
 jar {
@@ -62,9 +77,33 @@ jar {
             "Implementation-Title": "${mod_name}",
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"${mod_author}",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConnector": "betterdays.mixin.Connector"
         ])
     }
+}
+
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "${modid}.refmap.json"
 }
 
 tasks.withType(JavaCompile) {
@@ -80,7 +119,7 @@ curseforge {
         addGameVersion(minecraft_version)
         mainArtifact(jar) {
             relations {
-                optionalLibrary 'serene-seasons'
+                requiredLibrary 'mixinbootstrap'
             }
         }
     }
