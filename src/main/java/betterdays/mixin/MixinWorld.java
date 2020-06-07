@@ -98,7 +98,7 @@ public abstract class MixinWorld {
             segmentTicks += dayTicks - segmentStartTicks;
             segmentTime += now - segmentStartTime;
 
-            if (tickRateDiff > 0.01D) {
+            if (tickRateDiff > 0.001D) {
                 return 0L;
             }
         }
