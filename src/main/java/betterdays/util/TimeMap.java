@@ -1,12 +1,16 @@
 package betterdays.util;
 
+import betterdays.config.TimeOption;
+import betterdays.config.SyncedConfig;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import betterdays.config.TimeOption;
-import betterdays.config.SyncedConfig;
+import net.minecraftforge.fml.ModList;
+
+import readyplayerfun.event.ServerEventHandler;
 
 public class TimeMap {
     
@@ -79,6 +83,14 @@ public class TimeMap {
         }
 
         return tickRate;
+    }
+
+    public static boolean isPaused() {
+        if (ModList.get().isLoaded("readyplayerfun")) {
+            return ServerEventHandler.INSTANCE.isPaused();
+        }
+
+        return false;
     }
 
 }

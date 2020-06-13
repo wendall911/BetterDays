@@ -28,7 +28,18 @@ apply plugin: 'com.matthewprenger.cursegradle'
 
 repositories {
     mavenLocal()
-    maven {url='https://dist.creeper.host/Sponge/maven'}
+    maven {
+        name = 'Sponge'
+        url='https://dist.creeper.host/Sponge/maven'
+    }
+    maven {
+        name = 'GitHubPackages - ReadyPlayerFun'
+        url = 'https://maven.pkg.github.com/wendall911/ReadyPlayerFun'
+        credentials {
+            username = project.githubusername
+            password = project.githubtoken
+        }
+    }
 }
 
 group = 'com.github.wendall911.betterdays'
@@ -66,6 +77,7 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
+    compileOnly group: 'com.github.wendall911.readyplayerfun', name: 'ReadyPlayerFun', version: "${minecraft_version}-${readyplayerfun_version}"
 }
 
 jar {
@@ -120,6 +132,7 @@ curseforge {
         mainArtifact(jar) {
             relations {
                 requiredLibrary 'mixinbootstrap'
+                optionalLibrary 'ready-player-fun'
             }
         }
     }
