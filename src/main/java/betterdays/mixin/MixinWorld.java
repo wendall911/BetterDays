@@ -35,6 +35,7 @@ public abstract class MixinWorld {
     private long segmentStartTime = -1L;
     private long segmentTime = 0L;
     private long lastDayTicks = 0L;
+    private boolean paused = false;
 
     private long checkTime = 0L;
 
@@ -43,6 +44,16 @@ public abstract class MixinWorld {
         if (dimension.getType() == DimensionType.OVERWORLD) {
             if (!levelData.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
                 return value;
+            }
+
+            if (timeMap.isPaused()) {
+                paused = true;
+                return value;
+            }
+            else if (paused) {
+                // Server was unpaused
+                paused = false;
+                segmentStartTime = -1L;
             }
 
             long dayTime = levelData.getDayTime();
@@ -72,10 +83,18 @@ public abstract class MixinWorld {
 
             if (segmentStartTime == -1L || dayTicks == segmentStart) {
 
-                segmentStartTime = now;
-                segmentTime = 0L;
-                segmentTicks = 0L;
-                segmentStartTicks = dayTicks;
+                segmentStartTicks = segmentStart;
+
+                if (dayTicks == segmentStart) {
+                    segmentStartTime = now;
+                    segmentTime = 0L;
+                    segmentTicks = 0L;
+                }
+                else {
+                    segmentTicks = (long)((dayTicks - segmentStart) * (20 / targetTickRate));
+                    segmentTime = (long)(segmentTicks / targetTickRate) * 1000;
+                    segmentStartTime = now - segmentTime;
+                }
                 if (checkTime != 0L) {
                     duration = now - checkTime;
                     if (duration > 999L) {
