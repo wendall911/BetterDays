@@ -7,7 +7,7 @@ A Minecraft 1.15.2+ mod to designed to extend the length of the crazy short mine
 
 Download latest:
 
-1.15.2 - [![Download](https://curse.nikky.moe/api/img/386604?version=1.15.2&logo)](https://curse.nikky.moe/api/url/386604?version=1.15.2)
+1.16.5 - [![Download](https://curse.nikky.moe/api/img/386604?version=1.15.2&logo)](https://curse.nikky.moe/api/url/386604?version=1.16.5)
 
 All Downloads:
 

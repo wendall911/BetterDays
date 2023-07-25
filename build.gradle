@@ -1,7 +1,10 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {url='https://dist.creeper.host/Sponge/maven'}
+        maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
         jcenter()
         maven {
             name = 'gradle plugins'
@@ -32,6 +35,7 @@ repositories {
         name = 'Sponge'
         url='https://dist.creeper.host/Sponge/maven'
     }
+    /*
     maven {
         name = 'GitHubPackages - ReadyPlayerFun'
         url = 'https://maven.pkg.github.com/wendall911/ReadyPlayerFun'
@@ -40,6 +44,7 @@ repositories {
             password = project.githubtoken
         }
     }
+    */
 }
 
 group = 'com.github.wendall911.betterdays'
@@ -77,7 +82,7 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
-    compileOnly group: 'com.github.wendall911.readyplayerfun', name: 'ReadyPlayerFun', version: "${minecraft_version}-${readyplayerfun_version}"
+    //compileOnly group: 'com.github.wendall911.readyplayerfun', name: 'ReadyPlayerFun', version: "${minecraft_version}-${readyplayerfun_version}"
 }
 
 jar {
