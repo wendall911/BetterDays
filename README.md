@@ -1,6 +1,6 @@
 # Better Days [![Project](http://cf.way2muchnoise.eu/full_betterdays_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/betterdays)
 ![Minecraft](http://cf.way2muchnoise.eu/versions/betterdays.svg)
-![License: LGPL v3](https://img.shields.io/github/license/wendall911/BetterDays?color=blue)
+![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)
 
 A Minecraft 1.19+ mod to designed to extend the length of the crazy short minecraft day.
 
