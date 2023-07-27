@@ -1,190 +1,60 @@
-buildscript {
+allprojects {
+    apply plugin: "java"
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
+}
+
+subprojects {
+    jar {
+        from(rootProject.file("LICENSE"))
+        from(rootProject.file("COPYING"))
+        from(rootProject.file("COPYING.LESSER"))
+        from(rootProject.file("README.md"))
+        from(rootProject.file('files/changelog.txt'))
+        manifest {
+            attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestamp'              : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Build-On-Minecraft'      : minecraft_version
+            ])
+        }
+    }
+
     repositories {
         mavenCentral()
-        maven {url='https://dist.creeper.host/Sponge/maven'}
-        jcenter()
+
         maven {
-            name = 'gradle plugins'
-            url "https://plugins.gradle.org/m2/"
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
+
         maven {
-            name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org/'
         }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
-        classpath 'se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.64'
-    }
-}
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
-apply plugin: 'com.matthewprenger.cursegradle'
-
-repositories {
-    mavenLocal()
-    maven {
-        name = 'Sponge'
-        url='https://dist.creeper.host/Sponge/maven'
-    }
-    maven {
-        name = 'GitHubPackages - ReadyPlayerFun'
-        url = 'https://maven.pkg.github.com/wendall911/ReadyPlayerFun'
-        credentials {
-            username = project.githubusername
-            password = project.githubtoken
-        }
-    }
-}
-
-group = 'com.github.wendall911.betterdays'
-version = "${minecraft_version}-${mod_version}"
-archivesBaseName = "${mod_name}"
-def modid = "${modid}"
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
-
-minecraft {
-    mappings channel: 'snapshot', version: mappings_version
-
-    runs {
-        client {
-            workingDirectory project.file("run").canonicalPath
-
-            mods {
-                betterdays {
-                    source sourceSets.main
-                }
-            }
-        }
-        server {
-            workingDirectory project.file("run").canonicalPath
-
-            mods {
-                betterdays {
-                    source sourceSets.main
-                }
-            }
-        }
-    }    
-}
-
-dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compile 'org.spongepowered:mixin:0.8-SNAPSHOT'
-    compileOnly group: 'com.github.wendall911.readyplayerfun', name: 'ReadyPlayerFun', version: "${minecraft_version}-${readyplayerfun_version}"
-}
-
-jar {
-    manifest {
-        attributes([
-            "Specification-Title": "${mod_name}",
-            "Specification-Vendor": "${mod_author}",
-            "Specification-Version": "${version}",
-            "Implementation-Title": "${mod_name}",
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"${mod_author}",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConnector": "betterdays.mixin.Connector"
-        ])
-    }
-}
-
-def reobfFile = file("$buildDir/reobfJar/output.jar")
-def reobfArtifact = artifacts.add('default', reobfFile) {
-    type 'jar'
-    builtBy 'reobfJar'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact reobfArtifact
-        }
-    }
-    repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            name = "C4's Maven"
+            url = "https://maven.theillusivec4.top/"
         }
     }
-}
 
-mixin {
-    add sourceSets.main, "${modid}.refmap.json"
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
-}
-
-curseforge {
-    apiKey = project.bdcurseApiKey
-    project {
-        id = project.bdcurseId
-        changelog = file('build/libs/' + project.getName() + '-' + version + '-changelog.txt')
-        releaseType = cf_release_type
-        addGameVersion(minecraft_version)
-        mainArtifact(jar) {
-            relations {
-                requiredLibrary 'mixinbootstrap'
-                optionalLibrary 'ready-player-fun'
-            }
-        }
-    }
-}
-
-tasks.curseforge.dependsOn build
-
-task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File('build/libs/' + project.getName() + '-' + version + '-changelog.txt');
-    templateContent = file('files/templates/changelog.mustache').getText('UTF-8');
-	toRef = "${mod_version}";
-	fromRef = "${last_mod_version}";
-}
-
-tasks.build.dependsOn('changelog')
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    from (sourceSets.main.output) {
-        include 'LICENSE'
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = 'UTF-8'
+        it.options.release = 17
     }
 
-    classifier = 'src'
-}
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir 'resources'
-        }   
-    }   
-}
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-
-        // replaces
-        expand ([
-            'modid': modid,
-            'mod_version': version,
-            'mod_author': mod_author
-        ])
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
+    tasks.withType(GenerateModuleMetadata) {
+        it.enabled = false
     }
 }
-

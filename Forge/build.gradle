@@ -1,0 +1,197 @@
+plugins {
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.darkhax.curseforgegradle' version '1.+'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
+    id 'com.modrinth.minotaur' version '2.+'
+}
+
+repositories {
+    maven {
+        name = "C4's Maven"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "Curse Maven"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+archivesBaseName = "${mod_id}"
+version = "${minecraft_short_version}-${minecraft_version}-${mod_version}-FORGE"
+
+minecraft {
+    mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
+
+    if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
+        // This location is hardcoded in Forge and can not be changed.
+        // https://github.com/MinecraftForge/MinecraftForge/blob/be1698bb1554f9c8fa2f58e32b9ab70bc4385e60/fmlloader/src/main/java/net/minecraftforge/fml/loading/moddiscovery/ModFile.java#L123
+        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+        project.logger.debug('Forge Access Transformers are enabled for this project.')
+    }
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Client'
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                    source project(":Common").sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Server'
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                    source project(":Common").sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly project(":Common")
+
+    implementation fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}")
+    jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
+        jarJar.pin(it, "${spectrelib_version}")
+    }
+
+    // Testing mods
+    //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
+    //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4171024")
+}
+
+compileJava {
+    source(project(":Common").sourceSets.main.allSource)
+    options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-serial" << "-Werror"
+}
+
+tasks.withType(JavaCompile) {
+    source(project(":Common").sourceSets.main.allSource)
+}
+
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']
+def replaceProperties = [
+    'version': version, 'forge_mc_version_range': forge_mc_version_range, 'forge_version_range': forge_version_range,
+    'license': license, 'mod_id': mod_id, 'mod_author': mod_author, 'mod_description': mod_description,
+    'mod_name': mod_name, 'issue_tracker': issue_tracker, 'mod_credits': mod_credits, 'mod_update_url': mod_update_url
+]
+
+processResources {
+    from project(":Common").sourceSets.main.resources
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}
+
+tasks.jarJar.finalizedBy('reobfJar')
+reobfJarJar.dependsOn('jar')
+jar.finalizedBy('reobfJar')
+
+reobf {
+    jarJar {}
+}
+
+tasks.jarJar.configure {
+    archiveClassifier.set("")
+}
+
+jarJar {
+    enable()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
+}
+
+task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
+    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
+    fromRepo = file("$projectDir");
+    toRef = "HEAD";
+    fromRef = "${last_mod_version}";
+}
+
+def updates = tasks.register("generateUpdates", Copy) {
+    it.outputs.upToDateWhen {
+        false
+    }
+
+    it.from("../files/templates/") {
+        include 'updates.json'
+        expand 'version': version, 'minecraft_version': minecraft_version
+    }
+
+    it.into '../files/'
+}
+
+tasks.generateUpdates.mustRunAfter('jar')
+
+tasks.build.dependsOn('changelog', 'generateUpdates')
+
+def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+
+task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    if (project.hasProperty('bdcurseApiKey')) {
+        apiToken = project.bdcurseApiKey
+        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
+        mainFile.changelog = file(changelogFile)
+        mainFile.addJavaVersion('Java 17')
+        mainFile.addModLoader('Forge')
+        mainFile.releaseType = "${release_type}"
+        "${release_versions}".split(',').each {
+            mainFile.addGameVersion("${it}")
+        }
+        mainFile.addOptional('catalogue')
+        mainFile.addOptional('serene-seasons')
+    }
+}
+
+modrinth {
+    if (project.hasProperty('bdModrinthId')) {
+        token = project.modrinthKey
+        projectId = project.bdModrinthId
+        version = getVersion()
+        versionType = "${release_type}"
+        if (file(changelogFile).exists()) {
+            changelog = file(changelogFile).text
+        }
+        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+        gameVersions = "${release_versions}".split(",") as List<String>
+        dependencies {
+        }
+    }
+}
