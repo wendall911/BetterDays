@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
@@ -29,7 +29,7 @@ public class FabricPlatform implements IPlatform {
 
     @Override
     public ResourceLocation getResourceLocation(Item item) {
-        return Registry.ITEM.getKey(item);
+        return BuiltInRegistries.ITEM.getKey(item);
     }
 
     @Override

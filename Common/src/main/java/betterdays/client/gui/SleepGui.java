@@ -56,9 +56,9 @@ public class SleepGui {
     /**
      * Event listener that is called during GUI rendering. Renders additional GUI elements.
      */
-    public static void onGuiEvent(Minecraft minecraft, Screen screen) {
+    public static void onGuiEvent(Minecraft minecraft, Screen screen, PoseStack poseStack) {
         if (clockEnabled()) {
-            renderSleepInterface(minecraft, screen);
+            renderSleepInterface(minecraft, screen, poseStack);
         }
     }
 
@@ -67,7 +67,7 @@ public class SleepGui {
      *
      * @param minecraft  the current Minecraft instance
      */
-    public static void renderSleepInterface(Minecraft minecraft, Screen screen) {
+    public static void renderSleepInterface(Minecraft minecraft, Screen screen, PoseStack poseStack) {
         float x, y;
         int scale = ConfigHandler.Client.clockScale();
         int margin = ConfigHandler.Client.clockMargin();
@@ -97,7 +97,7 @@ public class SleepGui {
             y = screen.height - scale - margin;
         }
 
-        renderClock(minecraft, x, y, scale);
+        renderClock(minecraft, poseStack, x, y, scale);
     }
 
     /**
@@ -108,7 +108,7 @@ public class SleepGui {
      * @param y  the y coordinate of the center of the clock
      * @param scale  the size of the clock
      */
-    public static void renderClock(Minecraft minecraft, float x, float y, float scale) {
+    public static void renderClock(Minecraft minecraft, PoseStack poseStack, float x, float y, float scale) {
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
         scale /= 16F;
 
@@ -116,7 +116,7 @@ public class SleepGui {
         stack.pushPose();
         stack.translate(x, y, 0);
         stack.scale(scale, scale, 0);
-        itemRenderer.renderAndDecorateItem(clock, 0, 0);
+        itemRenderer.renderAndDecorateItem(poseStack, clock, 0, 0);
         stack.popPose();
     }
 
