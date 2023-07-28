@@ -36,8 +36,8 @@ dependencies {
     include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
     // Testing Mods
-    //modRuntimeOnly "curse.maven:sleepwarp-579295:4500512"
-    //modRuntimeOnly "curse.maven:fabricseasons-413523:4560136"
+    //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
+    //modRuntimeOnly "curse.maven:fabricseasons-413523:4576886"
 }
 
 loom {

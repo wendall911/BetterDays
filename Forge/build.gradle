@@ -77,7 +77,7 @@ dependencies {
     // Testing mods
     //runtimeOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
     //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
-    //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4171024")
+    //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4590890")
 }
 
 compileJava {
