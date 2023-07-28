@@ -21,12 +21,9 @@
 
 package betterdays.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -56,18 +53,16 @@ public class SleepGui {
     /**
      * Event listener that is called during GUI rendering. Renders additional GUI elements.
      */
-    public static void onGuiEvent(Minecraft minecraft, Screen screen, PoseStack poseStack) {
+    public static void onGuiEvent(Screen screen, GuiGraphics guiGraphics) {
         if (clockEnabled()) {
-            renderSleepInterface(minecraft, screen, poseStack);
+            renderSleepInterface(screen, guiGraphics);
         }
     }
 
     /**
      * Renders the interface that displays extra information over the sleep screen.
-     *
-     * @param minecraft  the current Minecraft instance
      */
-    public static void renderSleepInterface(Minecraft minecraft, Screen screen, PoseStack poseStack) {
+    public static void renderSleepInterface(Screen screen, GuiGraphics guiGraphics) {
         float x, y;
         int scale = ConfigHandler.Client.clockScale();
         int margin = ConfigHandler.Client.clockMargin();
@@ -97,27 +92,20 @@ public class SleepGui {
             y = screen.height - scale - margin;
         }
 
-        renderClock(minecraft, poseStack, x, y, scale);
+        renderClock(guiGraphics, x, y, scale);
     }
 
     /**
      * Renders a clock on the screen.
-     *
-     * @param minecraft  the current Minecraft instance
-     * @param x  the x coordinate of the center of the clock
-     * @param y  the y coordinate of the center of the clock
-     * @param scale  the size of the clock
      */
-    public static void renderClock(Minecraft minecraft, PoseStack poseStack, float x, float y, float scale) {
-        ItemRenderer itemRenderer = minecraft.getItemRenderer();
+    public static void renderClock(GuiGraphics guiGraphics, float x, float y, float scale) {
         scale /= 16F;
 
-        PoseStack stack = RenderSystem.getModelViewStack();
-        stack.pushPose();
-        stack.translate(x, y, 0);
-        stack.scale(scale, scale, 0);
-        itemRenderer.renderAndDecorateItem(poseStack, clock, 0, 0);
-        stack.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 0);
+        guiGraphics.pose().scale(scale, scale, 0);
+        guiGraphics.renderItem(clock, 0, 0);
+        guiGraphics.pose().popPose();
     }
 
     public static boolean clockEnabled() {

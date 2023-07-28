@@ -11,7 +11,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import betterdays.client.gui.SleepGui;
 import betterdays.client.TimeInterpolator;
 
-
 public class ClientEventListener {
 
     @SubscribeEvent
@@ -26,7 +25,7 @@ public class ClientEventListener {
     @SubscribeEvent
     public static void onGuiEvent(ScreenEvent.Render.Post event) {
         if (event.getScreen() instanceof InBedChatScreen) {
-            SleepGui.onGuiEvent(event.getScreen().getMinecraft(), event.getScreen(), event.getPoseStack());
+            SleepGui.onGuiEvent(event.getScreen(), event.getGuiGraphics());
         }
     }
 
