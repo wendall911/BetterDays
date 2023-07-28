@@ -33,4 +33,5 @@ public abstract class ServerLevelMixin {
             BetterDaysMessages.onSleepFinishedEvent(level);
         }
     }
+
 }

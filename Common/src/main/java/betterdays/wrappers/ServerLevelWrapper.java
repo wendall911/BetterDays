@@ -115,7 +115,7 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
             sleepStatus.set(this.get(), newStatus);
         }
         catch (IllegalAccessException | NoSuchFieldException e) {
-            BetterDays.LOGGER.warn("Error settings sleep status.", e);
+            BetterDays.LOGGER.error("Error settings sleep status.", e);
         }
     }
 
@@ -136,7 +136,7 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
 
             tickBlockEntitiesMethod.invoke(get());
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            BetterDays.LOGGER.warn("Error ticking block entities.", e);
+            BetterDays.LOGGER.error("Error ticking block entities.", e);
         }
     }
 

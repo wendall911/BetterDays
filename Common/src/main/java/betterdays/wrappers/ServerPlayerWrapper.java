@@ -49,7 +49,7 @@ public class ServerPlayerWrapper extends Wrapper<ServerPlayer> {
         try {
             tickEffectsMethod = ReflectionUtil.findMethod(LivingEntity.class, "tickEffects");
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            BetterDays.LOGGER.error("Error loading tickEffectsMethod: %s", e);
         }
     }
 
