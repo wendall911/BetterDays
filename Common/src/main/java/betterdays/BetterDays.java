@@ -26,7 +26,7 @@ public class BetterDays {
         }
 
         SpectreConfig commonConfig = SpectreConfigLoader.add(SpectreConfig.Type.COMMON, ConfigHandler.COMMON_SPEC, MODID);
-        commonConfig.addLoadListener(config -> ConfigHandler.init());
+        commonConfig.addLoadListener((config, flag) -> ConfigHandler.init());
     }
 
 }
