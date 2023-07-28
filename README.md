@@ -107,6 +107,10 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#Vanilla speed: 1.0
 	#Range: 0.0 ~ 24000.0
 	daySpeed = 1.0
+	#A reimplementation of 'Serene Seasons Fix' that overrides the fact that Serene Seasons doesn't honor the minecraft clock.
+	#If using this, Serene Seasons config value day_duration is set to 24000
+	#Set to true to override.
+	sereneSeasonsFix = true
 
 	[time.effects]
 		#When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.
