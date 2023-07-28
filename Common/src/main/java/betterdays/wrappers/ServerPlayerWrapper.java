@@ -30,6 +30,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
+import betterdays.BetterDays;
 import betterdays.utils.ReflectionUtil;
 
 /**
