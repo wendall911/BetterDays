@@ -5,7 +5,7 @@ plugins {
     id 'com.modrinth.minotaur' version '2.+'
 }
 
-version = "${minecraft_short_version}-${minecraft_version}-${mod_version}-FABRIC"
+version = "${minecraft_version}-${mod_version}-FABRIC"
 archivesBaseName = "${mod_id}"
 
 repositories {
@@ -35,6 +35,9 @@ dependencies {
 
     include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
+    // Testing Mods
+	//modRuntimeOnly "curse.maven:sleepwarp-579295:4500512"
+	//modRuntimeOnly "curse.maven:fabricseasons-413523:4560136"
 }
 
 loom {

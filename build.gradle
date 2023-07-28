@@ -47,6 +47,14 @@ subprojects {
             name = "C4's Maven"
             url = "https://maven.theillusivec4.top/"
         }
+
+        maven {
+            name = "Curse Maven"
+            url = "https://cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

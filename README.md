@@ -19,6 +19,7 @@ features that needed added. I've revived Better days to update for not only
  * Commands removed.
  * Forge only configuration screen
  * Syncing config updates with client. Now requires a restart.
+ * Added better support for Serene Seasons
 
 ## Features
 
@@ -45,6 +46,9 @@ Better Days is compatible with the following mods:
 * [Homeostatic](https://www.curseforge.com/minecraft/mc-mods/homeostatic)
 * [Ready Player Fun](https://www.curseforge.com/minecraft/mc-mods/ready-player-fun)
 * [Comforts](https://www.curseforge.com/minecraft/mc-mods/comforts)
+* [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
+  * If mod is installed, sleep system is disabled.
+* [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
 * [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
 * [Enhanced Celestials](https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials)
 * [Quark](https://www.curseforge.com/minecraft/mc-mods/quark)  

@@ -21,6 +21,7 @@
 
 package betterdays.config;
 
+import betterdays.platform.Services;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
@@ -339,7 +340,7 @@ public class ConfigHandler {
         }
 
         public static boolean enableSleepFeature() {
-            return COMMON.enableSleepFeature.get();
+            return !Services.PLATFORM.isModLoaded("sleepwarp") ? COMMON.enableSleepFeature.get() : false;
         }
 
         public static double sleepSpeedMin() {

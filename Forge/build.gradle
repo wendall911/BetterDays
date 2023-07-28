@@ -14,17 +14,10 @@ repositories {
         name = "C4's Maven"
         url = "https://maven.theillusivec4.top/"
     }
-    maven {
-        name = "Curse Maven"
-        url = "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
 }
 
 archivesBaseName = "${mod_id}"
-version = "${minecraft_short_version}-${minecraft_version}-${mod_version}-FORGE"
+version = "${minecraft_version}-${mod_version}-FORGE"
 
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
@@ -79,9 +72,10 @@ dependencies {
     jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
         jarJar.pin(it, "${spectrelib_version}")
     }
-    implementation fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
+    compileOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 
     // Testing mods
+    //runtimeOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
     //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
     //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4171024")
 }
