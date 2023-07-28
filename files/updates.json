@@ -1,14 +1,11 @@
 {
-  "homepage": "https://minecraft.curseforge.com/projects/betterdays",
-  "1.15.2": {
-    "0.1.0.4": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.4",
-    "0.1.0.3": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.3",
-    "0.1.0.2": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.2",
-    "0.1.0.1": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.1",
-    "0.1.0.0": "https://github.com/wendall911/BetterDays/releases/tag/0.1.0.0"
-  },
+  "homepage": "https://www.curseforge.com/minecraft/mc-mods/betterdays",
   "promos": {
-    "1.15.2-latest": "0.1.0.4",
-    "1.15.2-recommended": "0.1.0.4"
+    "1.19-latest": "1.19-1.19-1.19.2-1.1.0.0-FORGE",
+    "1.19-recommended": "1.19-1.19-1.19.2-1.1.0.0-FORGE",
+    "1.19.1-latest": "1.19.1-1.19-1.19.2-1.1.0.0-FORGE",
+    "1.19.1-recommended": "1.19.1-1.19-1.19.2-1.1.0.0-FORGE",
+    "1.19.2-latest": "1.19-1.19.2-1.1.0.0-FORGE",
+    "1.19.2-recommended": "1.19-1.19.2-1.1.0.0-FORGE"
   }
 }
