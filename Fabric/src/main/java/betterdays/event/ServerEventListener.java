@@ -1,20 +1,20 @@
 package betterdays.event;
 
-import betterdays.message.BetterDaysMessages;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionResult;
 
+import betterdays.message.BetterDaysMessages;
 import betterdays.time.TimeServiceManager;
-import net.minecraft.world.entity.player.Player;
 
 public class ServerEventListener {
 
     public static void setup() {
         EntitySleepEvents.ALLOW_SLEEP_TIME.register(((player, sleepingPos, vanillaResult) -> {
-            if (TimeServiceManager.onDaySleepCheck(player.level)) {
+            if (TimeServiceManager.onDaySleepCheck(player.level())) {
                 return InteractionResult.SUCCESS;
             }
 
@@ -24,7 +24,7 @@ public class ServerEventListener {
         EntitySleepEvents.ALLOW_SLEEP_TIME.register(((player, sleepingPos, vanillaResult) -> {
             BetterDaysMessages.onSleepingCheckEvent(player);
 
-            if (TimeServiceManager.onSleepingCheckEvent(player.level)) {
+            if (TimeServiceManager.onSleepingCheckEvent(player.level())) {
                 return InteractionResult.SUCCESS;
             }
 

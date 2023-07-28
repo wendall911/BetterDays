@@ -45,7 +45,7 @@ public class BetterDaysMessages {
                 && player.getSleepTimer() == 2
                 && player.getClass() == ServerPlayerWrapper.playerClass
                 && service != null
-                && service.level.get().equals(player.level)
+                && service.level.get().equals(player.level())
                 && service.level.get().players().size() > 1
                 && service.level.daylightRuleEnabled()) {
 
@@ -63,7 +63,7 @@ public class BetterDaysMessages {
         if (ConfigHandler.Common.enableSleepFeature()
                 && player.getClass() == ServerPlayerWrapper.playerClass
                 && service != null
-                && service.level.get().equals(player.level)
+                && service.level.get().equals(player.level())
                 && service.level.get().players().size() > 1
                 && service.level.daylightRuleEnabled()) {
 

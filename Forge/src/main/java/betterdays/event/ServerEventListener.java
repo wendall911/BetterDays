@@ -17,7 +17,7 @@ public class ServerEventListener {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onDaySleepCheck(SleepingTimeCheckEvent event) {
-        if (TimeServiceManager.onDaySleepCheck(event.getEntity().level)) {
+        if (TimeServiceManager.onDaySleepCheck(event.getEntity().level())) {
             event.setResult(Event.Result.ALLOW);
         }
     }
@@ -26,7 +26,7 @@ public class ServerEventListener {
     public static void onSleepingCheckEvent(SleepingTimeCheckEvent event) {
         BetterDaysMessages.onSleepingCheckEvent(event.getEntity());
 
-        if (TimeServiceManager.onSleepingCheckEvent(event.getEntity().level)) {
+        if (TimeServiceManager.onSleepingCheckEvent(event.getEntity().level())) {
             event.setResult(Event.Result.ALLOW);
         }
     }
