@@ -270,4 +270,5 @@ Location relative to Minecraft folder: `./config/betterdays-client.toml`
 ## Links of Interest
 
 + [Better Days Wiki](https://github.com/wendall911/BetterDays/wiki)
-+ [Better Days Curseforge Page](https://minecraft.curseforge.com/projects/better-days)
++ [Better Days Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/betterdays)
++ [Better Days Modrinth Page](https://modrinth.com/mod/betterdays)
