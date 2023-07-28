@@ -179,6 +179,7 @@ task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
         }
         mainFile.addOptional('catalogue')
         mainFile.addOptional('serene-seasons')
+        mainFile.addOptional('comforts')
     }
 }
 
@@ -194,6 +195,7 @@ modrinth {
         uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
         gameVersions = "${release_versions}".split(",") as List<String>
         dependencies {
+            optional.project 'comforts'
         }
     }
 }

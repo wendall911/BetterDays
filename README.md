@@ -56,10 +56,6 @@ Better Days is compatible with the following mods:
     [See note below.](#sleep-vote-mods)  
   * The "Nerf Clock" Quark option breaks the bed clock in Better Days. Either the Quark tweak should
     be disabled or the Better Days Bed Clock should be disabled via the `displayBedClock` config.
-* [Morpheus](https://www.curseforge.com/minecraft/mc-mods/morpheus)  
-  * The sleep feature of Better Days will need to be disabled to use it alongside Morpheus.
-    [See note below.](#sleep-vote-mods)
-* [Good Night's Sleep](https://www.curseforge.com/minecraft/mc-mods/good-nights-sleep)
 * [Nomadic Tents](https://www.curseforge.com/minecraft/mc-mods/nomadic-tents)
   * Better Days is compatible with this mod. However, sleep causes an extra full day cycle to pass
     after waking.

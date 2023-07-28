@@ -36,8 +36,8 @@ dependencies {
     include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
     // Testing Mods
-	//modRuntimeOnly "curse.maven:sleepwarp-579295:4500512"
-	//modRuntimeOnly "curse.maven:fabricseasons-413523:4560136"
+    //modRuntimeOnly "curse.maven:sleepwarp-579295:4500512"
+    //modRuntimeOnly "curse.maven:fabricseasons-413523:4560136"
 }
 
 loom {
@@ -94,8 +94,7 @@ task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
             mainFile.addGameVersion("${it}")
         }
         mainFile.addRequirement('fabric-api')
-        mainFile.addRequirement('fabric-api')
-        mainFile.addOptional('serene-seasons')
+        mainFile.addOptional('fabric-seasons')
     }
 }
 
@@ -112,6 +111,7 @@ modrinth {
         gameVersions = "${release_versions}".split(",") as List<String>
         dependencies {
             required.project 'fabric-api'
+            optional.project 'fabric-seasons'
         }
     }
 }
