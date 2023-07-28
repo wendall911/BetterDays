@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'net.darkhax.curseforgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
@@ -62,6 +63,12 @@ minecraft {
     }
 }
 
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+
+    config "${mod_id}.sereneseasons.mixins.json"
+}
+
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
@@ -72,6 +79,7 @@ dependencies {
     jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
         jarJar.pin(it, "${spectrelib_version}")
     }
+    implementation fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 
     // Testing mods
     //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
