@@ -44,7 +44,9 @@ public class SleepGui {
      * clock wobble when getting in bed.
      */
     public static void onClientTick(Minecraft minecraft) {
-        if (ConfigHandler.Client.preventClockWobble()
+        if (minecraft.player != null
+                && minecraft.player.isSleeping()
+                && ConfigHandler.Client.preventClockWobble()
                 && minecraft.level != null
                 && !minecraft.isPaused()
                 && clockEnabled()) {
