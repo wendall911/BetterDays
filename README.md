@@ -17,7 +17,7 @@ features that needed added. I've revived Better days to update for not only
 
 ### Differences from Hourglass Mod
  * Commands removed.
- * Forge only configuration screen
+ * Forge only configuration screen removed.
  * Syncing config updates with client. Now requires a restart.
  * Added better support for Serene Seasons
 
@@ -43,22 +43,22 @@ default but can be enabled by setting their associated [config options](#configu
 
 Better Days is compatible with the following mods:
 
-* [Homeostatic](https://www.curseforge.com/minecraft/mc-mods/homeostatic)
-* [Ready Player Fun](https://www.curseforge.com/minecraft/mc-mods/ready-player-fun)
-* [Comforts](https://www.curseforge.com/minecraft/mc-mods/comforts)
-* [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
-  * If mod is installed, sleep system is disabled.
-* [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
-* [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
-* [Enhanced Celestials](https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials)
-* [Quark](https://www.curseforge.com/minecraft/mc-mods/quark)  
-  * The Improved Sleeping module of Quark interferes with the sleep feature of Better Days.
-    [See note below.](#sleep-vote-mods)  
-  * The "Nerf Clock" Quark option breaks the bed clock in Better Days. Either the Quark tweak should
-    be disabled or the Better Days Bed Clock should be disabled via the `displayBedClock` config.
-* [Nomadic Tents](https://www.curseforge.com/minecraft/mc-mods/nomadic-tents)
-  * Better Days is compatible with this mod. However, sleep causes an extra full day cycle to pass
-    after waking.
+ * [Homeostatic](https://www.curseforge.com/minecraft/mc-mods/homeostatic)
+ * [Ready Player Fun](https://www.curseforge.com/minecraft/mc-mods/ready-player-fun)
+ * [Comforts](https://www.curseforge.com/minecraft/mc-mods/comforts)
+ * [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
+   * If mod is installed, sleep system is disabled.
+ * [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
+ * [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
+ * [Enhanced Celestials](https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials)
+ * [Quark](https://www.curseforge.com/minecraft/mc-mods/quark)
+   * The Improved Sleeping module of Quark interferes with the sleep feature of Better Days.
+     [See note below.](#sleep-vote-mods)
+   * The "Nerf Clock" Quark option breaks the bed clock in Better Days. Either the Quark tweak should
+     be disabled or the Better Days Bed Clock should be disabled via the `displayBedClock` config.
+ * [Nomadic Tents](https://www.curseforge.com/minecraft/mc-mods/nomadic-tents)
+   * Better Days is compatible with this mod. However, sleep causes an extra full day cycle to pass
+     after waking.
 
 #### Sleep Vote Mods
 
@@ -205,7 +205,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 			#Sets where this message appears.
 			#Allowed Values: SYSTEM, GAME_INFO
 			type = "GAME_INFO"
-			#Sets to whom this message is sent. 
+			#Sets to whom this message is sent.
 			#Allowed Values: ALL, DIMENSION, SLEEPING
 			target = "DIMENSION"
 
