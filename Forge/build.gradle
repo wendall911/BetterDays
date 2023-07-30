@@ -65,7 +65,6 @@ dependencies {
     jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
         jarJar.pin(it, "${spectrelib_version}")
     }
-    compileOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 
     // Testing mods
     //runtimeOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
