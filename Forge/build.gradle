@@ -136,7 +136,7 @@ task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
     fromRepo = file("$projectDir");
     toRef = "HEAD";
-    fromRef = "${last_mod_version}";
+    fromRef = "${minecraft_version}-${last_mod_version}";
 }
 
 def updates = tasks.register("generateUpdates", Copy) {
