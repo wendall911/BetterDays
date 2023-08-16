@@ -26,6 +26,9 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.Util;
+import net.minecraft.network.chat.ChatType;
+
 import org.apache.logging.log4j.core.lookup.MapLookup;
 import org.apache.logging.log4j.core.lookup.StrSubstitutor;
 
@@ -45,6 +48,7 @@ public class TemplateMessage {
     public StrSubstitutor substitutor;
 
     private boolean overlay;
+    private ChatType type = ChatType.SYSTEM;
     private TextWrapper message;
     private String template;
 
@@ -137,7 +141,7 @@ public class TemplateMessage {
         }
 
         if (target == MessageTarget.ALL) {
-            level.get().getServer().getPlayerList().broadcastSystemMessage(this.message.get(), overlay);
+            level.get().getServer().getPlayerList().broadcastMessage(this.message.get(), type, Util.NIL_UUID);
         } else {
             Stream<ServerPlayerWrapper> playerStream = level.get().players().stream()
                     .map(player -> new ServerPlayerWrapper(player));
@@ -146,7 +150,7 @@ public class TemplateMessage {
                 playerStream = playerStream.filter(ServerPlayerWrapper::isSleeping);
             }
 
-            playerStream.forEach(player -> player.get().sendSystemMessage(this.message.get(), overlay));
+            playerStream.forEach(player -> player.get().sendMessage(this.message.get(), type, Util.NIL_UUID));
         }
     }
 

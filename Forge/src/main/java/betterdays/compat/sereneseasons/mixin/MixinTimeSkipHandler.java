@@ -39,7 +39,7 @@ import sereneseasons.handler.season.TimeSkipHandler;
 public abstract class MixinTimeSkipHandler {
 
     @Inject(method = "onWorldTick", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void betterdays$onWorldTick(TickEvent.LevelTickEvent event, CallbackInfo ci) {
+    private void betterdays$onWorldTick(TickEvent.WorldTickEvent event, CallbackInfo ci) {
         ci.cancel();
     }
 

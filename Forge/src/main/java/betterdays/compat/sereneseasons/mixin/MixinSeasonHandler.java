@@ -38,8 +38,8 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
     private boolean wasSetDirty = false;
 
     @Inject(method = "onWorldTick", at = @At("HEAD"), cancellable = true)
-    private void betterdays$onWorldTick(TickEvent.LevelTickEvent event, CallbackInfo ci) {
-        Level level = event.level;
+    private void betterdays$onWorldTick(TickEvent.WorldTickEvent event, CallbackInfo ci) {
+        Level level = event.world;
 
         /*
          * Check if timeDirty is set in the ServerEventListener. If so, sync ticks to whatever random time / season was set.

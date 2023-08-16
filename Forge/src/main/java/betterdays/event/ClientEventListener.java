@@ -1,11 +1,11 @@
 package betterdays.event;
 
 import net.minecraft.client.Minecraft;
-
 import net.minecraft.client.gui.screens.InBedChatScreen;
+
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import betterdays.client.gui.SleepGui;
@@ -24,20 +24,20 @@ public class ClientEventListener {
     }
 
     @SubscribeEvent
-    public static void onGuiEvent(ScreenEvent.Render.Post event) {
+    public static void onGuiEvent(ScreenEvent.DrawScreenEvent.Post event) {
         if (event.getScreen() instanceof InBedChatScreen) {
             SleepGui.onGuiEvent(event.getScreen().getMinecraft(), event.getScreen());
         }
     }
 
     @SubscribeEvent
-    public static void onWorldLoad(LevelEvent.Load event) {
-        TimeInterpolator.onWorldLoad(event.getLevel());
+    public static void onWorldLoad(WorldEvent.Load event) {
+        TimeInterpolator.onWorldLoad(event.getWorld());
     }
 
     @SubscribeEvent
-    public static void onWorldUnload(LevelEvent.Unload event) {
-        TimeInterpolator.onWorldUnload(event.getLevel());
+    public static void onWorldUnload(WorldEvent.Unload event) {
+        TimeInterpolator.onWorldUnload(event.getWorld());
     }
 
     @SubscribeEvent

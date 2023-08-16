@@ -11,8 +11,8 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.level.SleepFinishedTimeEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.world.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +36,7 @@ public class ServerEventListener {
 
     @SubscribeEvent
     public static void onSleepingCheckEvent(SleepingTimeCheckEvent event) {
-        BetterDaysMessages.onSleepingCheckEvent(event.getEntity());
+        BetterDaysMessages.onSleepingCheckEvent(event.getPlayer());
 
         if (TimeServiceManager.onSleepingCheckEvent(event.getEntity().level)) {
             event.setResult(Event.Result.ALLOW);
@@ -45,31 +45,31 @@ public class ServerEventListener {
 
     @SubscribeEvent
     public static void onPlayerWakeUpEvent(PlayerWakeUpEvent event) {
-        if (event.updateLevel()) {
-            BetterDaysMessages.onPlayerWakeUpEvent(event.getEntity());
+        if (event.updateWorld()) {
+            BetterDaysMessages.onPlayerWakeUpEvent(event.getPlayer());
         }
 
     }
 
     @SubscribeEvent
     public static void onSleepFinishedEvent(SleepFinishedTimeEvent event) {
-        BetterDaysMessages.onSleepFinishedEvent(event.getLevel());
+        BetterDaysMessages.onSleepFinishedEvent(event.getWorld());
     }
 
     @SubscribeEvent
-    public static void onWorldLoad(LevelEvent.Load event) {
-        TimeServiceManager.onWorldLoad(event.getLevel());
+    public static void onWorldLoad(WorldEvent.Load event) {
+        TimeServiceManager.onWorldLoad(event.getWorld());
     }
 
     @SubscribeEvent
-    public static void onWorldUnload(LevelEvent.Unload event) {
-        TimeServiceManager.onWorldUnload(event.getLevel());
+    public static void onWorldUnload(WorldEvent.Unload event) {
+        TimeServiceManager.onWorldUnload(event.getWorld());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onWorldTick(TickEvent.LevelTickEvent event) {
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
         if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.START) {
-            TimeServiceManager.onWorldTick(event.level);
+            TimeServiceManager.onWorldTick(event.world);
         }
     }
 

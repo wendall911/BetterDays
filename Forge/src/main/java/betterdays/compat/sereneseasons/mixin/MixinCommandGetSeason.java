@@ -28,7 +28,7 @@ package betterdays.compat.sereneseasons.mixin;
 
 import net.minecraft.commands.CommandRuntimeException;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,7 +47,7 @@ public abstract class MixinCommandGetSeason {
     @Inject(method = "getSeason", at= @At("HEAD"), remap = false, cancellable = true)
     private static void betterdays$getSeason(CommandSourceStack cs, Level level, CallbackInfoReturnable<Integer> cir) throws CommandRuntimeException {
         if (ConfigHandler.Common.sereneSeasonsFix() && !ServerConfig.isDimensionWhitelisted(level.dimension())) {
-            cs.sendFailure(Component.translatable("commands.betterdays.getseason.notwhitelisted"));
+            cs.sendFailure(new TranslatableComponent("commands.betterdays.getseason.notwhitelisted"));
             cir.setReturnValue(1);
         }
     }
