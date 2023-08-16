@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 
 import org.spongepowered.asm.mixin.Final;
@@ -115,6 +117,7 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
     }
 
     @Inject(method = "onClientTick", at = @At("HEAD"), cancellable = true)
+    @OnlyIn(Dist.CLIENT)
     private void betterdays$onClientTick(TickEvent.ClientTickEvent event, CallbackInfo ci) {
         if (ConfigHandler.Common.sereneSeasonsFix() && Minecraft.getInstance().player != null) {
             Level level = Minecraft.getInstance().player.level();
