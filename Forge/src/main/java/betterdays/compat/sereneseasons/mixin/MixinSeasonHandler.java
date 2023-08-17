@@ -35,6 +35,7 @@ import betterdays.event.ServerEventListener;
 public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProvider {
 
     @Shadow @Final public static HashMap<ResourceKey<Level>, Integer> clientSeasonCycleTicks;
+
     private static final HashMap<Level, Long> lastDayTimes = new HashMap<>();
     private static final HashMap<Level, Long> clientLastDayTimes = new HashMap<>();
     private boolean wasSetDirty = false;
@@ -49,9 +50,11 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
          * Serene Seasons has a not very well implemented behavior where if you set the season, it starts the timer at the
          * exact time of day that you set the season. For this, we want to sync with the daytime.
          */
-        if (ConfigHandler.Common.sereneSeasonsFix() && ServerEventListener.isTimeDirty()
+        if (ConfigHandler.Common.sereneSeasonsFix()
+                && ServerEventListener.isTimeDirty()
                 && event.phase == TickEvent.Phase.START
-                && !level.isClientSide && ServerConfig.isDimensionWhitelisted(level.dimension())) {
+                && !level.isClientSide
+                && ServerConfig.isDimensionWhitelisted(level.dimension())) {
             long dayTime = level.getLevelData().getDayTime();
             SeasonSavedData seasonData = SeasonHandler.getSeasonSavedData(level);
             int seasonCycleTicks = seasonData.seasonCycleTicks;
@@ -59,6 +62,8 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
             int numDays = seasonCycleTicks / time.getDayDuration();
 
             seasonData.seasonCycleTicks = (int) ((numDays * 24000L) + dayTime);
+            lastDayTimes.put(level, dayTime);
+
             SeasonHandler.sendSeasonUpdate(level);
 
             seasonData.setDirty();
@@ -71,9 +76,9 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
         }
 
         if (ConfigHandler.Common.sereneSeasonsFix()
-                && !ServerEventListener.isTimeDirty()
                 && event.phase == TickEvent.Phase.END
-                && !level.isClientSide && ServerConfig.isDimensionWhitelisted(level.dimension())) {
+                && !level.isClientSide
+                && ServerConfig.isDimensionWhitelisted(level.dimension())) {
 
             if (!ServerConfig.progressSeasonWhileOffline.get()) {
                 MinecraftServer server = level.getServer();
@@ -106,12 +111,12 @@ public abstract class MixinSeasonHandler implements SeasonHelper.ISeasonDataProv
             }
             // If greater than 1, speed is much faster. We need to update the season ticks to match.
             else if (difference > 1) {
-                SeasonSavedData savedData = getSeasonSavedData(level);
+                SeasonSavedData seasonData = getSeasonSavedData(level);
 
-                savedData.seasonCycleTicks += difference - 1;
+                seasonData.seasonCycleTicks += difference - 1;
+
                 sendSeasonUpdate(level);
-
-                savedData.setDirty();
+                seasonData.setDirty();
             }
         }
     }
