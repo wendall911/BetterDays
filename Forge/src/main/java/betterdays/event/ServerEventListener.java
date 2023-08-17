@@ -89,7 +89,7 @@ public class ServerEventListener {
             String commandName = nodes.get(0).getNode().getName();
             String argument = nodes.get(1).getRange().get(event.getParseResults().getReader());
 
-            if (("season".equals(commandName) || "time".equals(commandName)) && "set".equals(argument)) {
+            if ("time".equals(commandName) && "set".equals(argument)) {
                 timeDirty = true;
             }
         }
