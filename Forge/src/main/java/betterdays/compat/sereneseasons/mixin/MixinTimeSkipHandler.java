@@ -35,12 +35,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import sereneseasons.handler.season.TimeSkipHandler;
 
+import betterdays.config.ConfigHandler;
+
 @Mixin(TimeSkipHandler.class)
 public abstract class MixinTimeSkipHandler {
 
     @Inject(method = "onWorldTick", at = @At("HEAD"), remap = false, cancellable = true)
     private void betterdays$onWorldTick(TickEvent.WorldTickEvent event, CallbackInfo ci) {
-        ci.cancel();
+        if (ConfigHandler.Common.sereneSeasonsFix()) {
+            ci.cancel();
+        }
     }
 
 }
