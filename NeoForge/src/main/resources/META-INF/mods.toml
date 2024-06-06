@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="${license}"
+issueTrackerURL="${issue_tracker}"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${neoforge_mod_version}"
+    displayName="${mod_name}"
+    updateJSONURL="https://raw.githubusercontent.com/wendall911/BetterDays/${mod_update_branch}/files/updates.json"
+    authors="${mod_author}"
+    displayUrl = "${mod_url}"
+    credits="${mod_credits}"
+    description='''
+    ${mod_description}
+    '''
+    logoFile="${mod_id}_icon.png"
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neoforge_loader_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${neoforge_mc_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[depenencies.betterdays]]
+    modId="sereneseasons"
+    type="optional"
+    versionRange=[0,]
+    ordering="AFTER"
+    side="BOTH"
