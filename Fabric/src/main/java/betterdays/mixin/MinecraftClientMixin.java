@@ -1,8 +1,7 @@
 package betterdays.mixin;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Timer;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,7 +18,8 @@ import betterdays.client.TimeInterpolator;
 @Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin {
 
-    @Shadow @Nullable public ClientLevel level;
+    @Shadow @Nullable
+    public ClientLevel level;
 
     @Shadow private float pausePartialTick;
 
@@ -36,8 +36,8 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "clearLevel()V", at = @At("HEAD"))
-    private void $betterdaysInjectClearLevel(CallbackInfo ci) {
+    @Inject(method = "disconnect()V", at = @At("HEAD"))
+    private void $betterdaysInjectDisconnect(CallbackInfo ci) {
         if (this.level != null) {
             TimeInterpolator.onWorldLoad(this.level);
         }

@@ -22,7 +22,7 @@ public class BetterDaysForge {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        MinecraftForge.EVENT_BUS.register(ServerEventListener.class);
+        MinecraftForge.EVENT_BUS.register(new ServerEventListener());
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> BetterDaysClientForge::new);
     }

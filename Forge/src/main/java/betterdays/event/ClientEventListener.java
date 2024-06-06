@@ -14,7 +14,7 @@ import betterdays.client.TimeInterpolator;
 public class ClientEventListener {
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             Minecraft minecraft = Minecraft.getInstance();
 
@@ -23,31 +23,31 @@ public class ClientEventListener {
     }
 
     @SubscribeEvent
-    public static void onGuiEvent(ScreenEvent.Render.Post event) {
+    public void onGuiEvent(ScreenEvent.Render.Post event) {
         if (event.getScreen() instanceof InBedChatScreen) {
             SleepGui.onGuiEvent(event.getScreen(), event.getGuiGraphics());
         }
     }
 
     @SubscribeEvent
-    public static void onWorldLoad(LevelEvent.Load event) {
+    public void onWorldLoad(LevelEvent.Load event) {
         TimeInterpolator.onWorldLoad(event.getLevel());
     }
 
     @SubscribeEvent
-    public static void onWorldUnload(LevelEvent.Unload event) {
+    public void onWorldUnload(LevelEvent.Unload event) {
         TimeInterpolator.onWorldUnload(event.getLevel());
     }
 
     @SubscribeEvent
-    public static void onRenderTickEvent(TickEvent.RenderTickEvent event) {
+    public void onRenderTickEvent(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             TimeInterpolator.onRenderTickEvent(event.renderTickTime);
         }
     }
 
     @SubscribeEvent
-    public static void onClientTickEvent(TickEvent.ClientTickEvent event) {
+    public void onClientTickEvent(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             Minecraft minecraft = Minecraft.getInstance();
 

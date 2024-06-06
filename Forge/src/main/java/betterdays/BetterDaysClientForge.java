@@ -7,7 +7,7 @@ import betterdays.event.ClientEventListener;
 public class BetterDaysClientForge {
 
     public BetterDaysClientForge() {
-        MinecraftForge.EVENT_BUS.register(ClientEventListener.class);
+        MinecraftForge.EVENT_BUS.register(new ClientEventListener());
     }
 
 }

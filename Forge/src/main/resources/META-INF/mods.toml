@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="${forge_version_range}"
+loaderVersion="${forge_loader_version_range}"
 license="${license}"
 logoBlur=false
 issueTrackerURL="${issue_tracker}"
@@ -7,21 +7,21 @@ logoFile="${mod_id}_icon.png"
 
 [[mods]]
     modId="${mod_id}"
-    version="${version}"
+    version="${forge_mod_version}"
     displayName="${mod_name}"
-    updateJSONURL="${mod_update_url}"
+    updateJSONURL="https://raw.githubusercontent.com/wendall911/BetterDays/${mod_update_branch}/files/forge/updates.json"
     authors="${mod_author}"
     credits="${mod_credits}"
     description='''
     ${mod_description}
     '''
-[[dependencies.betterdays]]
+[[dependencies.${mod_id}]]
     modId="forge"
     mandatory=true
     versionRange="${forge_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
-[[dependencies.betterdays]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
     versionRange="${forge_mc_version_range}"
