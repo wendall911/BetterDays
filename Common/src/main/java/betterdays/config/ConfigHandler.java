@@ -111,7 +111,6 @@ public class ConfigHandler {
         private final SpectreConfigSpec.EnumValue<EffectCondition> potionEffect;
         private final SpectreConfigSpec.EnumValue<EffectCondition> hungerEffect;
         private final SpectreConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
-        private final SpectreConfigSpec.BooleanValue sereneSeasonsFix;
 
         private final SpectreConfigSpec.BooleanValue enableSleepFeature;
         private final SpectreConfigSpec.DoubleValue sleepSpeedMin;
@@ -148,12 +147,6 @@ public class ConfigHandler {
                             "Night is defined as any time between 12500 (middle of dusk) and 23500 (middle of dawn).",
                             "Vanilla speed: 1.0")
                     .defineInRange("nightSpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
-
-            sereneSeasonsFix = builder.comment(
-                            "A reimplementation of 'Serene Seasons Fix' that overrides the fact that Serene Seasons doesn't honor the minecraft clock.",
-                            "If using this, Serene Seasons config value day_duration is set to 24000",
-                            "Set to true to override.")
-                    .define("sereneSeasonsFix", false);
 
             builder.push("effects"); // time.effects
 
@@ -344,10 +337,6 @@ public class ConfigHandler {
 
         public static EffectCondition blockEntityEffect() {
             return COMMON.blockEntityEffect.get();
-        }
-
-        public static boolean sereneSeasonsFix() {
-            return !Services.PLATFORM.isModLoaded("sereneseasonsfix") ? COMMON.sereneSeasonsFix.get() : false;
         }
 
         public static boolean enableSleepFeature() {
