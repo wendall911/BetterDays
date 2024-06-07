@@ -44,14 +44,14 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transtive dependencies request 6.0+
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
-    implementation fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}")
-    jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
+    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}"
+    jarJar (group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
         jarJar.pin(it, "${spectrelib_version}+${minecraft_version}")
     }
 
     // Testing mods
-    //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
-    //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4590890")
+    //runtimeOnly "curse.maven:configured-457570:4462837"
+    //runtimeOnly "curse.maven:catalogue-459701:4590890"
 }
 
 jar.finalizedBy('jarJar')
@@ -139,6 +139,7 @@ modrinth {
         }
         uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
         gameVersions = "${release_versions}".split(",") as List<String>
+        loaders = ['forge']
         dependencies {
             optional.project 'comforts'
         }
