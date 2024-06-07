@@ -58,7 +58,7 @@ task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
         apiToken = project.bdcurseApiKey
         def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
         mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
+        mainFile.addJavaVersion("Java ${java_version}")
         mainFile.addModLoader('Fabric')
         mainFile.releaseType = "${release_type}"
         "${release_versions}".split(',').each {
