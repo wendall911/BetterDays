@@ -4,8 +4,9 @@ import net.minecraft.client.gui.screens.InBedChatScreen;
 import net.minecraft.client.Minecraft;
 
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
 import betterdays.client.gui.SleepGui;
@@ -14,12 +15,10 @@ import betterdays.client.TimeInterpolator;
 public class ClientEventListener {
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            Minecraft minecraft = Minecraft.getInstance();
+    public void onClientTick(ClientTickEvent.Pre event) {
+        Minecraft minecraft = Minecraft.getInstance();
 
-            SleepGui.onClientTick(minecraft);
-        }
+        SleepGui.onClientTick(minecraft);
     }
 
     @SubscribeEvent
@@ -40,19 +39,15 @@ public class ClientEventListener {
     }
 
     @SubscribeEvent
-    public void onRenderTickEvent(TickEvent.RenderTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            TimeInterpolator.onRenderTickEvent(event.renderTickTime);
-        }
+    public void onRenderTickEvent(RenderGuiEvent.Pre event) {
+        TimeInterpolator.onRenderTickEvent(event.getPartialTick());
     }
 
     @SubscribeEvent
-    public void onClientTickEvent(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            Minecraft minecraft = Minecraft.getInstance();
+    public void onClientTickEvent(ClientTickEvent.Post event) {
+        Minecraft minecraft = Minecraft.getInstance();
 
-            TimeInterpolator.onClientTickEvent(minecraft);
-        }
+        TimeInterpolator.onClientTickEvent(minecraft);
     }
 
 }

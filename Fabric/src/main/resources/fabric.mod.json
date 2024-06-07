@@ -23,7 +23,7 @@
     "client": [
       "betterdays.BetterDaysClientFabric"
     ],
-    "spectrelib": [
+    "spectrelib-config": [
       "betterdays.FabricConfigInitializer"
     ]
   },

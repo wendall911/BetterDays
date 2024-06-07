@@ -104,7 +104,7 @@ public class ServerPlayerWrapper extends Wrapper<ServerPlayer> {
     public void sendMobEffectUpdatePackets() {
         for (MobEffectInstance e : get().getActiveEffects()) {
             int id = get().getId();
-            ClientboundUpdateMobEffectPacket packet = new ClientboundUpdateMobEffectPacket(id, e);
+            ClientboundUpdateMobEffectPacket packet = new ClientboundUpdateMobEffectPacket(id, e, false);
             get().connection.send(packet);
         }
     }

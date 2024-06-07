@@ -1,5 +1,7 @@
 package betterdays;
 
+import net.minecraft.server.level.ServerPlayer;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
