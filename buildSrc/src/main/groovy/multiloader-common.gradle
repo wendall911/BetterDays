@@ -101,8 +101,6 @@ jar {
 processResources {
     def expandProps = [
         'version': version,
-        'forge_version_range': forge_version_range,
-        'forge_mod_version': forge_mod_version,
         'neoforge_mod_version': neoforge_mod_version,
         'fabric_mod_version': fabric_mod_version,
         'license': license,
@@ -117,9 +115,7 @@ processResources {
         'fabric_mc_version_range': project.fabric_mc_version_range,
         'fabric_loader_min_version': fabric_loader_min_version,
         'neoforge_loader_version_range': neoforge_loader_version_range,
-        'neoforge_mc_version_range': neoforge_mc_version_range,
-        'forge_loader_version_range': forge_loader_version_range,
-        'forge_mc_version_range': forge_mc_version_range
+        'neoforge_mc_version_range': neoforge_mc_version_range
     ]
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', '*.mixins.json']) {
