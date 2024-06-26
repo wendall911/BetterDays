@@ -24,35 +24,44 @@ repositories {
                 url = 'https://repo.spongepowered.org/repository/maven-public'
             }
         }
-        filter { includeGroupAndSubgroups("org.spongepowered") }
+        filter { includeGroupAndSubgroups('org.spongepowered') }
+    }
+
+	exclusiveContent {
+        forRepositories(
+			maven {
+				name = 'ParchmentMC'
+				url = 'https://maven.parchmentmc.org/'
+			},
+			maven {
+				name = 'NeoForge'
+				url = 'https://maven.neoforged.net/releases'
+			}
+        )
+        filter { includeGroup('org.parchmentmc.data') }
     }
 
     maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org/'
+        name = 'TerraformersMC (Trinkets)'
+        url = 'https://maven.terraformersmc.com/'
     }
 
     maven {
-        name = "TerraformersMC (Trinkets)"
-        url = "https://maven.terraformersmc.com/"
-    }
-
-    maven {
-        name = "Curse Maven"
-        url = "https://cursemaven.com"
+        name = 'Curse Maven'
+        url = 'https://cursemaven.com'
         content {
-            includeGroup "curse.maven"
+            includeGroup 'curse.maven'
         }
     }
 
     maven {
         name = 'Illusive Soulworks'
-        url = "https://maven.theillusivec4.top/"
+        url = 'https://maven.theillusivec4.top/'
     }
 
     if (project.hasProperty('localmaven')) {
         maven {
-            url "file://" + localmaven
+            url 'file://' + localmaven
         }
     }
 }
@@ -70,17 +79,16 @@ repositories {
 }
 
 sourcesJar {
-    from(rootProject.file("LICENSE"))
-    from(rootProject.file("COPYING.LESSER"))
-    from(rootProject.file("README.md"))
+    from(rootProject.file('LICENSE'))
+    from(rootProject.file('COPYING.LESSER'))
+    from(rootProject.file('README.md'))
     from(rootProject.file('build/libs/changelog.txt'))
 }
 
 jar {
-    archiveClassifier.set("slim")
-    from(rootProject.file("LICENSE"))
-    from(rootProject.file("COPYING.LESSER"))
-    from(rootProject.file("README.md"))
+    from(rootProject.file('LICENSE'))
+    from(rootProject.file('COPYING.LESSER'))
+    from(rootProject.file('README.md'))
     from(rootProject.file('build/libs/changelog.txt'))
     manifest {
         attributes([
@@ -112,8 +120,9 @@ processResources {
         'issue_tracker': issue_tracker,
         'mod_update_branch': mod_update_branch,
         'mod_url': mod_url,
-        'fabric_mc_version_range': project.fabric_mc_version_range,
-        'fabric_loader_min_version': fabric_loader_min_version,
+        'fabric_loader_version': fabric_loader_version,
+		'fabric_loader_min_version': fabric_loader_min_version,
+        'minecraft_version': minecraft_version,
         'neoforge_loader_version_range': neoforge_loader_version_range,
         'neoforge_mc_version_range': neoforge_mc_version_range
     ]
@@ -126,8 +135,10 @@ processResources {
 
 publishing {
     repositories {
-        maven {
-            url System.getenv("local_maven_url")
+        if (project.hasProperty('localmaven')) {
+            maven {
+                url 'file://' + localmaven
+            }
         }
     }
 }

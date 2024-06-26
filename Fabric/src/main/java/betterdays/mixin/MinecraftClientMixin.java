@@ -2,10 +2,10 @@ package betterdays.mixin;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.Timer;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,13 +22,13 @@ public abstract class MinecraftClientMixin {
     @Shadow @Nullable
     public ClientLevel level;
 
-    @Shadow private float pausePartialTick;
-
     @Shadow private volatile boolean pause;
 
-    @Shadow @Final private Timer timer;
+    @Shadow @Final private DeltaTracker.Timer timer;
 
     @Shadow public boolean noRender;
+
+    @Shadow private volatile boolean running;
 
     @Inject(method = "setLevel", at = @At("HEAD"))
     private void $betterdaysInjectSetLevel(ClientLevel level, ReceivingLevelScreen.Reason reason, CallbackInfo ci) {
@@ -46,8 +46,8 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "runTick", at = @At(value = "HEAD"))
     private void $betterdaysInjectRunTick(boolean renderLevel, CallbackInfo ci) {
-        if (!this.noRender) {
-            TimeInterpolator.onRenderTickEvent(this.pause ? this.pausePartialTick : this.timer.partialTick);
+        if (renderLevel) {
+            TimeInterpolator.onRenderTickEvent(this.timer.getGameTimeDeltaPartialTick(true));
         }
     }
 

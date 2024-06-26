@@ -24,7 +24,7 @@ package betterdays.message;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.logging.log4j.core.lookup.MapLookup;
 import org.apache.logging.log4j.core.lookup.StrSubstitutor;
@@ -68,6 +68,7 @@ public class TemplateMessage {
      */
     public TemplateMessage setOverlay(boolean overlay) {
         this.overlay = overlay;
+
         return this;
     }
 
@@ -84,6 +85,7 @@ public class TemplateMessage {
      */
     public TemplateMessage setTemplate(String template) {
         this.template = template;
+
         return this;
     }
 
@@ -96,6 +98,7 @@ public class TemplateMessage {
      */
     public TemplateMessage setVariable(String key, String value) {
         this.variables.put(key, value);
+
         return this;
     }
 
@@ -111,6 +114,7 @@ public class TemplateMessage {
     public TemplateMessage bake() {
         this.substitutor.setVariableResolver(new MapLookup(this.variables));
         this.message = TextWrapper.literal(this.substitutor.replace(this.template));
+
         return this;
     }
 
@@ -140,7 +144,7 @@ public class TemplateMessage {
             level.get().getServer().getPlayerList().broadcastSystemMessage(this.message.get(), overlay);
         } else {
             Stream<ServerPlayerWrapper> playerStream = level.get().players().stream()
-                    .map(player -> new ServerPlayerWrapper(player));
+                .map(ServerPlayerWrapper::new);
 
             if (target == MessageTarget.SLEEPING) {
                 playerStream = playerStream.filter(ServerPlayerWrapper::isSleeping);

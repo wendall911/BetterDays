@@ -40,7 +40,7 @@ public class ClientEventListener {
 
     @SubscribeEvent
     public void onRenderTickEvent(RenderGuiEvent.Pre event) {
-        TimeInterpolator.onRenderTickEvent(event.getPartialTick());
+        TimeInterpolator.onRenderTickEvent(event.getPartialTick().getGameTimeDeltaPartialTick(true));
     }
 
     @SubscribeEvent
