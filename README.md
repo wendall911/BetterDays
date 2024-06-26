@@ -1,5 +1,7 @@
-# Better Days [![Project](http://cf.way2muchnoise.eu/full_betterdays_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/betterdays)
-![Minecraft](http://cf.way2muchnoise.eu/versions/betterdays.svg)
+# Better Days [![](http://cf.way2muchnoise.eu/full_895618_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/betterdays)
+[![](http://cf.way2muchnoise.eu/versions/895618.svg)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files)
+[![](https://img.shields.io/badge/NeoForge-20.4+-orange.svg?longCache=true&style=flat)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files?gameVersionTypeId=6)
+[![](https://img.shields.io/badge/Fabric-0.46.0+-yellowgreen.svg?longCache=true&style=flat)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files?gameVersionTypeId=4)
 ![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)
 
 A Minecraft 1.19+ mod to designed to extend the length of the crazy short minecraft day.
@@ -11,7 +13,7 @@ busy to update to 1.16.5,
 [Hourglass](https://github.com/DuckyCrayfish/hourglass) mod was created. Now
 Hourglass hasn't received any updates in nearly a year, plus there are new
 features that needed added. I've revived Better days to update for not only
-1.19 and 1.20, but also bring all the features to <u>both</u> **Forge and Fabric**.
+1.19 and 1.20, but also bring all the features to <u>both</u> **NeoForge and Fabric**.
 
 1.19+ is a fork of Hourglass mod, with new features and some functionality removed.
 
@@ -97,20 +99,24 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 
 ```toml
 [time]
-	#The speed at which time passes during the night.
-	#Night is defined as any time between 12500 (middle of dusk) and 23500 (middle of dawn).
-	#Vanilla speed: 1.0
-	#Range: 0.0 ~ 24000.0
-	nightSpeed = 1.0
 	#The speed at which time passes during the day.
-	#Day is defined as any time between 23500 (middle of dawn) and 12500 (middle of dusk) the next day.
+	#Day is defined as any time between dayStart (see below) and nightStart (see below) the next day.
 	#Vanilla speed: 1.0
 	#Range: 0.0 ~ 24000.0
-	daySpeed = 1.0
-	#A reimplementation of 'Serene Seasons Fix' that overrides the fact that Serene Seasons doesn't honor the minecraft clock.
-	#If using this, Serene Seasons config value day_duration is set to 24000
-	#Set to true to override.
-	sereneSeasonsFix = true
+	daySpeed = 0.5
+	#The speed at which time passes during the night.
+	#Night is defined as any time between dayStart (see below) and nightStart (see below).
+	#Vanilla speed: 1.0
+	#Range: 0.0 ~ 24000.0
+	nightSpeed = 15.0
+	#The time to start day. This is configurable within the time the sun appears and day starts.
+	#Default: 23500
+	#Range: 22300.0 ~ 24000.0
+	dayStart = 23500.0
+	#The time to start night. This is configurable within the time sunset starts and night starts.
+	#Default: 12500
+	#Range: 12000.0 ~ 13000.0
+	nightStart = 12500.0
 
 	[time.effects]
 		#When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.
