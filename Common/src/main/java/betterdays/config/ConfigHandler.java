@@ -104,6 +104,8 @@ public class ConfigHandler {
     public static class Common {
         private final SpectreConfigSpec.DoubleValue daySpeed;
         private final SpectreConfigSpec.DoubleValue nightSpeed;
+        private final SpectreConfigSpec.DoubleValue dayStart;
+        private final SpectreConfigSpec.DoubleValue nightStart;
 
         private final SpectreConfigSpec.EnumValue<EffectCondition> weatherEffect;
         private final SpectreConfigSpec.EnumValue<EffectCondition> randomTickEffect;
@@ -138,15 +140,25 @@ public class ConfigHandler {
 
             daySpeed = builder.comment(
                             "The speed at which time passes during the day.",
-                            "Day is defined as any time between 23500 (middle of dawn) and 12500 (middle of dusk) the next day.",
+                            "Day is defined as any time between dayStart (see below) and nightStart (see below) the next day.",
                             "Vanilla speed: 1.0")
                     .defineInRange("daySpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
 
             nightSpeed = builder.comment(
                             "The speed at which time passes during the night.",
-                            "Night is defined as any time between 12500 (middle of dusk) and 23500 (middle of dawn).",
+                            "Night is defined as any time between dayStart (see below) and nightStart (see below).",
                             "Vanilla speed: 1.0")
                     .defineInRange("nightSpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
+
+            dayStart = builder.comment(
+                            "The time to start day. This is configurable within the time the sun appears and day starts.",
+                            "Default: 23500")
+                    .defineInRange("dayStart", 23500D, 22300D, 24000D);
+
+            nightStart = builder.comment(
+                            "The time to start night. This is configurable within the time sunset starts and night starts.",
+                            "Default: 12500")
+                    .defineInRange("nightStart", 12500D, 12000D, 13000D);
 
             builder.push("effects"); // time.effects
 
@@ -313,6 +325,14 @@ public class ConfigHandler {
 
         public static double nightSpeed() {
             return COMMON.nightSpeed.get();
+        }
+
+        public static double dayStart() {
+            return COMMON.dayStart.get();
+        }
+
+        public static double nightStart() {
+            return COMMON.nightStart.get();
         }
 
         public static EffectCondition weatherEffect() {
