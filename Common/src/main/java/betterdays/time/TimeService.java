@@ -39,10 +39,10 @@ import betterdays.wrappers.TimePacketWrapper;
 public class TimeService {
 
     /** Time of day when the sun rises above the horizon. */
-    public static final Time DAY_START = new Time(23500);
+    public static final Time DAY_START = new Time(ConfigHandler.Common.dayStart());
 
     /** Time of day when the sun sets below the horizon. */
-    public static final Time NIGHT_START = new Time(12500);
+    public static final Time NIGHT_START = new Time(ConfigHandler.Common.nightStart());
 
     // The largest number of lunar cycles that can be stored in an int
     private static final int OVERFLOW_THRESHOLD = 11184 * Time.LUNAR_CYCLE_TICKS;
