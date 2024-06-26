@@ -22,10 +22,6 @@ dependencies {
     implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-common', version: "${spectrelib_version}+${minecraft_version}"
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-}
-
 configurations {
     commonJava {
         canBeResolved = false

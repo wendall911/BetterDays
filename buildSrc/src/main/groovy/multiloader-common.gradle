@@ -27,16 +27,16 @@ repositories {
         filter { includeGroupAndSubgroups('org.spongepowered') }
     }
 
-	exclusiveContent {
+    exclusiveContent {
         forRepositories(
-			maven {
-				name = 'ParchmentMC'
-				url = 'https://maven.parchmentmc.org/'
-			},
-			maven {
-				name = 'NeoForge'
-				url = 'https://maven.neoforged.net/releases'
-			}
+            maven {
+                name = 'ParchmentMC'
+                url = 'https://maven.parchmentmc.org/'
+            },
+            maven {
+                name = 'NeoForge'
+                url = 'https://maven.neoforged.net/releases'
+            }
         )
         filter { includeGroup('org.parchmentmc.data') }
     }
@@ -121,7 +121,7 @@ processResources {
         'mod_update_branch': mod_update_branch,
         'mod_url': mod_url,
         'fabric_loader_version': fabric_loader_version,
-		'fabric_loader_min_version': fabric_loader_min_version,
+        'fabric_loader_min_version': fabric_loader_min_version,
         'minecraft_version': minecraft_version,
         'neoforge_loader_version_range': neoforge_loader_version_range,
         'neoforge_mc_version_range': neoforge_mc_version_range
