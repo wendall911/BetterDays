@@ -1,8 +1,8 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
-    id 'net.darkhax.curseforgegradle' version '1.+'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
 }
 
 version = fabric_mod_version

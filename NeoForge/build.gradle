@@ -1,10 +1,10 @@
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
-    id 'io.github.goooler.shadow' version '8.1.7'
-    id 'net.darkhax.curseforgegradle' version '1.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'io.github.goooler.shadow'
+    id 'net.darkhax.curseforgegradle'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+    id 'com.modrinth.minotaur'
 }
 
 archivesBaseName = "${mod_id}"

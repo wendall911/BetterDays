@@ -3,4 +3,8 @@ plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
     id 'net.neoforged.moddev' version '0.1.110' apply false
+    id 'io.github.goooler.shadow' version '8.1.7' apply false
+    id 'net.darkhax.curseforgegradle' version '1.+' apply false
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8' apply false
+    id 'com.modrinth.minotaur' version '2.+' apply false
 }
