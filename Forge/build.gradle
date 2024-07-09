@@ -2,7 +2,6 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'net.darkhax.curseforgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
@@ -19,12 +18,6 @@ repositories {
 archivesBaseName = "${mod_id}"
 version = "${minecraft_version}-${mod_version}-FORGE"
 
-mixin {
-    add sourceSets.main, "${mod_id}-refmap.json"
-
-    config "${mod_id}.sereneseasons.mixins.json"
-}
-
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
 
@@ -38,10 +31,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=${mod_id}.sereneseasons.mixins.json"
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Client'
             mods {
@@ -54,10 +44,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg "-mixin.config=${mod_id}.sereneseasons.mixins.json"
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             ideaModule "${rootProject.name}.${project.name}.main"
             taskName 'Server'
             mods {
@@ -96,7 +83,7 @@ tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }
 
-def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta', '*.mixins.json']
+def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def replaceProperties = [
     'version': version, 'forge_mc_version_range': forge_mc_version_range, 'forge_version_range': forge_version_range,
     'license': license, 'mod_id': mod_id, 'mod_author': mod_author, 'mod_description': mod_description,
