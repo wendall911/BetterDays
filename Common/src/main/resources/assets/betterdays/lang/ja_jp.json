@@ -1,0 +1,4 @@
+{
+    "commands.betterdays.getseason.notwhitelisted": "このディメンションでは季節が無効になっています!",
+    "commands.betterdays.setseason.notwhitelisted": "このディメンションでは季節が無効になっています!"
+}
