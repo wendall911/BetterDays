@@ -19,7 +19,7 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-common', version: "${spectrelib_version}+${minecraft_version}"
+    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-common', version: "${spectrelib_version}"
 }
 
 configurations {

@@ -2,6 +2,8 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'idea'
+    id 'net.darkhax.curseforgegradle'
+    id 'com.modrinth.minotaur'
 }
 
 base {
@@ -42,7 +44,7 @@ repositories {
     }
 
     maven {
-        name = 'TerraformersMC (Trinkets)'
+        name = 'TerraformersMC (Trinkets / ModMenu)'
         url = 'https://maven.terraformersmc.com/'
     }
 

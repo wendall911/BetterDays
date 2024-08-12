@@ -1,8 +1,6 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
-    id 'net.darkhax.curseforgegradle'
-    id 'com.modrinth.minotaur'
 }
 
 version = fabric_mod_version
@@ -18,14 +16,14 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}+${minecraft_version}"
-    include "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}+${minecraft_version}"
+    modImplementation "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
+    include "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
 
     modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false
     }
 
-    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}+${minecraft_version}"
+    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
