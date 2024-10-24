@@ -24,7 +24,7 @@ public abstract class MinecraftClientMixin {
 
     @Shadow private volatile boolean pause;
 
-    @Shadow @Final private DeltaTracker.Timer timer;
+    @Shadow @Final private DeltaTracker.Timer deltaTracker;
 
     @Shadow public boolean noRender;
 
@@ -47,7 +47,7 @@ public abstract class MinecraftClientMixin {
     @Inject(method = "runTick", at = @At(value = "HEAD"))
     private void $betterdaysInjectRunTick(boolean renderLevel, CallbackInfo ci) {
         if (renderLevel) {
-            TimeInterpolator.onRenderTickEvent(this.timer.getGameTimeDeltaPartialTick(true));
+            TimeInterpolator.onRenderTickEvent(this.deltaTracker.getGameTimeDeltaPartialTick(true));
         }
     }
 

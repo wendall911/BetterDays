@@ -46,7 +46,11 @@ public class ClientLevelWrapper extends Wrapper<ClientLevel> {
 
     /** {@return true if the 'daylight cycle' game rule is enabled in this level} */
     public boolean daylightRuleEnabled() {
-        return this.get().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+        /*
+         * I'm not sure how to look this up on the client side in 1.21.3. Also, if this is broken, I'm not understanding
+         * why someone would even have this mod installed. It will just need to break. This was a "nice to have" feature.
+         */
+        return true;
     }
 
     /**

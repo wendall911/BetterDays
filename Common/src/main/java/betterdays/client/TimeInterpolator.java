@@ -194,7 +194,7 @@ public class TimeInterpolator {
                 lastTime = time - newTimeOfDay + oldTimeOfDay;
             }
 
-            level.get().setDayTime(lastTime);
+            level.get().getLevelData().setDayTime(lastTime);
         }
     }
 
@@ -205,7 +205,7 @@ public class TimeInterpolator {
      * @param time  the time of day to set
      */
     private void setDayTime(long time) {
-        level.get().setDayTime(time);
+        level.get().getLevelData().setDayTime(time);
         lastTime = time;
     }
 
@@ -215,7 +215,7 @@ public class TimeInterpolator {
      */
     private void undoVanillaTimeTicks() {
         if (level.daylightRuleEnabled()) {
-            level.get().setDayTime(level.get().getDayTime() - 1);
+            level.get().getLevelData().setDayTime(level.get().getDayTime() - 1);
         }
     }
 

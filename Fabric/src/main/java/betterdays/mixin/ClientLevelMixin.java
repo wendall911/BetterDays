@@ -19,7 +19,7 @@ import betterdays.client.TimeInterpolator;
 public abstract class ClientLevelMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void $betterdaysInjectInit(ClientPacketListener clientPacketListener, ClientLevel.ClientLevelData clientLevelData, ResourceKey resourceKey, Holder holder, int i, int j, Supplier supplier, LevelRenderer levelRenderer, boolean bl, long l, CallbackInfo ci) {
+    private void betterdays$InjectInit(ClientPacketListener clientPacketListener, ClientLevel.ClientLevelData clientLevelData, ResourceKey resourceKey, Holder holder, int i, int j, LevelRenderer levelRenderer, boolean bl, long l, int k, CallbackInfo ci) {
         ClientLevel level = (ClientLevel) (Object) this;
 
         TimeInterpolator.onWorldLoad(level);

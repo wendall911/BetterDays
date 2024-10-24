@@ -24,7 +24,7 @@ public abstract class ServerLevelMixin {
     @Final @Shadow List<ServerPlayer> players;
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
-    private void $betterdaysSleepFinishedTimeEvent(BooleanSupplier hasTimeLeft, CallbackInfo ci) {
+    private void betterdays$SleepFinishedTimeEvent(BooleanSupplier hasTimeLeft, CallbackInfo ci) {
         ServerLevel level = (ServerLevel) (Object) this;
         int i = level.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
         boolean daylightRule = level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);

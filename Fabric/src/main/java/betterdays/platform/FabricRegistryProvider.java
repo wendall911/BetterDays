@@ -22,6 +22,7 @@ package betterdays.platform;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -72,11 +73,12 @@ public class FabricRegistryProvider implements IRegistryFactory {
             else {
                 var reg = BuiltInRegistries.REGISTRY.get(key.location());
 
-                if (reg == null) {
+                if (reg.isPresent()) {
+                    registry = (Registry<T>) reg.get().value();
+                }
+                else {
                     throw new RuntimeException("Registry with name " + key.location() + " was not found!");
                 }
-
-                registry = (Registry<T>) reg;
             }
         }
 
@@ -112,7 +114,14 @@ public class FabricRegistryProvider implements IRegistryFactory {
 
                 @Override
                 public Holder<I> asHolder() {
-                    return (Holder<I>) registry.getHolderOrThrow((ResourceKey<T>) this.key);
+                    Optional<Holder.Reference<T>> optionalReference = registry.get((ResourceKey<T>) this.key);
+
+                    if (optionalReference.isPresent()) {
+                        return (Holder<I>) optionalReference.get();
+                    }
+                    else {
+                        throw new RuntimeException("Registry with name " + key.location() + " was not found!");
+                    }
                 }
             };
             entries.add((RegistryObject<T>) ro);
