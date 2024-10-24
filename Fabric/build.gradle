@@ -51,37 +51,36 @@ loom {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+publishMods {
+    file = file(publishFile)
+    changelog = file(changelogFile).text
+    type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
+    modLoaders.add('fabric')
+
     if (project.hasProperty('bdcurseApiKey')) {
-        apiToken = project.bdcurseApiKey
-        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion("Java ${java_version}")
-        mainFile.addModLoader('Fabric')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
+        curseforge {
+            accessToken = project.bdcurseApiKey
+            projectId = project.bdcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+			requires('fabric-api')
+			optional('fabric-seasons')
         }
-        mainFile.addRequirement('fabric-api')
-        mainFile.addOptional('fabric-seasons')
     }
-}
-
-modrinth {
     if (project.hasProperty('bdModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.bdModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.bdModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+			requires('fabric-api')
+			optional('fabric-seasons')
         }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        dependencies {
-            required.project 'fabric-api'
-            optional.project 'fabric-seasons'
-        }
+    }
+    if (project.hasProperty('bdGithubToken')) {
     }
 }

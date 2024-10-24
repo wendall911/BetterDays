@@ -73,38 +73,36 @@ tasks.generateUpdates.mustRunAfter('jar', 'sourcesJar')
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+publishMods {
+    file = file(publishFile)
+    changelog = file(changelogFile).text
+    type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
+    modLoaders.add('neoforge')
+
     if (project.hasProperty('bdcurseApiKey')) {
-        apiToken = project.bdcurseApiKey
-        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion("Java ${java_version}")
-        mainFile.addModLoader('NeoForge')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
+        curseforge {
+            accessToken = project.bdcurseApiKey
+            projectId = project.bdcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+            optional('catalogue')
+            optional('serene-seasons')
+            optional('comforts')
         }
-        mainFile.addOptional('catalogue')
-        mainFile.addOptional('serene-seasons')
-        mainFile.addOptional('comforts')
     }
-}
-
-modrinth {
     if (project.hasProperty('bdModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.bdModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.bdModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('comforts')
         }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        loaders = ['neoforge']
-        dependencies {
-            optional.project 'comforts'
-        }
+    }
+    if (project.hasProperty('bdGithubToken')) {
     }
 }

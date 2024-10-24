@@ -4,7 +4,6 @@ plugins {
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
     id 'net.neoforged.moddev' version '2.0.42-beta' apply false
     id 'io.github.goooler.shadow' version '8.1.7' apply false
-    id 'net.darkhax.curseforgegradle' version '1.+' apply false
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8' apply false
-    id 'com.modrinth.minotaur' version '2.+' apply false
+    id 'me.modmuss50.mod-publish-plugin' version '0.7.3' apply(false)
 }
