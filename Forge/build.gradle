@@ -72,6 +72,8 @@ dependencies {
     // Testing mods
     //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
     //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4171024")
+    //runtimeOnly fg.deobf("curse.maven:the_hordes-485779:5516432")
+    //runtimeOnly fg.deobf("curse.maven:atlaslib-463826:4088354")
 }
 
 compileJava {
