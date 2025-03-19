@@ -47,6 +47,8 @@ public class TimeService {
     // The largest number of lunar cycles that can be stored in an int
     private static final int OVERFLOW_THRESHOLD = 11184 * Time.LUNAR_CYCLE_TICKS;
 
+    private static MonotonicInterpolator monotonicInterpolator;
+
     /** The level managed by this {@code TimeService}. */
     public final ServerLevelWrapper level;
     /** The {@code SleepStatus} object for this level. */
@@ -64,6 +66,10 @@ public class TimeService {
         this.sleepStatus = new SleepStatus(ConfigHandler.Common::enableSleepFeature);
 
         this.level.setSleepStatus(this.sleepStatus);
+
+        if (ConfigHandler.Common.enableInterpolatedTime()) {
+            monotonicInterpolator = new MonotonicInterpolator(ConfigHandler.Common.interpolatedTimePairs(), ConfigHandler.Common.interpolatedTimeTension());
+        }
     }
 
     /**
@@ -203,6 +209,9 @@ public class TimeService {
      */
     public double getTimeSpeed(Time time) {
         if (!ConfigHandler.Common.enableSleepFeature() || sleepStatus.allAwake()) {
+            if (ConfigHandler.Common.enableInterpolatedTime()) {
+                return monotonicInterpolator.evaluate(time.timeOfDay().longValue());
+            }
             if (time.equals(DAY_START) || time.timeOfDay().betweenMod(DAY_START, NIGHT_START)) {
                 return ConfigHandler.Common.daySpeed();
             } else {
