@@ -21,16 +21,17 @@
 
 package betterdays.config;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
 import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
 
+import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec.TransformableValue;
 import net.minecraft.resources.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -144,6 +145,16 @@ public class ConfigHandler {
         private final SpectreConfigSpec.DoubleValue dayStart;
         private final SpectreConfigSpec.DoubleValue nightStart;
 
+        private final SpectreConfigSpec.BooleanValue enableInterpolatedTime;
+        private final SpectreConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
+        private final TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
+        private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
+                "0,1.0",
+                "24000,1.0"
+        });
+        private static final Predicate<Object> valuePairValidator = s -> s instanceof String
+                && ((String) s).matches("\\d+,\\d*\\.?\\d+");
+
         private final SpectreConfigSpec.EnumValue<EffectCondition> weatherEffect;
         private final SpectreConfigSpec.EnumValue<EffectCondition> randomTickEffect;
         private final SpectreConfigSpec.IntValue baseRandomTickSpeed;
@@ -196,6 +207,27 @@ public class ConfigHandler {
                             "The time to start night. This is configurable within the time sunset starts and night starts.",
                             "Default: 12500")
                     .defineInRange("nightStart", 12500D, 12000D, 13000D);
+
+            enableInterpolatedTime = builder.comment(
+                            "Enabling this will allow the setting of an infinite amount of time speeds defined as pairs in the form:",
+                            "(currentTick, desiredSpeed)",
+                            "where between each value bezier spline interpolation is performed for smooth transitioning",
+                            "The two default pairs at 0 and 24000 are necessary as they act as bounds. However ",
+                            "The time speed value for each of them can be freely modified")
+                            .define("enableInterpolatedTime", false);
+
+            interpolatedTimeSmoothingFactor = builder.comment(
+                            "The value that determines the smoothing factor in the interpolation algorithm.",
+                            "A high value will make the interpolation softer and curvier",
+                            "A low value will make the interpolation closer to a piecewise function")
+                            .defineInRange("interpolatedTimeSmoothingFactor", 0.25, 0, 10);
+
+            interpolatedTimePairs = builder
+                    .comment(
+                            "These are the pairs that define what speed time should run at, at the specified day/night tick",
+                            "The two default pairs need to exist, but their time speed values can be modified"
+                    )
+                    .defineList("interpolatedTimeList", defaultInterpolatedTimePairs, valuePairValidator, pairTransformer);
 
             builder.push("effects"); // time.effects
 
@@ -372,6 +404,12 @@ public class ConfigHandler {
             return COMMON.nightStart.get();
         }
 
+        public static boolean enableInterpolatedTime() {return COMMON.enableInterpolatedTime.get();}
+
+        public static double interpolatedTimeTension() {return COMMON.interpolatedTimeSmoothingFactor.get();}
+
+        public static List<Pair<Integer,Double>> interpolatedTimePairs() {return COMMON.interpolatedTimePairs.getTransformed();}
+
         public static EffectCondition weatherEffect() {
             return COMMON.weatherEffect.get();
         }
@@ -464,6 +502,19 @@ public class ConfigHandler {
             return COMMON.leaveBedMessageTarget.get();
         }
 
+        private static final Function<List<? extends String>, List<Pair<Integer, Double>>> pairTransformer =
+                list -> list.stream()
+                        .map(entry -> {
+                            String[] parts = entry.split(",");
+                            if (parts.length == 2) {
+                                try {
+                                    int first = Integer.parseInt(parts[0].trim());
+                                    double second = Double.parseDouble(parts[1].trim());
+                                    return Pair.of(first, second);
+                                } catch (NumberFormatException ignored) { }
+                            }
+                            return null;
+                        })
+                        .collect(Collectors.toList());
     }
-
 }
