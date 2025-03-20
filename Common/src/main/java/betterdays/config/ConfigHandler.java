@@ -406,7 +406,7 @@ public class ConfigHandler {
 
         public static boolean enableInterpolatedTime() {return COMMON.enableInterpolatedTime.get();}
 
-        public static double interpolatedTimeTension() {return COMMON.interpolatedTimeSmoothingFactor.get();}
+        public static double interpolatedTimeSmoothingFactor() {return COMMON.interpolatedTimeSmoothingFactor.get();}
 
         public static List<Pair<Integer,Double>> interpolatedTimePairs() {return COMMON.interpolatedTimePairs.getTransformed();}
 

@@ -68,7 +68,7 @@ public class TimeService {
         this.level.setSleepStatus(this.sleepStatus);
 
         if (ConfigHandler.Common.enableInterpolatedTime()) {
-            monotonicInterpolator = new MonotonicInterpolator(ConfigHandler.Common.interpolatedTimePairs(), ConfigHandler.Common.interpolatedTimeTension());
+            monotonicInterpolator = new MonotonicInterpolator(ConfigHandler.Common.interpolatedTimePairs(), ConfigHandler.Common.interpolatedTimeSmoothingFactor());
         }
     }
 
