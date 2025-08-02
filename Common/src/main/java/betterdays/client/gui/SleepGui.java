@@ -86,11 +86,11 @@ public class SleepGui {
     public static void renderClock(GuiGraphics guiGraphics, float x, float y, float scale) {
         scale /= 16F;
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 0);
-        guiGraphics.pose().scale(scale, scale, 0);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(x, y);
+        guiGraphics.pose().scale(scale, scale);
         guiGraphics.renderItem(clock, 0, 0);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     public static boolean clockEnabled() {
