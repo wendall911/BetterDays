@@ -37,7 +37,7 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "disconnect()V", at = @At("HEAD"))
+    @Inject(method = "disconnect", at = @At("HEAD"))
     private void $betterdaysInjectDisconnect(CallbackInfo ci) {
         if (this.level != null) {
             TimeInterpolator.onWorldLoad(this.level);
