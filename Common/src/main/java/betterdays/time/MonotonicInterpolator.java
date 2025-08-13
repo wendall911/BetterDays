@@ -1,19 +1,23 @@
 package betterdays.time;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 public class MonotonicInterpolator {
+
     private final double[] x, y, m; // x and y values, and computed slopes
     private final double smoothingFactor;
+
     public MonotonicInterpolator(List<Pair<Integer, Double>> points, double smoothingFactor) {
-        if (points.size() < 2)
+        if (points.size() < 2) {
             throw new IllegalArgumentException("At least two points are required.");
+        }
+
+        int n = points.size();
 
         this.smoothingFactor = smoothingFactor;
-        int n = points.size();
         this.x = new double[n];
         this.y = new double[n];
         this.m = new double[n];
@@ -65,8 +69,12 @@ public class MonotonicInterpolator {
     }
 
     public double evaluate(double xValue) {
-        if (xValue <= x[0]) return y[0];
-        if (xValue >= x[x.length - 1]) return y[y.length - 1];
+        if (xValue <= x[0]) {
+            return y[0];
+        }
+        if (xValue >= x[x.length - 1]) {
+            return y[y.length - 1];
+        }
 
         int i = Arrays.binarySearch(x, xValue);
         if (i < 0) i = -i - 2; // Get interval index
@@ -82,4 +90,5 @@ public class MonotonicInterpolator {
 
         return h00 * y[i] + h10 * m[i] + h01 * y[i + 1] + h11 * m[i + 1];
     }
+
 }
