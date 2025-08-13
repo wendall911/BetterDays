@@ -145,16 +145,16 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue daySpeed;
         private final WhiteNoiseConfigSpec.DoubleValue nightSpeed;
         private final WhiteNoiseConfigSpec.DoubleValue dayStart;
+        private final WhiteNoiseConfigSpec.DoubleValue nightStart;
         private final WhiteNoiseConfigSpec.BooleanValue enableInterpolatedTime;
         private final WhiteNoiseConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
         private final WhiteNoiseConfigSpec.TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
         private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
-                "0,1.0",
-                "24000,1.0"
+            "0,1.0",
+            "24000,1.0"
         });
         private static final Predicate<Object> valuePairValidator = s -> s instanceof String
-                && ((String) s).matches("\\d+,\\d*\\.?\\d+");
-        private final WhiteNoiseConfigSpec.DoubleValue nightStart;
+            && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> weatherEffect;
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> randomTickEffect;
