@@ -175,7 +175,6 @@ publishMods {
             projectId = project.bdModrinthId
             minecraftVersions.addAll("${release_versions}".split(','))
             optional('serene-seasons')
-            optional('ecliptic-seasons')
             optional('comforts')
             incompatible('immersive-snow')
         }
