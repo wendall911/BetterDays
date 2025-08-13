@@ -66,9 +66,10 @@ Better Days is compatible with the following mods:
    * Better Days is compatible with this mod. However, you MUST set hordeEventByPlayerTime = false
      or it will not work at all.
  * [Immersive Snow](https://www.curseforge.com/minecraft/mc-mods/immersive-snow)
-   * Better Days is NOT compatible with this mod if using a season mod as well, as it completely 
-     overrides the day and night length. There is a confuration option to disable this behavior, but
-     unfortunately it is set to override Better Days by default.
+   * Better Days is NOT compatible with this mod if using a season mod as well,
+     as it completely overrides the day and night length. There is a
+     configuration option to disable this behavior, but unfortunately, it is set
+     to override Better Days by default.
 
 #### Sleep Vote Mods
 
