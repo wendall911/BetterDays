@@ -70,6 +70,7 @@ publishMods {
             embeds('spectrelib')
 			requires('fabric-api')
 			optional('fabric-seasons')
+            incompatible('immersive-snow')
         }
     }
     if (project.hasProperty('bdModrinthId')) {
@@ -79,6 +80,7 @@ publishMods {
             minecraftVersions.addAll("${release_versions}".split(','))
 			requires('fabric-api')
 			optional('fabric-seasons')
+            incompatible('immersive-snow')
         }
     }
     if (project.hasProperty('bdGithubToken')) {

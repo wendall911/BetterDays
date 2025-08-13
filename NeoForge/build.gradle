@@ -93,6 +93,7 @@ publishMods {
             optional('catalogue')
             optional('serene-seasons')
             optional('comforts')
+            incompatible('immersive-snow')
         }
     }
     if (project.hasProperty('bdModrinthId')) {
@@ -101,6 +102,7 @@ publishMods {
             projectId = project.bdModrinthId
             minecraftVersions.addAll("${release_versions}".split(','))
             optional('comforts')
+            incompatible('immersive-snow')
         }
     }
     if (project.hasProperty('bdGithubToken')) {

@@ -51,6 +51,7 @@ Better Days is compatible with the following mods:
  * [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
    * If mod is installed, sleep system is disabled.
  * [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
+ * [Ecliptic Seasons](https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons)
  * [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
  * [Enhanced Celestials](https://www.curseforge.com/minecraft/mc-mods/enhanced-celestials)
  * [Quark](https://www.curseforge.com/minecraft/mc-mods/quark)
@@ -64,6 +65,10 @@ Better Days is compatible with the following mods:
  * [The Hordes](https://www.curseforge.com/minecraft/mc-mods/the-hordes)
    * Better Days is compatible with this mod. However, you MUST set hordeEventByPlayerTime = false
      or it will not work at all.
+ * [Immersive Snow](https://www.curseforge.com/minecraft/mc-mods/immersive-snow)
+   * Better Days is NOT compatible with this mod if using a season mod as well, as it completely 
+     overrides the day and night length. There is a confuration option to disable this behavior, but
+     unfortunately it is set to override Better Days by default.
 
 #### Sleep Vote Mods
 
