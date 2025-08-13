@@ -101,6 +101,19 @@ one morning to the next.
 
 > _**Warning:** Setting daySpeed and nightSpeed to values higher than 3600 may be unsafe for people with photosensitive epilepsy._
 
+### Interpolation Feature
+This feature allows segmentation of any period of time to set the speed which
+time passes. For example, if wanting to extend sunrise and sunset, you would
+first enable Interpolated time via `enableInterpolatedTime`, and modify how you
+want time to pass during the day and night, but give separate values for
+sunrise and sunset time segments. Here is an example of this:
+
+```
+interpolatedTimeList = ["0,0.5", "11600,0.5", "11850,0.3", "12200,0.1", "12800,0.1", "13900,1.0", "22500,1.0", "23000,0.1", "23900,0.3", "24000,0.5"]
+```
+
+***Note*** To better understand the above numbers, take a look at: [Daylight cycle](https://minecraft.wiki/w/Daylight_cycle) on the Minecraft wiki.
+
 ### Default Server Config
 
 Location relative to Minecraft folder: `./config/betterdays-common.toml`
@@ -125,6 +138,20 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#Default: 12500
 	#Range: 12000.0 ~ 13000.0
 	nightStart = 12500.0
+	#Enabling this will allow the setting of an infinite amount of time speeds defined as pairs in the form:
+	#(currentTick, desiredSpeed)
+	#where between each value bezier spline interpolation is performed for smooth transitioning
+	#The two default pairs at 0 and 24000 are necessary as they act as bounds. However 
+	#The time speed value for each of them can be freely modified
+	enableInterpolatedTime = false
+	#The value that determines the smoothing factor in the interpolation algorithm.
+	#A high value will make the interpolation softer and curvier
+	#A low value will make the interpolation closer to a piecewise function
+	#Range: 0.0 ~ 10.0
+	interpolatedTimeSmoothingFactor = 0.25
+	#These are the pairs that define what speed time should run at, at the specified day/night tick
+	#The two default pairs need to exist, but their time speed values can be modified
+	interpolatedTimeList = ["0,1.0", "24000,1.0"]
 
 	[time.effects]
 		#When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.
