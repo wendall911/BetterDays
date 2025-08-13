@@ -1,8 +1,7 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom'
     id 'idea'
-    id 'net.darkhax.curseforgegradle' version '1.+'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'me.modmuss50.mod-publish-plugin'
 }
 
 version = "${minecraft_version}-${mod_version}-FABRIC"
@@ -18,7 +17,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings(loom.layered {
         officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${fabric_parchment_mc_version}:${fabric_parchment_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${mappings_version}@zip")
     })
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -32,8 +31,6 @@ dependencies {
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
-
-    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
@@ -60,7 +57,6 @@ loom {
 processResources {
     from project(":Common").sourceSets.main.resources
     inputs.property "version", project.version
-    exclude '.cache'
     duplicatesStrategy(DuplicatesStrategy.FAIL)
 
     filesMatching("fabric.mod.json") {
@@ -68,7 +64,7 @@ processResources {
             'license': project.license, 'mod_id': project.mod_id, 'mod_author': project.mod_author,
             'mod_description': project.mod_description, 'mod_name': project.mod_name,
             'issue_tracker': project.issue_tracker, 'fabric_loader_min_version': fabric_loader_min_version,
-            'mod_credits': project.mod_credits
+            'mod_credits': project.mod_credits, 'java_version': project.java_version
     }
 
     filesMatching("pack.mcmeta") {
@@ -81,37 +77,34 @@ tasks.withType(JavaCompile) {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+publishMods {
+    file = file(publishFile)
+    changelog = file(changelogFile).text
+    type = STABLE
+    modLoaders.add('fabric')
     if (project.hasProperty('bdcurseApiKey')) {
-        apiToken = project.bdcurseApiKey
-        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
-        mainFile.addModLoader('Fabric')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
+        curseforge {
+            accessToken = project.bdcurseApiKey
+            projectId = project.bdcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            embeds('spectrelib')
+            requires('fabric-api')
+            optional('fabric-seasons')
         }
-        mainFile.addRequirement('fabric-api')
-        mainFile.addOptional('fabric-seasons')
     }
-}
 
-modrinth {
     if (project.hasProperty('bdModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.bdModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
-        }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        dependencies {
-            required.project 'fabric-api'
-            optional.project 'fabric-seasons'
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.bdModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            requires('fabric-api')
+            optional('fabric-seasons')
         }
     }
 }
