@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 
 import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
-
 import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec.TransformableValue;
+
 import net.minecraft.resources.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -151,11 +151,11 @@ public class ConfigHandler {
         private final SpectreConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
         private final TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
         private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
-                "0,1.0",
-                "24000,1.0"
+            "0,1.0",
+            "24000,1.0"
         });
         private static final Predicate<Object> valuePairValidator = s -> s instanceof String
-                && ((String) s).matches("\\d+,\\d*\\.?\\d+");
+            && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
         private final SpectreConfigSpec.EnumValue<EffectCondition> weatherEffect;
         private final SpectreConfigSpec.EnumValue<EffectCondition> randomTickEffect;
