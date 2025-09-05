@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
     id 'me.modmuss50.mod-publish-plugin'
 }
@@ -53,22 +54,10 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     compileOnly project(":Common")
 
-    implementation fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_version}+${minecraft_version}")
-    jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_version}+${minecraft_version}") {
-        jarJar.pin(it, "${spectrelib_version}+${minecraft_version}")
-        jarJar.ranged(it, "${spectrelib_range}")
-    }
-    implementation fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
-
-    // Testing mods
-    //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
-    //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4590890")
-}
-
-compileJava {
-    source(project(":Common").sourceSets.main.allSource)
+    runtimeOnly fg.deobf("curse.maven:readyplayerfun-322036:${readyplayerfun_version}")
 }
 
 tasks.withType(JavaCompile) {
@@ -86,6 +75,7 @@ processResources {
     from project(":Common").sourceSets.main.resources
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     inputs.properties replaceProperties
+    exclude '.cache'
     replaceProperties.put 'project', project
 
     filesMatching(resourceTargets) {
@@ -109,19 +99,19 @@ jarJar {
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            artifact jar
-        }
-    }
     repositories {
         maven {
             url "file://" + System.getenv("local_maven")
         }
     }
+}
+
+task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
+    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
+    fromRepo = file("$projectDir");
+    toRef = "HEAD";
+    fromRef = "${minecraft_version}-${last_mod_version}";
 }
 
 def updates = tasks.register("generateUpdates", Copy) {
@@ -137,7 +127,7 @@ def updates = tasks.register("generateUpdates", Copy) {
     it.into '../files/'
 }
 
-tasks.generateUpdates.mustRunAfter('jar')
+tasks.generateUpdates.mustRunAfter('jar', 'sourcesJar')
 
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
@@ -160,7 +150,6 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('spectrelib')
             optional('configured')
             optional('catalogue')
             optional('serene-seasons')
@@ -179,12 +168,4 @@ publishMods {
             incompatible('immersive-snow')
         }
     }
-}
-
-task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
-    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
-    fromRepo = file("$projectDir");
-    toRef = "HEAD";
-    fromRef = "${minecraft_version}-${last_mod_version}";
 }

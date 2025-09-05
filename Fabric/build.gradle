@@ -20,18 +20,18 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-${minecraft_version}:${mappings_version}@zip")
     })
 
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":Common")
+
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_range}"
-    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}+${minecraft_version}"
+    modApi group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
+    include group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
 
     modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false
     }
-
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":Common")
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
@@ -39,6 +39,9 @@ dependencies {
 }
 
 loom {
+    if (project(":Common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":Common").file("src/main/resources/${mod_id}.accesswidener"))
+    }
     runs {
         client {
             client()
@@ -82,8 +85,10 @@ def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${arc
 
 publishMods {
     file = file(publishFile)
-    changelog = file(changelogFile).text
-    type = STABLE
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
+    }
+    type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
     modLoaders.add('fabric')
     if (project.hasProperty('bdcurseApiKey')) {
         curseforge {
@@ -93,7 +98,7 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('spectrelib')
+            embeds('forge-config-api-port-fabric')
             requires('fabric-api')
             optional('fabric-seasons')
         }
