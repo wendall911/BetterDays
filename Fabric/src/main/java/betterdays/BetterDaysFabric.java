@@ -1,7 +1,7 @@
 package betterdays;
 
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -18,11 +18,11 @@ public class BetterDaysFabric implements ModInitializer {
         BetterDays.init();
         ServerEventListener.setup();
 
-        NeoForgeConfigRegistry.INSTANCE.register(BetterDays.MODID, ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
+        ConfigRegistry.INSTANCE.register(BetterDays.MODID, ModConfig.Type.COMMON, ConfigHandler.COMMON_SPEC);
 
         if (Services.PLATFORM.isPhysicalClient()) {
-            NeoForgeConfigRegistry.INSTANCE.register(BetterDays.MODID, ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-            NeoForgeModConfigEvents.loading(BetterDays.MODID).register((ModConfig config) -> {
+            ConfigRegistry.INSTANCE.register(BetterDays.MODID, ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+            ModConfigEvents.loading(BetterDays.MODID).register((ModConfig config) -> {
                 if (config.getSpec() == ConfigHandler.CLIENT_SPEC) {
                     ConfigHandler.init();
                 }
