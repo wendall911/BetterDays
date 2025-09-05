@@ -55,9 +55,17 @@ repositories {
         }
     }
 
-    maven {
-        name = 'Illusive Soulworks'
-        url = 'https://maven.theillusivec4.top/'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Fuzss'
+                url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
+
+            }
+        }
+        filter {
+            includeGroup('fuzs.forgeconfigapiport')
+        }
     }
 
     if (project.hasProperty('localmaven')) {
