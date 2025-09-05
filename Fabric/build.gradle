@@ -16,14 +16,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
-    include "com.illusivesoulworks.spectrelib:spectrelib-fabric:${spectrelib_version}"
+    modApi group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
+    include group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
 
     modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false
     }
-
-    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
