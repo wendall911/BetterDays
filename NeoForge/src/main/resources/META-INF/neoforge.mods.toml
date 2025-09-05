@@ -27,9 +27,3 @@ issueTrackerURL="${issue_tracker}"
     versionRange="${neoforge_mc_version_range}"
     ordering="NONE"
     side="BOTH"
-[[depenencies.betterdays]]
-    modId="sereneseasons"
-    type="optional"
-    versionRange=[0,]
-    ordering="AFTER"
-    side="BOTH"
