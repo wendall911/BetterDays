@@ -22,9 +22,6 @@
     ],
     "client": [
       "betterdays.BetterDaysClientFabric"
-    ],
-    "spectrelib": [
-      "betterdays.FabricConfigInitializer"
     ]
   },
   "mixins": [
