@@ -208,7 +208,9 @@ public class TimeService {
      * @return the time-speed
      */
     public double getTimeSpeed(Time time) {
-        if (!ConfigHandler.Common.enableSleepFeature() || sleepStatus.allAwake()) {
+        if (!ConfigHandler.Common.enableSleepFeature()
+                || sleepStatus.allAwake()
+                || (sleepStatus.ratio() < ConfigHandler.Common.percentPlayersForSleep())) {
             if (ConfigHandler.Common.enableInterpolatedTime()) {
                 return monotonicInterpolator.evaluate(time.timeOfDay().longValue());
             }
