@@ -171,6 +171,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.BooleanValue clearWeatherOnWake;
         private final WhiteNoiseConfigSpec.BooleanValue displayBedClock;
         private final WhiteNoiseConfigSpec.BooleanValue allowDaySleep;
+        private final WhiteNoiseConfigSpec.DoubleValue ratioPlayersForSleep;
 
         private final WhiteNoiseConfigSpec.ConfigValue<String> morningMessage;
         private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
@@ -326,6 +327,13 @@ public class ConfigHandler {
                     .comment("When true, a clock is displayed in the sleep interface.")
                     .define("displayBedClock", true);
 
+            ratioPlayersForSleep = builder
+                    .comment(
+                            "The ratio of players in a dimension that must be sleeping to skip to morning.",
+                            "A value of 1 means all players must be sleeping, 0.5 means half the players must be sleeping, etc.",
+                            "A value of 0 effectively disables this feature.")
+                    .defineInRange("ratioPlayersForSleep", 0.0D, 0D, 1D);
+
             // sleep.messages
             builder.comment(
                             "This section defines settings for notification messages.",
@@ -463,12 +471,16 @@ public class ConfigHandler {
             return COMMON.clearWeatherOnWake.get();
         }
 
+        public static boolean allowDaySleep() {
+            return COMMON.allowDaySleep.get();
+        }
+
         public static boolean displayBedClock() {
             return COMMON.displayBedClock.get();
         }
 
-        public static boolean allowDaySleep() {
-            return COMMON.allowDaySleep.get();
+        public static double percentPlayersForSleep() {
+            return COMMON.ratioPlayersForSleep.get();
         }
 
         public static String morningMessage() {
