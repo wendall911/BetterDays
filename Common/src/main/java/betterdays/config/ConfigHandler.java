@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
-import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec.TransformableValue;
-
 import net.minecraft.resources.ResourceLocation;
+
+import net.neoforged.fml.config.IConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -47,15 +47,15 @@ import betterdays.time.Time;
 
 public class ConfigHandler {
 
-    public static final SpectreConfigSpec CLIENT_SPEC;
-    public static final SpectreConfigSpec COMMON_SPEC;
+    public static final IConfigSpec CLIENT_SPEC;
+    public static final IConfigSpec COMMON_SPEC;
 
     private static final Client CLIENT;
     private static final Common COMMON;
 
     static {
-        final Pair<Client, SpectreConfigSpec> specPairClient = new SpectreConfigSpec.Builder().configure(Client::new);
-        final Pair<Common, SpectreConfigSpec> specPairCommon = new SpectreConfigSpec.Builder().configure(Common::new);
+        final Pair<Client, ModConfigSpec> specPairClient = new ModConfigSpec.Builder().configure(Client::new);
+        final Pair<Common, ModConfigSpec> specPairCommon = new ModConfigSpec.Builder().configure(Common::new);
 
         CLIENT_SPEC = specPairClient.getRight();
         CLIENT = specPairClient.getLeft();
@@ -71,11 +71,11 @@ public class ConfigHandler {
 
     public static class Client {
 
-        private final SpectreConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
-        private final SpectreConfigSpec.IntValue clockScale;
-        private final SpectreConfigSpec.IntValue clockMargin;
-        private final SpectreConfigSpec.BooleanValue preventClockWobble;
-        private final SpectreConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
+        private final ModConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
+        private final ModConfigSpec.IntValue clockScale;
+        private final ModConfigSpec.IntValue clockMargin;
+        private final ModConfigSpec.BooleanValue preventClockWobble;
+        private final ModConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
         private static final List<String> blacklistDimensionsList = List.of("blacklistDimensions");
         private static final String[] defaultBlacklistDimensions = new String[] {
             "aether:the_aether"
@@ -84,7 +84,7 @@ public class ConfigHandler {
         private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
-        public Client(SpectreConfigSpec.Builder builder) {
+        public Client(ModConfigSpec.Builder builder) {
             builder.push("gui"); // gui
 
                 clockAlignment = builder.comment("Sets the screen alignment of the bed clock.")
@@ -142,14 +142,14 @@ public class ConfigHandler {
     }
 
     public static class Common {
-        private final SpectreConfigSpec.DoubleValue daySpeed;
-        private final SpectreConfigSpec.DoubleValue nightSpeed;
-        private final SpectreConfigSpec.DoubleValue dayStart;
-        private final SpectreConfigSpec.DoubleValue nightStart;
+        private final ModConfigSpec.DoubleValue daySpeed;
+        private final ModConfigSpec.DoubleValue nightSpeed;
+        private final ModConfigSpec.DoubleValue dayStart;
+        private final ModConfigSpec.DoubleValue nightStart;
 
-        private final SpectreConfigSpec.BooleanValue enableInterpolatedTime;
-        private final SpectreConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
-        private final TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
+        private final ModConfigSpec.BooleanValue enableInterpolatedTime;
+        private final ModConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
+        private final ModConfigSpec.ConfigValue<List<? extends String>> interpolatedTimePairs;
         private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
             "0,1.0",
             "24000,1.0"
@@ -157,36 +157,36 @@ public class ConfigHandler {
         private static final Predicate<Object> valuePairValidator = s -> s instanceof String
             && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
-        private final SpectreConfigSpec.EnumValue<EffectCondition> weatherEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> randomTickEffect;
-        private final SpectreConfigSpec.IntValue baseRandomTickSpeed;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> potionEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> hungerEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
+        private final ModConfigSpec.EnumValue<EffectCondition> weatherEffect;
+        private final ModConfigSpec.EnumValue<EffectCondition> randomTickEffect;
+        private final ModConfigSpec.IntValue baseRandomTickSpeed;
+        private final ModConfigSpec.EnumValue<EffectCondition> potionEffect;
+        private final ModConfigSpec.EnumValue<EffectCondition> hungerEffect;
+        private final ModConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
 
-        private final SpectreConfigSpec.BooleanValue enableSleepFeature;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedMin;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedMax;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedAll;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedCurve;
-        private final SpectreConfigSpec.BooleanValue clearWeatherOnWake;
-        private final SpectreConfigSpec.BooleanValue allowDaySleep;
-        private final SpectreConfigSpec.BooleanValue displayBedClock;
-        private final SpectreConfigSpec.DoubleValue ratioPlayersForSleep;
+        private final ModConfigSpec.BooleanValue enableSleepFeature;
+        private final ModConfigSpec.DoubleValue sleepSpeedMin;
+        private final ModConfigSpec.DoubleValue sleepSpeedMax;
+        private final ModConfigSpec.DoubleValue sleepSpeedAll;
+        private final ModConfigSpec.DoubleValue sleepSpeedCurve;
+        private final ModConfigSpec.BooleanValue clearWeatherOnWake;
+        private final ModConfigSpec.BooleanValue allowDaySleep;
+        private final ModConfigSpec.BooleanValue displayBedClock;
+        private final ModConfigSpec.DoubleValue ratioPlayersForSleep;
 
-        private final SpectreConfigSpec.ConfigValue<String> morningMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
+        private final ModConfigSpec.ConfigValue<String> morningMessage;
+        private final ModConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
+        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
 
-        private final SpectreConfigSpec.ConfigValue<String> enterBedMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
+        private final ModConfigSpec.ConfigValue<String> enterBedMessage;
+        private final ModConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
+        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
 
-        private final SpectreConfigSpec.ConfigValue<String> leaveBedMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
+        private final ModConfigSpec.ConfigValue<String> leaveBedMessage;
+        private final ModConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
+        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
 
-        public Common(SpectreConfigSpec.Builder builder) {
+        public Common(ModConfigSpec.Builder builder) {
             builder.push("time"); // time
 
             daySpeed = builder.comment(
@@ -230,7 +230,7 @@ public class ConfigHandler {
                             "These are the pairs that define what speed time should run at, at the specified day/night tick",
                             "The two default pairs need to exist, but their time speed values can be modified"
                     )
-                    .defineList("interpolatedTimeList", defaultInterpolatedTimePairs, valuePairValidator, pairTransformer);
+                    .defineList("interpolatedTimeList", defaultInterpolatedTimePairs, valuePairValidator);
 
             builder.push("effects"); // time.effects
 
@@ -414,11 +414,17 @@ public class ConfigHandler {
             return COMMON.nightStart.get();
         }
 
-        public static boolean enableInterpolatedTime() {return COMMON.enableInterpolatedTime.get();}
+        public static boolean enableInterpolatedTime() {
+            return COMMON.enableInterpolatedTime.get();
+        }
 
-        public static double interpolatedTimeSmoothingFactor() {return COMMON.interpolatedTimeSmoothingFactor.get();}
+        public static double interpolatedTimeSmoothingFactor() {
+            return COMMON.interpolatedTimeSmoothingFactor.get();
+        }
 
-        public static List<Pair<Integer,Double>> interpolatedTimePairs() {return COMMON.interpolatedTimePairs.getTransformed();}
+        public static List<Pair<Integer,Double>> interpolatedTimePairs() {
+            return pairTransformer.apply(COMMON.interpolatedTimePairs.get());
+        }
 
         public static EffectCondition weatherEffect() {
             return COMMON.weatherEffect.get();

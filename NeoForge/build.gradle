@@ -1,7 +1,6 @@
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
-    id 'io.github.goooler.shadow'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
@@ -35,16 +34,9 @@ neoForge {
 }
 
 dependencies {
-    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}"
-    jarJar group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-neoforge', version: "${spectrelib_version}"
-
     // Testing mods
     //runtimeOnly "curse.maven:configured-457570:4462837"
     //runtimeOnly "curse.maven:catalogue-459701:4590890"
-}
-
-shadowJar {
-    archiveClassifier = ''
 }
 
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {

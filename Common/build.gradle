@@ -19,7 +19,10 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-    implementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-common', version: "${spectrelib_version}"
+    compileOnly (group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}") {
+        exclude(group: 'net.fabricmc.fabric-api')
+        transitive(false)
+    }
 }
 
 configurations {
