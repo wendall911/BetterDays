@@ -19,17 +19,11 @@ logoFile="${mod_id}_icon.png"
     modId="forge"
     mandatory=true
     versionRange="${forge_version_range}"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.betterdays]]
     modId="minecraft"
     mandatory=true
     versionRange="${forge_mc_version_range}"
     ordering="NONE"
-    side="BOTH"
-[[depenencies.betterdays]]
-    modId="sereneseasons"
-    mandatory=false
-    versionRange=[0,]
-    ordering="AFTER"
     side="BOTH"
