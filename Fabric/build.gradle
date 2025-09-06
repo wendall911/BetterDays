@@ -70,7 +70,7 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('spectrelib')
+            embeds('forge-config-api-port-fabric')
 			requires('fabric-api')
 			optional('fabric-seasons')
             incompatible('immersive-snow')

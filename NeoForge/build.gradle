@@ -81,7 +81,6 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('spectrelib')
             optional('catalogue')
             optional('serene-seasons')
             optional('comforts')
