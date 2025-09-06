@@ -227,6 +227,12 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#Set to 'false' to force weather to pass naturally. Adds realism when accelerateWeather is enabled.
 	#Note: This setting is ignored if game rule doWeatherCycle is false.
 	clearWeatherOnWake = true
+	#The ratio of players in a dimension that must be sleeping to skip to morning.
+	#A value of 1 means all players must be sleeping, 0.5 means half the players must be sleeping, etc.
+	#A value of 0 effectively disables this feature.
+	# Default: 0.0
+	# Range: 0.0 ~ 1.0
+	ratioPlayersForSleep = 0.0
 
 	#This section defines settings for notification messages.
 	#All messages support Minecraft formatting codes (https://minecraft.fandom.com/wiki/Formatting_codes).
