@@ -1,13 +1,9 @@
-allprojects {
-    apply plugin: "java"
-
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        options.release = 17
-    }
-}
-
 subprojects {
+    apply plugin: 'java'
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.withSourcesJar()
+
     jar {
         from(rootProject.file("LICENSE"))
         from(rootProject.file("COPYING"))
@@ -44,21 +40,18 @@ subprojects {
         }
 
         maven {
-            name = "C4's Maven"
-            url = "https://maven.theillusivec4.top/"
-        }
-
-        maven {
-            name = "Curse Maven"
-            url = "https://cursemaven.com"
+            name = 'Curse Maven'
+            url = 'https://cursemaven.com'
             content {
-                includeGroup "curse.maven"
+                includeGroup 'curse.maven'
             }
         }
 
         maven {
-            url "file://${project.localmaven}"
+            name = 'WhiteNoise' // Library for wendall911 mods
+            url = 'https://raw.githubusercontent.com/wendall911/maven/main/'
         }
+
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -66,7 +59,14 @@ subprojects {
         it.options.release = 17
     }
 
+    // Disables Gradle's custom module metadata from being published to maven. The
+    // metadata includes mapped dependencies which are not reasonably consumable by
+    // other mod developers.
     tasks.withType(GenerateModuleMetadata) {
-        it.enabled = false
+        enabled = false
+    }
+
+    tasks.withType(Jar).all {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 }

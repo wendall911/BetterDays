@@ -47,6 +47,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
+import technology.roughness.whitenoise.util.ResourceLocationHelper;
+
 import betterdays.registry.RegistryObject;
 import betterdays.registry.RegistryProvider;
 import betterdays.platform.services.IRegistryFactory;
@@ -116,7 +118,7 @@ public class ForgeRegistryProvider implements IRegistryFactory {
         @SuppressWarnings("unchecked")
         public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
             Supplier<?> forgeSupplier = null;
-            ResourceLocation resourceLocation = new ResourceLocation(BetterDays.MODID, name);
+            ResourceLocation resourceLocation = ResourceLocationHelper.loc(BetterDays.MODID, name);
 
             /*
              * This is a product of backporting. Needed to wrap the effects with IForgeRegistryEntry. I'm sure there is
