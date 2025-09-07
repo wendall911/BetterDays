@@ -28,21 +28,6 @@ public class FabricPlatform implements IPlatform {
     }
 
     @Override
-    public ResourceLocation getResourceLocation(Item item) {
-        return Registry.ITEM.getKey(item);
-    }
-
-    @Override
-    public boolean isModLoaded(String name) {
-        return FabricLoader.getInstance().isModLoaded(name);
-    }
-
-    @Override
-    public boolean isPhysicalClient() {
-        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
-    }
-
-    @Override
     public void onSleepFinished(ServerLevelWrapper levelWrapper, long time) {
         BetterDaysMessages.onSleepFinishedEvent(levelWrapper.get());
     }

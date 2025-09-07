@@ -8,13 +8,6 @@ plugins {
     id 'com.modrinth.minotaur' version '2.+'
 }
 
-repositories {
-    maven {
-        name = "C4's Maven"
-        url = "https://maven.theillusivec4.top/"
-    }
-}
-
 archivesBaseName = "${mod_id}"
 version = "${minecraft_version}-${mod_version}-FORGE"
 
@@ -63,9 +56,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":Common")
 
-    implementation fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}")
-    jarJar fg.deobf(group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-forge', version: "${spectrelib_range}") {
-        jarJar.pin(it, "${spectrelib_version}")
+    implementation fg.deobf(group: 'technology.roughness.whitenoise', name: 'whitenoise-forge', version: "${whitenoise_version}+${minecraft_version}")
+    jarJar fg.deobf(group: 'technology.roughness.whitenoise', name: 'whitenoise-forge', version: "${whitenoise_version}+${minecraft_version}") {
+        jarJar.pin(it, "${whitenoise_version}+${minecraft_version}")
+        jarJar.ranged(it, "${whitenoise_range}")
     }
     implementation fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 
@@ -78,7 +72,6 @@ dependencies {
 
 compileJava {
     source(project(":Common").sourceSets.main.allSource)
-    options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-serial" << "-Werror"
 }
 
 tasks.withType(JavaCompile) {
