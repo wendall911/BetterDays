@@ -12,7 +12,7 @@ archivesBaseName = "${mod_id}"
 version = "${minecraft_version}-${mod_version}-FORGE"
 
 minecraft {
-    mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
+    mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
 
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
         // This location is hardcoded in Forge and can not be changed.
