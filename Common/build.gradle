@@ -22,7 +22,7 @@ minecraft {
 
 dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-common', version: "${whitenoise_version}+${minecraft_version}"
+    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-common', version: "${whitenoise_version}"
 }
 
 sourceSets.main.resources {
