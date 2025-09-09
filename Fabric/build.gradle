@@ -92,7 +92,7 @@ publishing {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
-def publishFile = project(":").projectDir.toString() + "${project.buildDir}/libs/${archivesBaseName}-${version}.jar"
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
 
 publishMods {
     file = file(publishFile)

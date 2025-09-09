@@ -151,7 +151,7 @@ tasks.generateUpdates.mustRunAfter('jar')
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
-def publishFile = project(":").projectDir.toString() + "${project.buildDir}/libs/${archivesBaseName}-${version}.jar"
+def publishFile = project(":").projectDir.toString() + "/Forge/build/libs/${archivesBaseName}-${version}.jar"
 
 publishMods {
     file = file(publishFile)
