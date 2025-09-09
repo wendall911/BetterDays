@@ -27,9 +27,3 @@ logoFile="${mod_id}_icon.png"
     versionRange="${forge_mc_version_range}"
     ordering="NONE"
     side="BOTH"
-[[depenencies.betterdays]]
-    modId="sereneseasons"
-    mandatory=false
-    versionRange=[0,]
-    ordering="AFTER"
-    side="BOTH"

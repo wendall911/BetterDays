@@ -1,18 +1,17 @@
 plugins {
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'net.darkhax.curseforgegradle' version '1.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.71.8'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'net.minecraftforge.gradle'
+    id 'org.parchmentmc.librarian.forgegradle'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+    id 'me.modmuss50.mod-publish-plugin'
 }
 
-archivesBaseName = "${mod_id}"
 version = "${minecraft_version}-${mod_version}-FORGE"
+archivesBaseName = "${mod_id}"
 
 minecraft {
-    mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
+    mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
 
     if (project.hasProperty('forge_ats_enabled') && project.findProperty('forge_ats_enabled').toBoolean()) {
         // This location is hardcoded in Forge and can not be changed.
@@ -61,11 +60,11 @@ dependencies {
         jarJar.pin(it, "${whitenoise_version}")
         jarJar.ranged(it, "${whitenoise_range}")
     }
-    implementation fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 
     // Testing mods
     //runtimeOnly fg.deobf("curse.maven:configured-457570:4462837")
     //runtimeOnly fg.deobf("curse.maven:catalogue-459701:4171024")
+    //runtimeOnly fg.deobf("curse.maven:sereneseasons-291874:${serene_seasons_version}")
 }
 
 compileJava {
@@ -88,7 +87,6 @@ processResources {
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
-
     filesMatching(resourceTargets) {
         expand replaceProperties
     }
@@ -115,22 +113,24 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
+            // This gives us the built obfuscated version Forge requires
             artifact jar
         }
     }
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
+        if (System.getenv('local_maven') != null) {
+            maven {
+                url 'file://' + System.getenv('local_maven')
+            }
         }
     }
 }
 
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
-    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
-    fromRepo = file("$projectDir");
-    toRef = "HEAD";
-    fromRef = "${minecraft_version}-${last_mod_version}";
+    file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
+    templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
+    toRevision.set('HEAD');
+    fromRevision.set("${minecraft_version}-${last_mod_version}");
 }
 
 def updates = tasks.register("generateUpdates", Copy) {
@@ -151,37 +151,37 @@ tasks.generateUpdates.mustRunAfter('jar')
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "${project.buildDir}/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
-    if (project.hasProperty('bdcurseApiKey')) {
-        apiToken = project.bdcurseApiKey
-        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
-        mainFile.addModLoader('Forge')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
-        }
-        mainFile.addOptional('catalogue')
-        mainFile.addOptional('serene-seasons')
-        mainFile.addOptional('comforts')
+publishMods {
+    file = file(publishFile)
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
     }
-}
+    type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
+    modLoaders.addAll(['forge'])
 
-modrinth {
-    if (project.hasProperty('bdModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.bdModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
+    if (project.hasProperty('bdcurseApiKey')) {
+        curseforge {
+            accessToken = project.bdcurseApiKey
+            projectId = project.bdcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('catalogue')
+            optional('serene-seasons')
+            optional('comforts')
+            incompatible('immersive-snow')
         }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        dependencies {
-            optional.project 'comforts'
+    }
+    if (project.hasProperty('bdModrinthId')) {
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.bdModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            optional('comforts')
+            incompatible('immersive-snow')
         }
     }
 }
