@@ -23,7 +23,7 @@
     "client": [
       "betterdays.BetterDaysClientFabric"
     ],
-    "spectrelib": [
+    "whitenoise": [
       "betterdays.FabricConfigInitializer"
     ]
   },

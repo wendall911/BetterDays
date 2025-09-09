@@ -23,7 +23,6 @@ package betterdays.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 
 import betterdays.BetterDays;
 import betterdays.time.effects.BlockEntityTimeEffect;
@@ -33,13 +32,15 @@ import betterdays.time.effects.RandomTickSleepEffect;
 import betterdays.time.effects.TimeEffect;
 import betterdays.time.effects.WeatherSleepEffect;
 
+import static technology.roughness.whitenoise.util.ResourceLocationHelper.loc;
+
 /**
  * This class registers all of the first-party time effects that come with Better Days.
  */
 public class TimeEffectsRegistry {
 
     /** The resource key for the {@link #TIME_EFFECT_REGISTRY} registry. */
-    public static final ResourceKey<Registry<TimeEffect>> KEY = ResourceKey.createRegistryKey(new ResourceLocation(BetterDays.MODID, "time_effect"));
+    public static final ResourceKey<Registry<TimeEffect>> KEY = ResourceKey.createRegistryKey(loc(BetterDays.MODID, "time_effect"));
 
     /** Registry for time effects. See {@link TimeEffect} for details on time effects. */
     public static final RegistryProvider<TimeEffect> TIME_EFFECT_REGISTRY = RegistryProvider.get(KEY, BetterDays.MODID, true);

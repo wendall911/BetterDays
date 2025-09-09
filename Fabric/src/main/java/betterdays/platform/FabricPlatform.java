@@ -6,12 +6,7 @@ import java.util.HashMap;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 
 import betterdays.message.BetterDaysMessages;
 import betterdays.platform.services.IPlatform;
@@ -25,21 +20,6 @@ public class FabricPlatform implements IPlatform {
         loomMapping.put("tickBlockEntities", "method_18471");
         loomMapping.put("sleepStatus", "field_28859");
         loomMapping.put("tickEffects", "method_6050");
-    }
-
-    @Override
-    public ResourceLocation getResourceLocation(Item item) {
-        return BuiltInRegistries.ITEM.getKey(item);
-    }
-
-    @Override
-    public boolean isModLoaded(String name) {
-        return FabricLoader.getInstance().isModLoaded(name);
-    }
-
-    @Override
-    public boolean isPhysicalClient() {
-        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     }
 
     @Override

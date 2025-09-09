@@ -31,31 +31,32 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec;
-import com.illusivesoulworks.spectrelib.config.SpectreConfigSpec.TransformableValue;
-
 import net.minecraft.resources.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
+import technology.roughness.whitenoise.platform.Services;
+
 import betterdays.client.gui.ScreenAlignment;
 import betterdays.message.ChatTypeOptions;
 import betterdays.message.TemplateMessage;
-import betterdays.platform.Services;
 import betterdays.time.effects.EffectCondition;
 import betterdays.time.Time;
 
+import static technology.roughness.whitenoise.util.ResourceLocationHelper.mcLoc;
+
 public class ConfigHandler {
 
-    public static final SpectreConfigSpec CLIENT_SPEC;
-    public static final SpectreConfigSpec COMMON_SPEC;
+    public static final WhiteNoiseConfigSpec CLIENT_SPEC;
+    public static final WhiteNoiseConfigSpec COMMON_SPEC;
 
     private static final Client CLIENT;
     private static final Common COMMON;
 
     static {
-        final Pair<Client, SpectreConfigSpec> specPairClient = new SpectreConfigSpec.Builder().configure(Client::new);
-        final Pair<Common, SpectreConfigSpec> specPairCommon = new SpectreConfigSpec.Builder().configure(Common::new);
+        final Pair<Client, WhiteNoiseConfigSpec> specPairClient = new WhiteNoiseConfigSpec.Builder().configure(Client::new);
+        final Pair<Common, WhiteNoiseConfigSpec> specPairCommon = new WhiteNoiseConfigSpec.Builder().configure(Common::new);
 
         CLIENT_SPEC = specPairClient.getRight();
         CLIENT = specPairClient.getLeft();
@@ -65,17 +66,17 @@ public class ConfigHandler {
 
     public static void init() {
         for (String dimensionKey : CLIENT.blacklistDimensions.get()) {
-            Client.blacklistDimensionsSet.add(new ResourceLocation(dimensionKey));
+            Client.blacklistDimensionsSet.add(mcLoc(dimensionKey));
         }
     }
 
     public static class Client {
 
-        private final SpectreConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
-        private final SpectreConfigSpec.IntValue clockScale;
-        private final SpectreConfigSpec.IntValue clockMargin;
-        private final SpectreConfigSpec.BooleanValue preventClockWobble;
-        private final SpectreConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
+        private final WhiteNoiseConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
+        private final WhiteNoiseConfigSpec.IntValue clockScale;
+        private final WhiteNoiseConfigSpec.IntValue clockMargin;
+        private final WhiteNoiseConfigSpec.BooleanValue preventClockWobble;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
         private static final List<String> blacklistDimensionsList = List.of("blacklistDimensions");
         private static final String[] defaultBlacklistDimensions = new String[] {
             "aether:the_aether"
@@ -84,7 +85,7 @@ public class ConfigHandler {
         private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
-        public Client(SpectreConfigSpec.Builder builder) {
+        public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("gui"); // gui
 
                 clockAlignment = builder.comment("Sets the screen alignment of the bed clock.")
@@ -142,14 +143,15 @@ public class ConfigHandler {
     }
 
     public static class Common {
-        private final SpectreConfigSpec.DoubleValue daySpeed;
-        private final SpectreConfigSpec.DoubleValue nightSpeed;
-        private final SpectreConfigSpec.DoubleValue dayStart;
-        private final SpectreConfigSpec.DoubleValue nightStart;
 
-        private final SpectreConfigSpec.BooleanValue enableInterpolatedTime;
-        private final SpectreConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
-        private final TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
+        private final WhiteNoiseConfigSpec.DoubleValue daySpeed;
+        private final WhiteNoiseConfigSpec.DoubleValue nightSpeed;
+        private final WhiteNoiseConfigSpec.DoubleValue dayStart;
+        private final WhiteNoiseConfigSpec.DoubleValue nightStart;
+
+        private final WhiteNoiseConfigSpec.BooleanValue enableInterpolatedTime;
+        private final WhiteNoiseConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
+        private final WhiteNoiseConfigSpec.TransformableValue<List<? extends String>, List<Pair<Integer, Double>>> interpolatedTimePairs;
         private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
             "0,1.0",
             "24000,1.0"
@@ -157,36 +159,36 @@ public class ConfigHandler {
         private static final Predicate<Object> valuePairValidator = s -> s instanceof String
             && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
-        private final SpectreConfigSpec.EnumValue<EffectCondition> weatherEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> randomTickEffect;
-        private final SpectreConfigSpec.IntValue baseRandomTickSpeed;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> potionEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> hungerEffect;
-        private final SpectreConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> weatherEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> randomTickEffect;
+        private final WhiteNoiseConfigSpec.IntValue baseRandomTickSpeed;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> potionEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> hungerEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
 
-        private final SpectreConfigSpec.BooleanValue enableSleepFeature;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedMin;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedMax;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedAll;
-        private final SpectreConfigSpec.DoubleValue sleepSpeedCurve;
-        private final SpectreConfigSpec.BooleanValue clearWeatherOnWake;
-        private final SpectreConfigSpec.BooleanValue allowDaySleep;
-        private final SpectreConfigSpec.BooleanValue displayBedClock;
-        private final SpectreConfigSpec.DoubleValue ratioPlayersForSleep;
+        private final WhiteNoiseConfigSpec.BooleanValue enableSleepFeature;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedMin;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedMax;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedAll;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedCurve;
+        private final WhiteNoiseConfigSpec.BooleanValue clearWeatherOnWake;
+        private final WhiteNoiseConfigSpec.BooleanValue allowDaySleep;
+        private final WhiteNoiseConfigSpec.BooleanValue displayBedClock;
+        private final WhiteNoiseConfigSpec.DoubleValue ratioPlayersForSleep;
 
-        private final SpectreConfigSpec.ConfigValue<String> morningMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> morningMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
 
-        private final SpectreConfigSpec.ConfigValue<String> enterBedMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> enterBedMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
 
-        private final SpectreConfigSpec.ConfigValue<String> leaveBedMessage;
-        private final SpectreConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
-        private final SpectreConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> leaveBedMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
 
-        public Common(SpectreConfigSpec.Builder builder) {
+        public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("time"); // time
 
             daySpeed = builder.comment(
@@ -530,5 +532,7 @@ public class ConfigHandler {
                             return null;
                         })
                         .collect(Collectors.toList());
+
     }
+
 }

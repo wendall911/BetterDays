@@ -8,18 +8,11 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin'
 }
 
-repositories {
-    maven {
-        name = "C4's Maven"
-        url = "https://maven.theillusivec4.top/"
-    }
-}
-
 archivesBaseName = "${mod_id}"
 version = "${minecraft_version}-${mod_version}-FORGE"
 
 minecraft {
-    mappings channel: "${mappings_channel}", version: "${mappings_version}-${minecraft_version}"
+    mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
 
     runs {
         client {
@@ -56,6 +49,12 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     compileOnly project(":Common")
+
+    implementation fg.deobf(group: 'technology.roughness.whitenoise', name: 'whitenoise-forge', version: "${whitenoise_version}")
+    jarJar fg.deobf(group: 'technology.roughness.whitenoise', name: 'whitenoise-forge', version: "${whitenoise_version}") {
+        jarJar.pin(it, "${whitenoise_version}")
+        jarJar.ranged(it, "${whitenoise_range}")
+    }
 
     runtimeOnly fg.deobf("curse.maven:readyplayerfun-322036:${readyplayerfun_version}")
 }
@@ -99,9 +98,20 @@ jarJar {
 }
 
 publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            // This gives us the built obfuscated version Forge requires
+            artifact jar
+        }
+    }
     repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
+        if (System.getenv('local_maven') != null) {
+            maven {
+                url 'file://' + System.getenv('local_maven')
+            }
         }
     }
 }

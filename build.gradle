@@ -55,29 +55,16 @@ subprojects {
         }
 
         maven {
-            name 'Illusive Soulworks'
-            url = "https://maven.theillusivec4.top/"
+            name = 'Curse Maven'
+            url = 'https://cursemaven.com'
+            content {
+                includeGroup 'curse.maven'
+            }
         }
 
         maven {
-            name = 'Curse Maven'
-            url = "https://cursemaven.com"
-            content {
-                includeGroup "curse.maven"
-            }
-        }
-
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Fuzss'
-                    url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
-
-                }
-            }
-            filter {
-                includeGroup('fuzs.forgeconfigapiport')
-            }
+            name = 'WhiteNoise' // Library for wendall911 mods
+            url = 'https://raw.githubusercontent.com/wendall911/maven/main/'
         }
     }
 

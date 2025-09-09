@@ -1,8 +1,8 @@
 package betterdays;
 
-import com.illusivesoulworks.spectrelib.config.SpectreLibInitializer;
+import technology.roughness.whitenoise.config.WhiteNoiseInitializer;
 
-public class FabricConfigInitializer implements SpectreLibInitializer {
+public class FabricConfigInitializer implements WhiteNoiseInitializer {
 
     @Override
     public void onInitializeConfig() {

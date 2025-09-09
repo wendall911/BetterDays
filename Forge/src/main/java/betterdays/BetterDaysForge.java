@@ -13,6 +13,7 @@ import betterdays.event.ServerEventListener;
 @Mod(BetterDays.MODID)
 public class BetterDaysForge {
 
+    @SuppressWarnings("removal")
     public BetterDaysForge() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 

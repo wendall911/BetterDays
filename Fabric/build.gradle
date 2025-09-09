@@ -1,6 +1,7 @@
 plugins {
-    id 'fabric-loom'
     id 'idea'
+    id 'maven-publish'
+    id 'fabric-loom'
     id 'me.modmuss50.mod-publish-plugin'
 }
 
@@ -26,12 +27,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modApi group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
-    include group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-fabric', version: "${forgeconfigapiport_version}"
+    modImplementation group: 'technology.roughness.whitenoise', name: 'whitenoise-fabric', version: "${whitenoise_range}"
+    include group: 'technology.roughness.whitenoise', name: 'whitenoise-fabric', version: "${whitenoise_version}"
 
-    modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
-        transitive = false
-    }
+    modLocalRuntime group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4576762"
@@ -80,6 +79,24 @@ tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
+    repositories {
+        if (System.getenv('local_maven') != null) {
+            maven {
+                url 'file://' + System.getenv('local_maven')
+            }
+        }
+    }
+}
+
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
 def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
 
@@ -98,7 +115,6 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('forge-config-api-port-fabric')
             requires('fabric-api')
             optional('fabric-seasons')
         }
