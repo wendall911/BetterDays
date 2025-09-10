@@ -2,9 +2,8 @@
 # Ugly bug effective
 cd Forge/
 ../gradlew build || exit 1
-cat build/libs/changelog.txt
 cd ../Fabric
 ../gradlew build || exit 1
 ../gradlew publishMods || exit 1
 cd ../Forge
-./gradlew publishMods || exit 1
+../gradlew publishMods || exit 1
