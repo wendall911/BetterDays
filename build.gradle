@@ -1,6 +1,25 @@
-subprojects {
+plugins {
+    id 'fabric-loom' version '1.11-SNAPSHOT' apply(false)
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
+    id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
+    id 'org.spongepowered.mixin' version "0.7-SNAPSHOT" apply(false)
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+' apply(false)
+    // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
+    id 'me.modmuss50.mod-publish-plugin' version '1.0.0' apply(false)
+    // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.7' apply(false)
+}
+allprojects {
     apply plugin: 'java'
 
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.release = 17
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
     java.withSourcesJar()
 
@@ -19,7 +38,7 @@ subprojects {
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_author,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestamp'              : System.currentTimeMillis(),
+                'Timestamp'               : System.currentTimeMillis(),
                 'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
                 'Build-On-Minecraft'      : minecraft_version
             ])
@@ -30,11 +49,6 @@ subprojects {
         mavenCentral()
 
         maven {
-            name = 'Forge'
-            url = 'https://maven.minecraftforge.net/releases'
-        }
-
-        maven {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
@@ -42,6 +56,11 @@ subprojects {
         maven {
             name = 'ParchmentMC'
             url = 'https://maven.parchmentmc.org/'
+        }
+
+        maven {
+            name = 'TerraformersMC (Trinkets / ModMenu)'
+            url 'https://maven.terraformersmc.com/releases'
         }
 
         maven {
@@ -56,6 +75,7 @@ subprojects {
             name = 'WhiteNoise' // Library for wendall911 mods
             url = 'https://raw.githubusercontent.com/wendall911/maven/main/'
         }
+
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -67,7 +87,7 @@ subprojects {
     // metadata includes mapped dependencies which are not reasonably consumable by
     // other mod developers.
     tasks.withType(GenerateModuleMetadata) {
-        enabled = false
+        it.enabled = false
     }
 
     tasks.withType(Jar).all {

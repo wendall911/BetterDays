@@ -1,18 +1,12 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
     id 'idea'
-    id 'net.darkhax.curseforgegradle' version '1.+'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'maven-publish'
+    id 'fabric-loom'
+    id 'me.modmuss50.mod-publish-plugin'
 }
 
 version = "${minecraft_version}-${mod_version}-FABRIC"
 archivesBaseName = "${mod_id}"
-
-repositories {
-    maven {
-        url "https://maven.terraformersmc.com/releases"
-    }
-}
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -20,20 +14,17 @@ dependencies {
         officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-${minecraft_version}:${mappings_version}@zip")
     })
-
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
-    modImplementation group: 'technology.roughness.whitenoise', name: 'whitenoise-fabric', version: "${whitenoise_range}"
-
-    modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
-        transitive = false
-    }
-
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
 
+    modImplementation group: 'technology.roughness.whitenoise', name: 'whitenoise-fabric', version: "${whitenoise_range}"
     include group: 'technology.roughness.whitenoise', name: 'whitenoise-fabric', version: "${whitenoise_version}"
+
+    modLocalRuntime("com.terraformersmc:modmenu:${mod_menu_version}") {
+        transitive = false
+    }
 
     // Testing Mods
     //modRuntimeOnly "curse.maven:sleepwarp-579295:4500512"
@@ -57,22 +48,23 @@ loom {
     }
 }
 
+def resourceTargets = ['fabric.mod.json', 'pack.mcmeta', '*.mixins.json']
+def replaceProperties = [
+    'version': version, 'fabric_mc_version_range': fabric_mc_version_range,
+    'license': license, 'mod_id': mod_id, 'mod_author': mod_author,
+    'mod_description': mod_description, 'mod_name': mod_name,
+    'issue_tracker': issue_tracker, 'fabric_loader_min_version': fabric_loader_min_version,
+    'mod_credits': mod_credits
+]
+
 processResources {
     from project(":Common").sourceSets.main.resources
-    inputs.property "version", project.version
-    exclude '.cache'
     duplicatesStrategy(DuplicatesStrategy.FAIL)
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
 
-    filesMatching("fabric.mod.json") {
-        expand 'version': project.version, 'fabric_mc_version_range': project.fabric_mc_version_range,
-            'license': project.license, 'mod_id': project.mod_id, 'mod_author': project.mod_author,
-            'mod_description': project.mod_description, 'mod_name': project.mod_name,
-            'issue_tracker': project.issue_tracker, 'fabric_loader_min_version': fabric_loader_min_version,
-            'mod_credits': project.mod_credits
-    }
-
-    filesMatching("pack.mcmeta") {
-        expand 'mod_name': project.mod_name
+    filesMatching(resourceTargets) {
+        expand replaceProperties
     }
 }
 
@@ -81,37 +73,36 @@ tasks.withType(JavaCompile) {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
 
-task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
-    if (project.hasProperty('bdcurseApiKey')) {
-        apiToken = project.bdcurseApiKey
-        def mainFile = upload(project.bdcurseId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
-        mainFile.changelog = file(changelogFile)
-        mainFile.addJavaVersion('Java 17')
-        mainFile.addModLoader('Fabric')
-        mainFile.releaseType = "${release_type}"
-        "${release_versions}".split(',').each {
-            mainFile.addGameVersion("${it}")
-        }
-        mainFile.addRequirement('fabric-api')
-        mainFile.addOptional('fabric-seasons')
+publishMods {
+    file = file(publishFile)
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
     }
-}
+    type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
+    modLoaders.addAll(['fabric'])
+    dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
 
-modrinth {
-    if (project.hasProperty('bdModrinthId')) {
-        token = project.modrinthKey
-        projectId = project.bdModrinthId
-        version = getVersion()
-        versionType = "${release_type}"
-        if (file(changelogFile).exists()) {
-            changelog = file(changelogFile).text
+    if (project.hasProperty('bdcurseApiKey')) {
+        curseforge {
+            accessToken = project.bdcurseApiKey
+            projectId = project.bdcurseId
+            javaVersions.add(JavaVersion.toVersion("${java_version}"))
+            clientRequired = true
+            serverRequired = true
+            minecraftVersions.addAll("${release_versions}".split(','))
+            requires('fabric-api')
+            optional('fabric-seasons')
         }
-        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
-        gameVersions = "${release_versions}".split(",") as List<String>
-        dependencies {
-            required.project 'fabric-api'
-            optional.project 'fabric-seasons'
+    }
+    if (project.hasProperty('bdModrinthId')) {
+        modrinth {
+            accessToken = project.modrinthKey
+            projectId = project.bdModrinthId
+            minecraftVersions.addAll("${release_versions}".split(','))
+            requires('fabric-api')
+            optional('fabric-seasons')
         }
     }
 }
