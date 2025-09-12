@@ -107,6 +107,8 @@ publishMods {
     }
     type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
     modLoaders.add('fabric')
+    dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
+
     if (project.hasProperty('bdcurseApiKey')) {
         curseforge {
             accessToken = project.bdcurseApiKey
