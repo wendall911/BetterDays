@@ -1,0 +1,9 @@
+#!/bin/bash
+# Ugly bug effective
+cd NeoForge/
+../gradlew build || exit 1
+cd ../Fabric
+../gradlew build || exit 1
+../gradlew publishMods || exit 1
+cd ../NeoForge
+../gradlew publishMods || exit 1
