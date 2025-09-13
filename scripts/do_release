@@ -1,0 +1,10 @@
+#!/bin/bash
+# Ugly bug effective
+cd NeoForge/
+../gradlew build || exit 1
+cat ../build/libs/changelog.txt
+cd ../Fabric
+../gradlew build || exit 1
+DO_RELEASE=true ../gradlew publishMods || exit 1
+cd ../NeoForge
+DO_RELEASE=true ../gradlew publishMods || exit 1
