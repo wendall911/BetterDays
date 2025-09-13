@@ -33,29 +33,30 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.resources.ResourceLocation;
 
-import net.neoforged.fml.config.IConfigSpec;
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 import org.apache.commons.lang3.tuple.Pair;
+
+import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
+import technology.roughness.whitenoise.platform.Services;
 
 import betterdays.client.gui.ScreenAlignment;
 import betterdays.message.ChatTypeOptions;
 import betterdays.message.TemplateMessage;
-import betterdays.platform.Services;
 import betterdays.time.effects.EffectCondition;
 import betterdays.time.Time;
 
+import static net.minecraft.resources.ResourceLocation.tryParse;
+
 public class ConfigHandler {
 
-    public static final IConfigSpec CLIENT_SPEC;
-    public static final IConfigSpec COMMON_SPEC;
+    public static final WhiteNoiseConfigSpec CLIENT_SPEC;
+    public static final WhiteNoiseConfigSpec COMMON_SPEC;
 
     private static final Client CLIENT;
     private static final Common COMMON;
 
     static {
-        final Pair<Client, ModConfigSpec> specPairClient = new ModConfigSpec.Builder().configure(Client::new);
-        final Pair<Common, ModConfigSpec> specPairCommon = new ModConfigSpec.Builder().configure(Common::new);
+        final Pair<Client, WhiteNoiseConfigSpec> specPairClient = new WhiteNoiseConfigSpec.Builder().configure(Client::new);
+        final Pair<Common, WhiteNoiseConfigSpec> specPairCommon = new WhiteNoiseConfigSpec.Builder().configure(Common::new);
 
         CLIENT_SPEC = specPairClient.getRight();
         CLIENT = specPairClient.getLeft();
@@ -65,17 +66,17 @@ public class ConfigHandler {
 
     public static void init() {
         for (String dimensionKey : CLIENT.blacklistDimensions.get()) {
-            Client.blacklistDimensionsSet.add(ResourceLocation.parse(dimensionKey));
+            Client.blacklistDimensionsSet.add(tryParse(dimensionKey));
         }
     }
 
     public static class Client {
 
-        private final ModConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
-        private final ModConfigSpec.IntValue clockScale;
-        private final ModConfigSpec.IntValue clockMargin;
-        private final ModConfigSpec.BooleanValue preventClockWobble;
-        private final ModConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
+        private final WhiteNoiseConfigSpec.EnumValue<ScreenAlignment> clockAlignment;
+        private final WhiteNoiseConfigSpec.IntValue clockScale;
+        private final WhiteNoiseConfigSpec.IntValue clockMargin;
+        private final WhiteNoiseConfigSpec.BooleanValue preventClockWobble;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> blacklistDimensions;
         private static final List<String> blacklistDimensionsList = List.of("blacklistDimensions");
         private static final String[] defaultBlacklistDimensions = new String[] {
             "aether:the_aether"
@@ -84,7 +85,7 @@ public class ConfigHandler {
         private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
-        public Client(ModConfigSpec.Builder builder) {
+        public Client(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("gui"); // gui
 
                 clockAlignment = builder.comment("Sets the screen alignment of the bed clock.")
@@ -142,14 +143,14 @@ public class ConfigHandler {
     }
 
     public static class Common {
-        private final ModConfigSpec.DoubleValue daySpeed;
-        private final ModConfigSpec.DoubleValue nightSpeed;
-        private final ModConfigSpec.DoubleValue dayStart;
-        private final ModConfigSpec.DoubleValue nightStart;
+        private final WhiteNoiseConfigSpec.DoubleValue daySpeed;
+        private final WhiteNoiseConfigSpec.DoubleValue nightSpeed;
+        private final WhiteNoiseConfigSpec.DoubleValue dayStart;
+        private final WhiteNoiseConfigSpec.DoubleValue nightStart;
 
-        private final ModConfigSpec.BooleanValue enableInterpolatedTime;
-        private final ModConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
-        private final ModConfigSpec.ConfigValue<List<? extends String>> interpolatedTimePairs;
+        private final WhiteNoiseConfigSpec.BooleanValue enableInterpolatedTime;
+        private final WhiteNoiseConfigSpec.DoubleValue interpolatedTimeSmoothingFactor;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> interpolatedTimePairs;
         private static final List<String> defaultInterpolatedTimePairs = List.of(new String[]{
             "0,1.0",
             "24000,1.0"
@@ -157,36 +158,36 @@ public class ConfigHandler {
         private static final Predicate<Object> valuePairValidator = s -> s instanceof String
             && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
-        private final ModConfigSpec.EnumValue<EffectCondition> weatherEffect;
-        private final ModConfigSpec.EnumValue<EffectCondition> randomTickEffect;
-        private final ModConfigSpec.IntValue baseRandomTickSpeed;
-        private final ModConfigSpec.EnumValue<EffectCondition> potionEffect;
-        private final ModConfigSpec.EnumValue<EffectCondition> hungerEffect;
-        private final ModConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> weatherEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> randomTickEffect;
+        private final WhiteNoiseConfigSpec.IntValue baseRandomTickSpeed;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> potionEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> hungerEffect;
+        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
 
-        private final ModConfigSpec.BooleanValue enableSleepFeature;
-        private final ModConfigSpec.DoubleValue sleepSpeedMin;
-        private final ModConfigSpec.DoubleValue sleepSpeedMax;
-        private final ModConfigSpec.DoubleValue sleepSpeedAll;
-        private final ModConfigSpec.DoubleValue sleepSpeedCurve;
-        private final ModConfigSpec.BooleanValue clearWeatherOnWake;
-        private final ModConfigSpec.BooleanValue allowDaySleep;
-        private final ModConfigSpec.BooleanValue displayBedClock;
-        private final ModConfigSpec.DoubleValue ratioPlayersForSleep;
+        private final WhiteNoiseConfigSpec.BooleanValue enableSleepFeature;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedMin;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedMax;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedAll;
+        private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedCurve;
+        private final WhiteNoiseConfigSpec.BooleanValue clearWeatherOnWake;
+        private final WhiteNoiseConfigSpec.BooleanValue allowDaySleep;
+        private final WhiteNoiseConfigSpec.BooleanValue displayBedClock;
+        private final WhiteNoiseConfigSpec.DoubleValue ratioPlayersForSleep;
 
-        private final ModConfigSpec.ConfigValue<String> morningMessage;
-        private final ModConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
-        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> morningMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> morningMessageTarget;
 
-        private final ModConfigSpec.ConfigValue<String> enterBedMessage;
-        private final ModConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
-        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> enterBedMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> enterBedMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> enterBedMessageTarget;
 
-        private final ModConfigSpec.ConfigValue<String> leaveBedMessage;
-        private final ModConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
-        private final ModConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
+        private final WhiteNoiseConfigSpec.ConfigValue<String> leaveBedMessage;
+        private final WhiteNoiseConfigSpec.EnumValue<ChatTypeOptions> leaveBedMessageType;
+        private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
 
-        public Common(ModConfigSpec.Builder builder) {
+        public Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("time"); // time
 
             daySpeed = builder.comment(
