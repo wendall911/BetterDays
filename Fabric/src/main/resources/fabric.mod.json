@@ -23,6 +23,9 @@
     ],
     "client": [
       "betterdays.BetterDaysClientFabric"
+    ],
+    "whitenoise-config": [
+      "betterdays.FabricConfigInitializer"
     ]
   },
   "mixins": [
