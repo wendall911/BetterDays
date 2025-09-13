@@ -10,8 +10,8 @@ version = neoforge_mod_version
 neoForge {
     version = neoforge_version
     parchment {
-        minecraftVersion = parchment_mc_version
-        mappingsVersion = parchment_version
+        minecraftVersion = minecraft_version
+        mappingsVersion = mappings_version
     }
     runs {
         configureEach {
@@ -34,17 +34,19 @@ neoForge {
 }
 
 dependencies {
+    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-neoforge', version: "${whitenoise_version}"
+    jarJar group: 'technology.roughness.whitenoise', name: 'whitenoise-neoforge', version: "${whitenoise_version}"
+
     // Testing mods
     //runtimeOnly "curse.maven:configured-457570:4462837"
     //runtimeOnly "curse.maven:catalogue-459701:4590890"
 }
 
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    file = new File(project(":").projectDir.toString() + '/build/libs/changelog.txt');
-    templateContent = file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8');
-    fromRepo = file("$projectDir");
-    toRef = "HEAD";
-    fromRef = "${minecraft_version}-${last_mod_version}";
+    file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
+    templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
+    toRevision.set('HEAD');
+    fromRevision.set("${minecraft_version}-${last_mod_version}");
 }
 
 def updates = tasks.register("generateUpdates", Copy) {
@@ -69,9 +71,12 @@ def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${a
 
 publishMods {
     file = file(publishFile)
-    changelog = file(changelogFile).text
+    if (file(changelogFile).exists()) {
+        changelog = file(changelogFile).text
+    }
     type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
     modLoaders.add('neoforge')
+    dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
 
     if (project.hasProperty('bdcurseApiKey')) {
         curseforge {
@@ -81,6 +86,7 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
+            optional('configured')
             optional('catalogue')
             optional('serene-seasons')
             optional('comforts')
@@ -92,10 +98,9 @@ publishMods {
             accessToken = project.modrinthKey
             projectId = project.bdModrinthId
             minecraftVersions.addAll("${release_versions}".split(','))
+            optional('serene-seasons')
             optional('comforts')
             incompatible('immersive-snow')
         }
-    }
-    if (project.hasProperty('bdGithubToken')) {
     }
 }
