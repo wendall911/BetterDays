@@ -52,8 +52,6 @@ shadowJar {
     archiveClassifier = ''
 }
 
-tasks.register('idePostSync') {}
-
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
     templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
