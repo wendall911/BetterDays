@@ -70,7 +70,6 @@ publishMods {
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
-            embeds('spectrelib')
             requires('fabric-api')
             optional('fabric-seasons')
             incompatible('immersive-snow')
