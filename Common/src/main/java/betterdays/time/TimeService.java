@@ -129,6 +129,7 @@ public class TimeService {
      */
     private void preventTimeOverflow() {
         long time = level.get().getDayTime();
+
         if (time > OVERFLOW_THRESHOLD) {
             level.get().setDayTime(time - OVERFLOW_THRESHOLD);
         }
@@ -147,6 +148,7 @@ public class TimeService {
         timeDelta = correctForOvershoot(time, timeDelta);
 
         setDayTime(time.add(timeDelta));
+
         return timeDelta;
     }
 
