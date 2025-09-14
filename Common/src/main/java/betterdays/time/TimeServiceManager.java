@@ -70,10 +70,9 @@ public class TimeServiceManager {
     public static boolean onSleepingCheckEvent(Level level) {
         if (service != null && service.level.get().equals(level)) {
             Time time = service.getDayTime().timeOfDay();
-            if (ConfigHandler.Common.enableSleepFeature()
-                    && time.compareTo(VANILLA_SLEEP_END) >= 0) {
-                return true;
-            }
+            return ConfigHandler.Common.enableSleepFeature()
+                    && (time.compareTo(VANILLA_SLEEP_END) >= 0
+                    || ConfigHandler.Common.allowDaySleep());
         }
 
         return false;
