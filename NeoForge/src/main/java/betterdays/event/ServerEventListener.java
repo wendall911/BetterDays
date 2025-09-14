@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.CanContinueSleepingEvent;
+import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.level.SleepFinishedTimeEvent;
@@ -16,9 +17,9 @@ import betterdays.time.TimeServiceManager;
 public class ServerEventListener {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onDaySleepCheck(CanContinueSleepingEvent event) {
+    public void onDaySleepCheck(CanPlayerSleepEvent event) {
         if (TimeServiceManager.onDaySleepCheck(event.getEntity().level())) {
-            event.setContinueSleeping(true);
+            event.setProblem(null);
         }
     }
 
