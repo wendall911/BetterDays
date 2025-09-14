@@ -399,7 +399,10 @@ public class ConfigHandler {
         }
 
         public static boolean enableSleepFeature() {
-            return !Services.PLATFORM.isModLoaded("sleepwarp") ? COMMON.enableSleepFeature.get() : false;
+            boolean sleepModLoaded = Services.PLATFORM.isModLoaded("sleepwarp")
+                    || Services.PLATFORM.isModLoaded("sleep_tight");
+
+            return !sleepModLoaded ? COMMON.enableSleepFeature.get() : false;
         }
 
         public static double sleepSpeedMin() {
