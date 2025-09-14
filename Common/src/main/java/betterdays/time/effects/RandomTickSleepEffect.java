@@ -53,7 +53,18 @@ public class RandomTickSleepEffect extends AbstractTimeEffect {
         int speed = ConfigHandler.Common.baseRandomTickSpeed();
         SleepStatus sleepStatus = context.getTimeService().sleepStatus;
         if (condition == ALWAYS || (condition == SLEEPING && !sleepStatus.allAwake())) {
-            speed *= context.getTimeDelta().longValue();
+            long timeDelta = context.getTimeDelta().longValue();
+
+            if (timeDelta > 1) {
+                speed *= timeDelta;
+            }
+            else {
+                speed *= context.getTimeService().getTimeSpeed(context.getCurrentTime());
+            }
+        }
+
+        if (speed < 1) {
+            speed = 1;
         }
 
         context.getLevel().setRandomTickSpeed(speed);
