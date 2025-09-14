@@ -50,6 +50,8 @@ Better Days is compatible with the following mods:
  * [Comforts](https://www.curseforge.com/minecraft/mc-mods/comforts)
  * [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
    * If mod is installed, sleep system is disabled.
+ * [Sleep Tight](https://www.curseforge.com/minecraft/mc-mods/sleep-tight)
+   * If mod is installed, sleep system is disabled.
  * [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
  * [Ecliptic Seasons](https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons)
  * [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
