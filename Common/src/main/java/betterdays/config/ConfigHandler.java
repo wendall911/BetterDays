@@ -143,9 +143,11 @@ public class ConfigHandler {
     }
 
     public static class Common {
-
+        private final WhiteNoiseConfigSpec.EnumValue<SpeedMethod> speedMethod;
         private final WhiteNoiseConfigSpec.DoubleValue daySpeed;
         private final WhiteNoiseConfigSpec.DoubleValue nightSpeed;
+        private final WhiteNoiseConfigSpec.DoubleValue daySpeedMinutes;
+        private final WhiteNoiseConfigSpec.DoubleValue nightSpeedMinutes;
         private final WhiteNoiseConfigSpec.DoubleValue dayStart;
         private final WhiteNoiseConfigSpec.DoubleValue nightStart;
 
@@ -194,14 +196,37 @@ public class ConfigHandler {
             daySpeed = builder.comment(
                             "The speed at which time passes during the day.",
                             "Day is defined as any time between dayStart (see below) and nightStart (see below) the next day.",
+                            "This is the RATIO of time passing relative to vanilla.",
                             "Vanilla speed: 1.0")
                     .defineInRange("daySpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
 
             nightSpeed = builder.comment(
                             "The speed at which time passes during the night.",
                             "Night is defined as any time between dayStart (see below) and nightStart (see below).",
+                            "This is the RATIO of time passing relative to vanilla.",
                             "Vanilla speed: 1.0")
                     .defineInRange("nightSpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
+
+            daySpeedMinutes = builder.comment(
+                            "An alternative way to set day speed. This setting is mutually exclusive with daySpeed.",
+                            "If both are set, speedMethod (see below) determines which setting is used.",
+                            "This setting defines the length of the day in real-world minutes.",
+                            "Vanilla length: 10.0 minutes")
+                    .defineInRange("daySpeedMinutes", 10D, 0.1D, 10000D);
+
+            nightSpeedMinutes = builder.comment(
+                            "An alternative way to set night speed. This setting is mutually exclusive with nightSpeed.",
+                            "If both are set, speedMethod (see below) determines which setting is used.",
+                            "This setting defines the length of the night in real-world minutes.",
+                            "Vanilla length: 10.0 minutes")
+                    .defineInRange("nightSpeedMinutes", 10D, 0.1D, 10000D);
+
+            speedMethod = builder.comment(
+                            "Determines which method is used to set day and night speed.",
+                            "RATIO: Uses daySpeed and nightSpeed settings.",
+                            "MINUTES: Uses daySpeedMinutes and nightSpeedMinutes settings.",
+                            "REALTIME: Sets day and night to 12 real-world hours each.")
+                    .defineEnum("speedMethod", SpeedMethod.RATIO);
 
             dayStart = builder.comment(
                             "The time to start day. This is configurable within the time the sun appears and day starts.",
@@ -402,10 +427,24 @@ public class ConfigHandler {
         }
 
         public static double daySpeed() {
+            if (COMMON.speedMethod.get() == SpeedMethod.MINUTES) {
+                return (100F / COMMON.daySpeedMinutes.get()) / 10F;
+            }
+            else if (COMMON.speedMethod.get() == SpeedMethod.REALTIME) {
+                return (100F / 720F) / 10F;
+            }
+
             return COMMON.daySpeed.get();
         }
 
         public static double nightSpeed() {
+            if (COMMON.speedMethod.get() == SpeedMethod.MINUTES) {
+                return (100F / COMMON.nightSpeedMinutes.get()) / 10F;
+            }
+            else if (COMMON.speedMethod.get() == SpeedMethod.REALTIME) {
+                return (100F / 720F) / 10F;
+            }
+
             return COMMON.nightSpeed.get();
         }
 
