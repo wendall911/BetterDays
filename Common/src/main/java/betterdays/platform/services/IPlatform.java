@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 
 import org.jetbrains.annotations.NotNull;
 
+import betterdays.platform.ModLoader;
+
 import betterdays.wrappers.ServerLevelWrapper;
 
 public interface IPlatform {
@@ -14,5 +16,9 @@ public interface IPlatform {
     @NotNull Field findField(final @NotNull Class<?> clazz, final @NotNull String name) throws NoSuchFieldException;
 
     @NotNull Method findMethod(final @NotNull Class<?> clazz, final @NotNull String name, final Class<?> @NotNull ... parameters) throws NoSuchMethodException;
+
+    ModLoader getModLoader();
+
+    void setTimeSpeed(ServerLevelWrapper level, float speed);
 
 }
