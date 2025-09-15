@@ -265,6 +265,7 @@ public class ConfigHandler {
                             "When applied, this effect syncs the passage of weather with the current speed of time.",
                             "I.e., as time moves faster, rain stops faster. Clear weather is not affected.",
                             "When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.",
+                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
                             "Note: This setting is not applicable if game rule doWeatherCycle is false.")
                     .defineEnum("weatherEffect", EffectCondition.SLEEPING);
 
@@ -275,6 +276,7 @@ public class ConfigHandler {
                             "More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick",
                             "WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,",
                             "use the baseRandomTickSpeed setting instead of changing the game rule directly.",
+                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
                             "This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0.")
                     .defineEnum("randomTickEffect", EffectCondition.NEVER);
 
@@ -287,7 +289,8 @@ public class ConfigHandler {
                             "This effect does not apply if time speed is 1.0 or less.",
                             "THIS MAY HAVE A NEGATIVE IMPACT ON PERFORMANCE IN SERVERS WITH MANY PLAYERS.",
                             "When set to ALWAYS, this effect applies to all players in the dimension, day or night.",
-                            "When set to SLEEPING, this effect only applies to players who are sleeping.")
+                            "When set to SLEEPING, this effect only applies to players who are sleeping.",
+                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.")
                     .defineEnum("potionEffect", EffectCondition.NEVER);
 
             hungerEffect = builder.comment(
@@ -302,7 +305,8 @@ public class ConfigHandler {
                             "When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.",
                             "WARNING: This time-effect has a significant impact on performance.",
                             "This effect does not apply if time speed is 1.0 or less.",
-                            "When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.")
+                            "When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.",
+                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.")
                     .defineEnum("blockEntityEffect", EffectCondition.NEVER);
 
             builder.pop(); // time.effects

@@ -29,10 +29,14 @@ import betterdays.registry.TimeEffectsRegistry;
 import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
 import betterdays.platform.Services;
+import betterdays.time.effects.EffectCondition;
+import betterdays.time.effects.RandomTickSleepEffect;
 import betterdays.time.effects.TimeEffect;
 import betterdays.utils.MathUtils;
 import betterdays.wrappers.ServerLevelWrapper;
 import betterdays.wrappers.TimePacketWrapper;
+
+import static betterdays.time.effects.EffectCondition.SLEEPING;
 
 /**
  * Handles the Better Days time and sleep functionality for a level.
@@ -88,8 +92,6 @@ public class TimeService {
             double speed = getTimeSpeed(time);
             context = new TimeContext(this, time, time);
 
-            tickTimeEffects(context);
-
             /*
              * TODO: Figure out how to not need this with Fabric.
              * Without patching, not entirely sure how do do with only Mixins.
@@ -97,6 +99,9 @@ public class TimeService {
              * https://github.com/neoforged/NeoForge/pull/1318
              */
             Services.PLATFORM.setTimeSpeed(level, (float) speed);
+
+            // This is needed to reset if using sleep effect
+            tryResetRandomTickSpeed();
         }
         else {
             Time oldTime = getDayTime();
@@ -104,7 +109,7 @@ public class TimeService {
             Time time = getDayTime();
             context = new TimeContext(this, time, deltaTime);
 
-            tickTimeEffects(context);
+            getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 
             preventTimeOverflow();
             broadcastTime();
@@ -116,8 +121,12 @@ public class TimeService {
         }
     }
 
-    private void tickTimeEffects(TimeContext context) {
-        getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
+    private void tryResetRandomTickSpeed() {
+        EffectCondition condition = ConfigHandler.Common.randomTickEffect();
+
+        if (condition != EffectCondition.NEVER) {
+            level.setRandomTickSpeed(ConfigHandler.Common.baseRandomTickSpeed());
+        }
     }
 
     private void handleMorning() {

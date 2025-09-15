@@ -70,4 +70,5 @@ public class RandomTickSleepEffect extends AbstractTimeEffect {
         context.getLevel().setRandomTickSpeed(speed);
     }
 
+
 }
