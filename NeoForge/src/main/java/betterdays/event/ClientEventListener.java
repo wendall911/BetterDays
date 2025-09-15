@@ -1,8 +1,10 @@
 package betterdays.event;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.InBedChatScreen;
 
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
 import betterdays.client.gui.SleepGui;
