@@ -180,6 +180,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 		#When applied, this effect syncs the passage of weather with the current speed of time.
 		#I.e., as time moves faster, rain stops faster. Clear weather is not affected.
 		#When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.
+		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
 		#Note: This setting is not applicable if game rule doWeatherCycle is false.
 		#Allowed Values: NEVER, ALWAYS, SLEEPING
 		weatherEffect = "SLEEPING"
@@ -189,6 +190,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 		#More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick
 		#WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,
 		#use the baseRandomTickSpeed setting instead of changing the game rule directly.
+		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
 		#This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0.
 		#Allowed Values: NEVER, ALWAYS, SLEEPING
 		randomTickEffect = "NEVER"
@@ -200,6 +202,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 		#THIS MAY HAVE A NEGATIVE IMPACT ON PERFORMANCE IN SERVERS WITH MANY PLAYERS.
 		#When set to ALWAYS, this effect applies to all players in the dimension, day or night.
 		#When set to SLEEPING, this effect only applies to players who are sleeping.
+		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
 		#Allowed Values: NEVER, ALWAYS, SLEEPING
 		potionEffect = "NEVER"
 		#When applied, this effect progresses player hunger effects to match the rate of the current time-speed.
@@ -213,6 +216,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 		#WARNING: This time-effect has a significant impact on performance.
 		#This effect does not apply if time speed is 1.0 or less.
 		#When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.
+		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
 		#Allowed Values: NEVER, ALWAYS, SLEEPING
 		blockEntityEffect = "NEVER"
 
