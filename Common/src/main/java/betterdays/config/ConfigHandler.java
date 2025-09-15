@@ -272,7 +272,7 @@ public class ConfigHandler {
                             "When applied, this effect syncs the random tick speed with the current speed of time, forcing",
                             "crop, tree, and grass growth to occur at baseRandomTickSpeed multiplied by the current time-speed.",
                             "When set to SLEEPING, randomTickSpeed is set to baseRandomTickSpeed unless at least one player is sleeping in a dimension.",
-                            "More information on the effects of random tick speed can be found here: https://minecraft.fandom.com/wiki/Tick#Random_tick",
+                            "More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick",
                             "WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,",
                             "use the baseRandomTickSpeed setting instead of changing the game rule directly.",
                             "This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0.")
@@ -365,7 +365,7 @@ public class ConfigHandler {
             // sleep.messages
             builder.comment(
                             "This section defines settings for notification messages.",
-                            "All messages support Minecraft formatting codes (https://minecraft.fandom.com/wiki/Formatting_codes).",
+                            "All messages support Minecraft formatting codes (https://minecraft.wiki/w/Formatting_codes).",
                             "All messages have variables that can be inserted using the following format: ${variableName}",
                             "The type option controls where the message appears:",
                             "\tSYSTEM: Appears as a message in the chat. (e.g., \"Respawn point set\")",
