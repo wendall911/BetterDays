@@ -42,4 +42,14 @@ public class NeoForgePlatform implements IPlatform {
         }
     }
 
+    @Override
+    public ModLoader getModLoader() {
+        return ModLoader.NEOFORGE;
+    }
+
+    @Override
+    public void setTimeSpeed(ServerLevelWrapper level, float speed) {
+        level.get().setDayTimePerTick(speed);
+    }
+
 }

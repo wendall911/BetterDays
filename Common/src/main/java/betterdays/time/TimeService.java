@@ -24,6 +24,7 @@ package betterdays.time;
 import java.util.Collection;
 
 import betterdays.BetterDays;
+import betterdays.platform.ModLoader;
 import betterdays.registry.TimeEffectsRegistry;
 import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
@@ -76,24 +77,47 @@ public class TimeService {
      * Performs all time, sleep, and weather calculations. Should run once per tick.
      */
     public void tick() {
+        TimeContext context;
+
         if (!level.daylightRuleEnabled()) {
             return;
         }
 
-        Time oldTime = getDayTime();
-        Time deltaTime = tickTime();
-        Time time = getDayTime();
+        if (Services.PLATFORM.getModLoader() == ModLoader.NEOFORGE && sleepStatus.allAwake()) {
+            Time time = getDayTime();
+            double speed = getTimeSpeed(time);
+            context = new TimeContext(this, time, time);
 
-        TimeContext context = new TimeContext(this, time, deltaTime);
-        getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
+            tickTimeEffects(context);
 
-        if (ConfigHandler.Common.enableSleepFeature() && !sleepStatus.allAwake() && Time.crossedMorning(oldTime, time)) {
-            handleMorning();
+            /*
+             * TODO: Figure out how to not need this with Fabric.
+             * Without patching, not entirely sure how do do with only Mixins.
+             * This is implemented in NeoForge here:
+             * https://github.com/neoforged/NeoForge/pull/1318
+             */
+            Services.PLATFORM.setTimeSpeed(level, (float) speed);
         }
+        else {
+            Time oldTime = getDayTime();
+            Time deltaTime = tickTime();
+            Time time = getDayTime();
+            context = new TimeContext(this, time, deltaTime);
 
-        preventTimeOverflow();
-        broadcastTime();
-        vanillaTimeCompensation();
+            tickTimeEffects(context);
+
+            preventTimeOverflow();
+            broadcastTime();
+            vanillaTimeCompensation();
+
+            if (ConfigHandler.Common.enableSleepFeature() && !sleepStatus.allAwake() && Time.crossedMorning(oldTime, time)) {
+                handleMorning();
+            }
+        }
+    }
+
+    private void tickTimeEffects(TimeContext context) {
+        getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
     }
 
     private void handleMorning() {

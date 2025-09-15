@@ -43,4 +43,14 @@ public class FabricPlatform implements IPlatform {
         return method;
     }
 
+    @Override
+    public ModLoader getModLoader() {
+        return ModLoader.FABRIC;
+    }
+
+    @Override
+    public void setTimeSpeed(ServerLevelWrapper level, float speed) {
+        // NO-OP
+    }
+
 }
