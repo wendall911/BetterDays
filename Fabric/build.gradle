@@ -22,7 +22,7 @@ dependencies {
     modImplementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_range}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
-    modLocalRuntime ("com.terraformersmc:modmenu:${mod_menu_version}") {
+    modLocalRuntime("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false
     }
 
