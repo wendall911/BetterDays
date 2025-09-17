@@ -18,7 +18,7 @@ dependencies {
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: "${mixin_extras_version}"
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: "${mixin_extras_version}"
-    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-common', version: "${whitenoise_version}"
+    implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-common", version: "${whitenoise_version}"
 }
 
 configurations {
