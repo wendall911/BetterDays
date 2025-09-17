@@ -70,6 +70,13 @@ subprojects {
             name = 'WhiteNoise' // Library for wendall911 mods
             url = 'https://raw.githubusercontent.com/wendall911/maven/main/'
         }
+
+        if (System.getenv('local_maven') != null && project.hasProperty('localmaven')) {
+            maven {
+                url 'file://' + localmaven
+            }
+        }
+
     }
 
     tasks.withType(JavaCompile).configureEach {

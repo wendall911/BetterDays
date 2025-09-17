@@ -15,7 +15,7 @@ minecraft {
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: "${mixin_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation group: 'technology.roughness.whitenoise', name: 'whitenoise-common', version: "${whitenoise_version}"
+    implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-common", version: "${whitenoise_version}"
 }
 
 sourceSets.main.resources {
