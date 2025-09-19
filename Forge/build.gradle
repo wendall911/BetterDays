@@ -8,8 +8,9 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin'
 }
 
+def actualVersion = version
+version = "${minecraft_version}-${version}-FORGE"
 archivesBaseName = "${mod_id}"
-version = "${minecraft_version}-${mod_version}-FORGE"
 
 minecraft {
     mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
@@ -135,7 +136,7 @@ def updates = tasks.register("generateUpdates", Copy) {
 
     it.from("../files/templates/") {
         include 'updates.json'
-        expand 'version': version, 'minecraft_version': minecraft_version
+        expand 'version': actualVersion, 'minecraft_version': minecraft_version
     }
 
     it.into '../files/'
