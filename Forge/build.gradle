@@ -7,7 +7,8 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin'
 }
 
-version = "${minecraft_version}-${mod_version}-FORGE"
+def actualVersion = version
+version = "${minecraft_version}-${version}-FORGE"
 archivesBaseName = "${mod_id}"
 
 minecraft {
@@ -74,7 +75,7 @@ def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def replaceProperties = [
     'version': version, 'forge_mc_version_range': forge_mc_version_range, 'forge_version_range': forge_version_range,
     'license': license, 'mod_id': mod_id, 'mod_author': mod_author, 'mod_description': mod_description,
-    'mod_name': mod_name, 'issue_tracker': issue_tracker, 'mod_credits': mod_credits, 'mod_update_url': mod_update_url
+    'mod_name': mod_name, 'issue_tracker': issue_tracker, 'mod_credits': mod_credits, 'mod_update_branch': mod_update_branch
 ]
 
 processResources {
@@ -135,7 +136,7 @@ def updates = tasks.register("generateUpdates", Copy) {
 
     it.from("../files/templates/") {
         include 'updates.json'
-        expand 'version': version, 'minecraft_version': minecraft_version
+        expand 'version': actualVersion, 'minecraft_version': minecraft_version
     }
 
     it.into '../files/'
