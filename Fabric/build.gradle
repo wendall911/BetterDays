@@ -3,8 +3,8 @@ plugins {
     id 'fabric-loom'
 }
 
-version = fabric_mod_version
-archivesBaseName = "${mod_id}"
+def modLoader = "${project.name}".toUpperCase()
+version = "${version}-${modLoader}"
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -52,12 +52,16 @@ loom {
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
 def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
+def display_name = "${project.name} ${minecraft_version}-${version}"
+def display_version = "${minecraft_version}-${version}"
 
 publishMods {
     file = file(publishFile)
     if (file(changelogFile).exists()) {
         changelog = file(changelogFile).text
     }
+    displayName = "${display_name}"
+    version = "${display_version}"
     type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
     modLoaders.add('fabric')
     dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
