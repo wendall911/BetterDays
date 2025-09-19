@@ -1,3 +1,5 @@
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
@@ -5,8 +7,10 @@ plugins {
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
-archivesBaseName = "${mod_id}"
-version = neoforge_mod_version
+
+def modLoader = "${project.name}".toUpperCase()
+def actualVersion = version
+version = "${version}-${modLoader}"
 
 neoForge {
     version = neoforge_version
@@ -52,7 +56,7 @@ shadowJar {
     archiveClassifier = ''
 }
 
-task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+tasks.register('changelog', GitChangelogTask) {
     file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
     templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
     toRevision.set('HEAD');
@@ -66,7 +70,7 @@ def updates = tasks.register("generateUpdates", Copy) {
 
     it.from("../files/templates/") {
         include 'updates.json'
-        expand 'version': version, 'minecraft_version': minecraft_version
+        expand 'version': actualVersion, 'minecraft_version': minecraft_version
     }
 
     it.into '../files/'
@@ -78,12 +82,16 @@ tasks.build.dependsOn('changelog', 'generateUpdates')
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
 def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
+def display_name = "${project.name} ${minecraft_version}-${version}"
+def display_version = "${minecraft_version}-${version}"
 
 publishMods {
     file = file(publishFile)
     if (file(changelogFile).exists()) {
         changelog = file(changelogFile).text
     }
+    displayName = "${display_name}"
+    version = "${display_version}"
     type = "${release_type}".startsWith("release") ? STABLE : ("${release_type}".startsWith("beta") ? BETA : ALPHA)
     modLoaders.add('neoforge')
     dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
