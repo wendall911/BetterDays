@@ -1,5 +1,5 @@
 {
-  "homepage": "https://www.curseforge.com/minecraft/mc-mods/betterdays",
+  "homepage": "https://minecraft.curseforge.com/projects/betterdays",
   "promos": {
     "${minecraft_version}-latest": "${version}",
     "${minecraft_version}-recommended": "${version}"

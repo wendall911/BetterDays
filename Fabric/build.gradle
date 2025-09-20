@@ -67,6 +67,18 @@ def replaceProperties = [
     'mod_credits': mod_credits, 'java_version': java_version
 ]
 
+processResources {
+    from project(":Common").sourceSets.main.resources
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    inputs.properties replaceProperties
+    replaceProperties.put 'project', project
+    exclude '.cache'
+
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
+}
+
 tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }
