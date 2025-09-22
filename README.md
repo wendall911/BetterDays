@@ -73,6 +73,11 @@ Better Days is compatible with the following mods:
      configuration option to disable this behavior, but unfortunately, it is set
      to override Better Days by default.
 
+Better Days is incompatible with the following mods:
+
+ * [Steve's Realistic Sleep](https://www.curseforge.com/minecraft/mc-mods/stevesrealisticsleep)
+   * If mod is installed, everything just breaks. Do not use these mods together.
+
 #### Sleep Vote Mods
 
 Better Days is compatible with mods that enable sleep voting or have sleep percentage systems like
