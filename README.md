@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/Fabric-0.46.0+-yellowgreen.svg?longCache=true&style=flat)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files?gameVersionTypeId=4)
 ![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)
 
-A Minecraft 1.19+ mod to designed to extend the length of the crazy short minecraft day.
+A Minecraft 1.19+ mod designed to extend the length of the crazy short Minecraft day.
 
 ## Notice
 
@@ -15,7 +15,7 @@ Hourglass hasn't received any updates in nearly a year, plus there are new
 features that needed added. I've revived Better days to update for not only
 1.19 and 1.20, but also bring all the features to <u>both</u> **NeoForge and Fabric**.
 
-1.19+ is a fork of Hourglass mod, with new features and some functionality removed.
+1.19+ is a fork of the Hourglass mod, with new features and some functionality removed.
 
 ### Differences from Hourglass Mod
  * Commands removed.
@@ -49,9 +49,9 @@ Better Days is compatible with the following mods:
  * [Ready Player Fun](https://www.curseforge.com/minecraft/mc-mods/ready-player-fun)
  * [Comforts](https://www.curseforge.com/minecraft/mc-mods/comforts)
  * [Sleep Warp](https://www.curseforge.com/minecraft/mc-mods/sleep-warp)
-   * If mod is installed, sleep system is disabled.
+   * If mod is installed, the sleep system is disabled.
  * [Sleep Tight](https://www.curseforge.com/minecraft/mc-mods/sleep-tight)
-   * If mod is installed, sleep system is disabled.
+   * If mod is installed, the sleep system is disabled.
  * [Fabric Seasons](https://www.curseforge.com/minecraft/mc-mods/fabric-seasons)
  * [Ecliptic Seasons](https://www.curseforge.com/minecraft/mc-mods/ecliptic-seasons)
  * [Serene Seasons](https://www.curseforge.com/minecraft/mc-mods/serene-seasons)
@@ -65,7 +65,7 @@ Better Days is compatible with the following mods:
    * Better Days is compatible with this mod. However, sleep causes an extra full day cycle to pass
      after waking.
  * [The Hordes](https://www.curseforge.com/minecraft/mc-mods/the-hordes)
-   * Better Days is compatible with this mod. However, you MUST set hordeEventByPlayerTime = false
+   * Better Days is compatible with this mod. However, you MUST set hordeEventByPlayerTime = false,
      or it will not work at all.
  * [Immersive Snow](https://www.curseforge.com/minecraft/mc-mods/immersive-snow)
    * Better Days is NOT compatible with this mod if using a season mod as well,
@@ -91,7 +91,7 @@ The Overworld is currently the only dimension supported. However, most dimension
 (including custom dimensions) derive their time information from the Overworld and will therefore
 elapse time at the same rate.
 
-This mod does not save data to world files and can safely be safely removed from a Minecraft
+This mod does not save data to world files and can be safely removed from a Minecraft
 installation.
 
 ## Configuration
