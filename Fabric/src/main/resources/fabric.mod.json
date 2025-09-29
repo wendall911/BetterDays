@@ -11,24 +11,26 @@
     "${mod_credits}"
   ],
   "contact": {
-    "issues": "${issue_tracker}"
+    "homepage": "https://github.com/${mod_author}/${mod_name}",
+    "issues": "https://github.com/${mod_author}/${mod_name}/issues",
+    "sources": "https://github.com/${mod_author}/${mod_name}"
   },
   "license": "${license}",
   "icon": "${mod_id}_icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "betterdays.BetterDaysFabric"
+      "${mod_id}.${mod_name}Fabric"
     ],
     "client": [
-      "betterdays.BetterDaysClientFabric"
+      "${mod_id}.${mod_name}ClientFabric"
     ],
     "whitenoise": [
-      "betterdays.FabricConfigInitializer"
+      "${mod_id}.FabricConfigInitializer"
     ]
   },
   "mixins": [
-    "betterdays.fabric.mixins.json"
+    "${mod_id}.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": "${fabric_loader_min_version}",

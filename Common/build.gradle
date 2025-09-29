@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'
     id 'org.spongepowered.gradle.vanilla'
 }
 
@@ -22,8 +23,13 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
+def replaceProperties = [
+    'mod_display_name': mod_display_name,
+    'pack_format': pack_format
+]
+
 processResources {
     filesMatching("pack.mcmeta") {
-        expand 'mod_name': project.mod_name
+        expand replaceProperties
     }
 }

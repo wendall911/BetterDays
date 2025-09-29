@@ -21,7 +21,6 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-    java.withSourcesJar()
 
     jar {
         from(rootProject.file("LICENSE"))
@@ -38,7 +37,7 @@ subprojects {
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_author,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'Timestamp'              : System.currentTimeMillis(),
+                'Timestamp'               : System.currentTimeMillis(),
                 'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
                 'Build-On-Minecraft'      : minecraft_version
             ])
@@ -54,8 +53,18 @@ subprojects {
         }
 
         maven {
+            name = 'REI / JEI / Architectury'
+            url 'https://maven.shedaniel.me/'
+        }
+
+        maven {
             name = 'ParchmentMC'
             url = 'https://maven.parchmentmc.org/'
+        }
+
+        maven {
+            name = 'TerraformersMC (Trinkets / ModMenu)'
+            url = 'https://maven.terraformersmc.com/'
         }
 
         maven {

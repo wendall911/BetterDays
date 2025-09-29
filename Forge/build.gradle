@@ -1,6 +1,5 @@
 plugins {
     id 'idea'
-    id 'maven-publish'
     id 'net.minecraftforge.gradle'
     id 'org.parchmentmc.librarian.forgegradle'
     id 'org.spongepowered.mixin'
@@ -28,7 +27,6 @@ minecraft {
                 }
             }
         }
-
         server {
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'debug'
@@ -60,6 +58,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:readyplayerfun-322036:${readyplayerfun_version}")
 }
 
+// Throw errors on warnings. Can also disable warnings here.
 compileJava {
     source(project(":Common").sourceSets.main.allSource)
     options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-serial" << "-Werror"
@@ -71,16 +70,26 @@ tasks.withType(JavaCompile) {
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']
 def replaceProperties = [
-    'version': actualVersion, 'forge_mc_version_range': forge_mc_version_range, 'forge_version_range': forge_version_range,
-    'license': license, 'mod_id': mod_id, 'mod_author': mod_author, 'mod_description': mod_description,
-    'mod_name': mod_name, 'issue_tracker': issue_tracker, 'mod_credits': mod_credits, 'mod_update_branch': mod_update_branch
+    'version': actualVersion,
+    'minecraft_version': minecraft_version,
+    'forge_mc_version_range': forge_mc_version_range,
+    'forge_version_range': forge_version_range,
+    'license': license,
+    'mod_id': mod_id,
+    'mod_author': mod_author,
+    'mod_description': mod_description,
+    'mod_display_name': mod_display_name,
+    'mod_name': mod_name,
+    'mod_credits': mod_credits,
+    'mod_update_branch': mod_update_branch,
+    'pack_format': pack_format,
+    'curseforge_slug': curseforge_slug
 ]
 
 processResources {
     from project(":Common").sourceSets.main.resources
     duplicatesStrategy(DuplicatesStrategy.FAIL)
     inputs.properties replaceProperties
-    exclude '.cache'
     replaceProperties.put 'project', project
 
     filesMatching(resourceTargets) {
@@ -103,25 +112,6 @@ jarJar {
     enable()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            // This gives us the built obfuscated version Forge requires
-            artifact jar
-        }
-    }
-    repositories {
-        if (System.getenv('local_maven') != null) {
-            maven {
-                url 'file://' + System.getenv('local_maven')
-            }
-        }
-    }
-}
-
 task changelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
     templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
@@ -136,13 +126,13 @@ def updates = tasks.register("generateUpdates", Copy) {
 
     it.from("../files/templates/") {
         include 'updates.json'
-        expand 'version': actualVersion, 'minecraft_version': minecraft_version
+        expand replaceProperties
     }
 
     it.into '../files/'
 }
 
-tasks.generateUpdates.mustRunAfter('jar', 'sourcesJar')
+tasks.generateUpdates.mustRunAfter('jar')
 
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
@@ -158,14 +148,24 @@ publishMods {
     modLoaders.addAll(['neoforge', 'forge'])
     dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
 
-    if (project.hasProperty('bdcurseApiKey')) {
+    if (project.hasProperty("${curseforge_api_key_prop}")) {
         curseforge {
-            accessToken = project.bdcurseApiKey
-            projectId = project.bdcurseId
+            accessToken = project.property("${curseforge_api_key_prop}")
+            projectId = "${curseforge_id}"
+            projectSlug = "${curseforge_slug}"
             javaVersions.add(JavaVersion.toVersion("${java_version}"))
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
+            optional('actually-harvest')
+            optional('charged-charms')
+            optional('creeper-fireworks')
+            optional('homeostatic')
+            optional('magical-psi-revival')
+            optional('simpletextoverlay')
+            optional('ready-player-fun')
+            optional('survivalist-essentials')
+            optional('tinkersurvival')
             optional('configured')
             optional('catalogue')
             optional('serene-seasons')
@@ -174,14 +174,30 @@ publishMods {
             incompatible('immersive-snow')
         }
     }
-    if (project.hasProperty('bdModrinthId')) {
+    if (project.hasProperty("${modrinth_api_key_prop}")) {
         modrinth {
-            accessToken = project.modrinthKey
-            projectId = project.bdModrinthId
+            accessToken = project.property("${modrinth_api_key_prop}")
+            projectId = "${modrinth_id}"
             minecraftVersions.addAll("${release_versions}".split(','))
-            optional('serene-seasons')
-            optional('comforts')
-            incompatible('immersive-snow')
+            optional('actually-harvest')
+            optional('charged-charms')
+            optional('creeper-fireworks-mod')
+            optional('homeostatic')
+            optional('magical-psi-revival')
+            optional('simpletextoverlay')
+            optional('ready-player-fun')
+            optional('survivalist-essentials')
+            optional('tinkersurvival')
+        }
+    }
+    if (project.hasProperty("${discord_webhook_prop}")) {
+        discord {
+            webhookUrl = project.property("${discord_webhook_prop}")
+            dryRunWebhookUrl = project.property("${discord_dryrun_webhook_prop}")
+            username = "${mod_author}"
+            content = changelog.map {
+                "# A new version of ${mod_display_name} for Forge ${minecraft_version} has been released! \n" + it
+            }
         }
     }
 }
