@@ -2,7 +2,7 @@
 [![](https://modrinth.roughness.technology/versions/betterdays.svg)](https://modrinth.com/mod/betterdays/versions)
 [![](https://img.shields.io/badge/NeoForge-20.4+-orange.svg?longCache=true&style=flat)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files?gameVersionTypeId=6)
 [![](https://img.shields.io/badge/Fabric-0.46.0+-yellowgreen.svg?longCache=true&style=flat)](https://www.curseforge.com/minecraft/mc-mods/betterdays/files?gameVersionTypeId=4)
-![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)
+[![](https://img.shields.io/badge/license-LGPL_v3-blue.svg?longCache=true&style=flat)](https://www.gnu.org/licenses/lgpl-3.0)
 
 A Minecraft 1.19+ mod designed to extend the length of the crazy short Minecraft day.
 
