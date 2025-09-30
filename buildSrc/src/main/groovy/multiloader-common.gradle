@@ -11,7 +11,6 @@ base {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
-    withSourcesJar()
 }
 
 repositories {
@@ -68,7 +67,7 @@ repositories {
 
 // Declare capabilities on the outgoing configurations.
 // Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
-['apiElements', 'runtimeElements', 'sourcesElements'].each { variant ->
+['apiElements', 'runtimeElements'].each { variant ->
     configurations."$variant".outgoing {
         capability("$group:$mod_id-${project.name}:$version")
         capability("$group:$mod_id:$version")
@@ -76,13 +75,6 @@ repositories {
     publishing.publications.configureEach {
         suppressPomMetadataWarningsFor(variant)
     }
-}
-
-sourcesJar {
-    from(rootProject.file('LICENSE'))
-    from(rootProject.file('COPYING.LESSER'))
-    from(rootProject.file('README.md'))
-    from(rootProject.file('build/libs/changelog.txt'))
 }
 
 jar {
@@ -106,26 +98,27 @@ jar {
     }
 }
 
-processResources {
-    def expandProps = [
-        'version': version,
-        'java_version': java_version,
-        'license': license,
-        'mod_id': mod_id,
-        'mod_author': mod_author,
-        'mod_description': mod_description,
-        'mod_name': mod_name,
-        'mod_credits': mod_credits,
-        'mod_url': mod_url,
-        'issue_tracker': issue_tracker,
-        'mod_update_branch': mod_update_branch,
-        'minecraft_version': minecraft_version,
-        'fabric_loader_min_version': fabric_loader_min_version,
-        'fabric_mc_version_range': fabric_mc_version_range,
-        'neoforge_loader_version_range': neoforge_loader_version_range,
-        'neoforge_mc_version_range': neoforge_mc_version_range
-    ]
+ext.expandProps = [
+    'version': version,
+    'java_version': java_version,
+    'license': license,
+    'mod_id': mod_id,
+    'mod_author': mod_author,
+    'mod_description': mod_description,
+    'mod_display_name': mod_display_name,
+    'mod_name': mod_name,
+    'mod_update_branch': mod_update_branch,
+    'minecraft_version': minecraft_version,
+    'fabric_loader_min_version': fabric_loader_min_version,
+    'fabric_mc_version_range': fabric_mc_version_range,
+    'neoforge_loader_version_range': neoforge_loader_version_range,
+    'neoforge_mc_version_range': neoforge_mc_version_range,
+    'mod_credits': mod_credits,
+    'curseforge_slug': curseforge_slug,
+    'pack_format': pack_format
+]
 
+processResources {
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
         expand expandProps
     }
@@ -133,10 +126,18 @@ processResources {
 }
 
 publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
     repositories {
-        if (project.hasProperty('localmaven')) {
+        if (System.getenv('local_maven') != null) {
             maven {
-                url 'file://' + localmaven
+                url 'file://' + System.getenv('local_maven')
             }
         }
     }

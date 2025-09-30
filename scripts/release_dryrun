@@ -1,6 +1,8 @@
 #!/bin/bash
-# Ugly bug effective
-cd NeoForge/
+# Ugly but effective
+cd Common/
+../gradlew build || exit 1
+cd ../NeoForge/
 ../gradlew build || exit 1
 cd ../Fabric
 ../gradlew build || exit 1

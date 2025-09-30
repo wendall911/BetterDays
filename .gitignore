@@ -2,8 +2,6 @@
 build
 .gradle
 run
-runs
 
 # IntelliJ
 .idea
-*.iml
