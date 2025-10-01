@@ -46,8 +46,8 @@ dependencies {
     //runtimeOnly "curse.maven:aether-255308:${aether_neoforge_version}"
     // Extremely annoying and strangely popular mod library that disabled doDaylightCycle on new worlds by default
     //runtimeOnly "curse.maven:owo-532610:${owo_neoforge_version}"
-    runtimeOnly "curse.maven:sbsm-616330:5962693"
-    runtimeOnly "curse.maven:cloth_config-348521:5729127"
+    //runtimeOnly "curse.maven:sbsm-616330:5962693"
+    //runtimeOnly "curse.maven:cloth_config-348521:5729127"
 }
 
 shadowJar {
