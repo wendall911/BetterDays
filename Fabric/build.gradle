@@ -66,29 +66,52 @@ publishMods {
     modLoaders.add('fabric')
     dryRun = providers.environmentVariable('DO_RELEASE').getOrNull() == null
 
-    if (project.hasProperty('bdcurseApiKey')) {
+    if (project.hasProperty("${curseforge_api_key_prop}")) {
         curseforge {
-            accessToken = project.bdcurseApiKey
-            projectId = project.bdcurseId
+            accessToken = project.property("${curseforge_api_key_prop}")
+            projectId = "${curseforge_id}"
+            projectSlug = "${curseforge_slug}"
             javaVersions.add(JavaVersion.toVersion("${java_version}"))
             clientRequired = true
             serverRequired = true
             minecraftVersions.addAll("${release_versions}".split(','))
             requires('fabric-api')
+            optional('actually-harvest')
+            optional('charged-charms')
+            optional('creeper-fireworks')
+            optional('homeostatic')
+            optional('simpletextoverlay')
+            optional('ready-player-fun')
             optional('fabric-seasons')
             incompatible('immersive-snow')
             incompatible('stevesrealisticsleep')
         }
     }
-    if (project.hasProperty('bdModrinthId')) {
+    if (project.hasProperty("${modrinth_api_key_prop}")) {
         modrinth {
-            accessToken = project.modrinthKey
-            projectId = project.bdModrinthId
+            accessToken = project.property("${modrinth_api_key_prop}")
+            projectId = "${modrinth_id}"
             minecraftVersions.addAll("${release_versions}".split(','))
             requires('fabric-api')
+            optional('actually-harvest')
+            optional('charged-charms')
+            optional('creeper-fireworks-mod')
+            optional('homeostatic')
+            optional('simpletextoverlay')
+            optional('ready-player-fun')
             optional('fabric-seasons')
             incompatible('immersive-snow')
             incompatible('stevesrealisticsleep')
+        }
+    }
+    if (project.hasProperty("${discord_webhook_prop}")) {
+        discord {
+            webhookUrl = project.property("${discord_webhook_prop}")
+            dryRunWebhookUrl = project.property("${discord_dryrun_webhook_prop}")
+            username = "${mod_author}"
+            content = changelog.map {
+                "# A new version of ${mod_display_name} for Fabric ${minecraft_version} has been released! \n" + it
+            }
         }
     }
 }

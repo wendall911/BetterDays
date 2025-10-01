@@ -31,11 +31,3 @@ processResources {
     from(configurations.commonResources)
     exclude '.cache'
 }
-
-tasks.named("sourcesJar", Jar) {
-    dependsOn(configurations.commonJava)
-    from(configurations.commonJava)
-    dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
-    exclude '.cache'
-}

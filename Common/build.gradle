@@ -1,6 +1,9 @@
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+
 plugins {
     id 'multiloader-common'
     id 'net.neoforged.moddev'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
 archivesBaseName = "${mod_id}-common"
@@ -36,3 +39,27 @@ artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
     commonResources sourceSets.main.resources.sourceDirectories.files
 }
+
+tasks.register('changelog', GitChangelogTask) {
+    file.set(new File(project(":").projectDir.toString() + '/build/libs/changelog.txt'));
+    templateContent.set(file(project(":").projectDir.toString() + '/files/templates/changelog.mustache').getText('UTF-8'));
+    toRevision.set('HEAD');
+    fromRevision.set("${minecraft_version}-${last_mod_version}");
+}
+
+def updates = tasks.register("generateUpdates", Copy) {
+    it.outputs.upToDateWhen {
+        false
+    }
+
+    it.from("../files/templates/") {
+        include 'updates.json'
+        expand expandProps
+    }
+
+    it.into '../files/'
+}
+
+tasks.generateUpdates.mustRunAfter('jar')
+
+tasks.build.dependsOn('changelog', 'generateUpdates')
