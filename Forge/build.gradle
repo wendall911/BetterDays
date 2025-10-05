@@ -83,7 +83,8 @@ def replaceProperties = [
     'mod_credits': mod_credits,
     'mod_update_branch': mod_update_branch,
     'pack_format': pack_format,
-    'curseforge_slug': curseforge_slug
+    'curseforge_slug': curseforge_slug,
+    'whitenoise_range': whitenoise_range
 ]
 
 processResources {

@@ -27,3 +27,9 @@ issueTrackerURL="https://github.com/${mod_author}/${mod_name}/issues"
     versionRange="${forge_mc_version_range}"
     ordering="NONE"
     side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="whitenoise"
+    mandatory=true
+    versionRange="${whitenoise_range}"
+    ordering="NONE"
+    side="BOTH"

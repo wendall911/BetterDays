@@ -21,7 +21,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modImplementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_range}"
+    modImplementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
     modApi "dev.architectury:architectury-fabric:${architectury_version}"
@@ -72,7 +72,8 @@ def replaceProperties = [
     'fabric_loader_min_version': fabric_loader_min_version,
     'mod_credits': mod_credits,
     'java_version': java_version,
-    'pack_format': pack_format
+    'pack_format': pack_format,
+    'whitenoise_range': whitenoise_range
 ]
 
 processResources {
