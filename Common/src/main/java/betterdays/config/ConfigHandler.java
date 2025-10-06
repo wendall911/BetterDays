@@ -39,6 +39,7 @@ import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
 import technology.roughness.whitenoise.platform.Services;
 
 import betterdays.client.gui.ScreenAlignment;
+import betterdays.common.Translations;
 import betterdays.message.ChatTypeOptions;
 import betterdays.message.TemplateMessage;
 import betterdays.time.effects.EffectCondition;
@@ -86,30 +87,24 @@ public class ConfigHandler {
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
         public Client(WhiteNoiseConfigSpec.Builder builder) {
-            builder.push("gui"); // gui
+            builder.push("gui").comment(getTranslation("gui")); // gui
 
-                clockAlignment = builder.comment("Sets the screen alignment of the bed clock.")
+                clockAlignment = builder.comment(getTranslation("clockalignment"))
                     .defineEnum("clockAlignment", ScreenAlignment.TOP_RIGHT);
 
-                clockScale = builder.comment("Sets the scale of the bed clock.")
+                clockScale = builder.comment(getTranslation("clockscale"))
                     .defineInRange("clockScale", 64, 1, Integer.MAX_VALUE);
 
-                clockMargin = builder.comment(
-                    "Sets the distance between the clock and the edge of the screen.",
-                    "Unused if clockAlignment is CENTER_CENTER.")
+                clockMargin = builder.comment(getTranslation("clockmargin"))
                     .defineInRange("clockMargin", 16, 0, Integer.MAX_VALUE);
 
                 preventClockWobble = builder.comment(
-                    "This setting prevents clock wobble when getting in bed by updating the clock's position every tick.",
-                    "As a side-effect, the clock won't wobble when first viewed as it does in vanilla. This setting is",
-                    "unused if displayBedClock is false.")
+                        getTranslation("preventclockwobble"),
+                        getTranslation("preventclockwobble.comment")
+                    )
                     .define("preventClockWobble", true);
 
-                blacklistDimensions = builder
-                    .comment(
-                        "This setting blacklists the sky rendering for specific dimensions. Like in the Aether if using "+
-                        "/time set command, the sky jitters. Adding to the blacklist will prevent this behavior."
-                    )
+                blacklistDimensions = builder.comment(getTranslation("blacklistdimensions"))
                     .defineListAllowEmpty(blacklistDimensionsList, getBlacklistDimensionsList(), resourceLocationValidator);
 
             builder.pop(); // gui
@@ -191,241 +186,151 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.EnumValue<TemplateMessage.MessageTarget> leaveBedMessageTarget;
 
         public Common(WhiteNoiseConfigSpec.Builder builder) {
-            builder.push("time"); // time
+            builder.push("time").comment(getTranslation("time")); // time
 
-            daySpeed = builder.comment(
-                            "The speed at which time passes during the day.",
-                            "Day is defined as any time between dayStart (see below) and nightStart (see below) the next day.",
-                            "This is the RATIO of time passing relative to vanilla.",
-                            "Vanilla speed: 1.0")
-                    .defineInRange("daySpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
-
-            nightSpeed = builder.comment(
-                            "The speed at which time passes during the night.",
-                            "Night is defined as any time between dayStart (see below) and nightStart (see below).",
-                            "This is the RATIO of time passing relative to vanilla.",
-                            "Vanilla speed: 1.0")
-                    .defineInRange("nightSpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
-
-            daySpeedMinutes = builder.comment(
-                            "An alternative way to set day speed. This setting is mutually exclusive with daySpeed.",
-                            "If both are set, speedMethod (see below) determines which setting is used.",
-                            "This setting defines the length of the day in real-world minutes.",
-                            "Vanilla length: 10.0 minutes")
-                    .defineInRange("daySpeedMinutes", 10D, 0.1D, 10000D);
-
-            nightSpeedMinutes = builder.comment(
-                            "An alternative way to set night speed. This setting is mutually exclusive with nightSpeed.",
-                            "If both are set, speedMethod (see below) determines which setting is used.",
-                            "This setting defines the length of the night in real-world minutes.",
-                            "Vanilla length: 10.0 minutes")
-                    .defineInRange("nightSpeedMinutes", 10D, 0.1D, 10000D);
-
-            speedMethod = builder.comment(
-                            "Determines which method is used to set day and night speed.",
-                            "RATIO: Uses daySpeed and nightSpeed settings.",
-                            "MINUTES: Uses daySpeedMinutes and nightSpeedMinutes settings.",
-                            "REALTIME: Sets day and night to 12 real-world hours each.")
+            speedMethod = builder.comment(getTranslation("speedmethod"))
                     .defineEnum("speedMethod", SpeedMethod.RATIO);
 
-            dayStart = builder.comment(
-                            "The time to start day. This is configurable within the time the sun appears and day starts.",
-                            "Default: 23500")
-                    .defineInRange("dayStart", 23500D, 22300D, 24000D);
+            daySpeed = builder.comment(getTranslation("dayspeed"))
+                .defineInRange("daySpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
 
-            nightStart = builder.comment(
-                            "The time to start night. This is configurable within the time sunset starts and night starts.",
-                            "Default: 12500")
-                    .defineInRange("nightStart", 12500D, 12000D, 13000D);
+            nightSpeed = builder.comment(getTranslation("nightspeed"))
+                .defineInRange("nightSpeed", 1D, 0D, Time.DAY_LENGTH.doubleValue());
 
-            enableInterpolatedTime = builder.comment(
-                            "Enabling this will allow the setting of an infinite amount of time speeds defined as pairs in the form:",
-                            "(currentTick, desiredSpeed)",
-                            "where between each value bezier spline interpolation is performed for smooth transitioning",
-                            "The two default pairs at 0 and 24000 are necessary as they act as bounds. However ",
-                            "The time speed value for each of them can be freely modified")
-                            .define("enableInterpolatedTime", false);
+            daySpeedMinutes = builder.comment(getTranslation("dayspeedminutes"))
+                .defineInRange("daySpeedMinutes", 10D, 0.1D, 10000D);
 
-            interpolatedTimeSmoothingFactor = builder.comment(
-                            "The value that determines the smoothing factor in the interpolation algorithm.",
-                            "A high value will make the interpolation softer and curvier",
-                            "A low value will make the interpolation closer to a piecewise function")
-                            .defineInRange("interpolatedTimeSmoothingFactor", 0.25, 0, 10);
+            nightSpeedMinutes = builder.comment(getTranslation("nightspeedminutes"))
+                .defineInRange("nightSpeedMinutes", 10D, 0.1D, 10000D);
 
-            interpolatedTimePairs = builder
-                    .comment(
-                            "These are the pairs that define what speed time should run at, at the specified day/night tick",
-                            "The two default pairs need to exist, but their time speed values can be modified"
-                    )
-                    .defineList("interpolatedTimeList", defaultInterpolatedTimePairs, valuePairValidator);
+            dayStart = builder.comment(getTranslation("daystart"))
+                .defineInRange("dayStart", 23500D, 22300D, 24000D);
 
-            builder.push("effects"); // time.effects
+            nightStart = builder.comment(getTranslation("nightstart"))
+                .defineInRange("nightStart", 12500D, 12000D, 13000D);
+
+            enableInterpolatedTime = builder.comment(getTranslation("enableinterpolatedtime"))
+                .define("enableInterpolatedTime", false);
+
+            interpolatedTimeSmoothingFactor = builder.comment(getTranslation("interpolatedtimesmoothingfactor"))
+                .defineInRange("interpolatedTimeSmoothingFactor", 0.25, 0, 10);
+
+            interpolatedTimePairs = builder.comment(getTranslation("interpolatedtimelist"))
+                .defineList("interpolatedTimeList", defaultInterpolatedTimePairs, valuePairValidator);
+
+            builder.push("effects").comment(getTranslation("effects")); // time.effects
 
             weatherEffect = builder.comment(
-                            "When applied, this effect syncs the passage of weather with the current speed of time.",
-                            "I.e., as time moves faster, rain stops faster. Clear weather is not affected.",
-                            "When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.",
-                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
-                            "Note: This setting is not applicable if game rule doWeatherCycle is false.")
-                    .defineEnum("weatherEffect", EffectCondition.SLEEPING);
+                    getTranslation("weathereffect"),
+                    getTranslation("weathereffect.comment")
+                )
+                .defineEnum("weatherEffect", EffectCondition.SLEEPING);
 
             randomTickEffect = builder.comment(
-                            "When applied, this effect syncs the random tick speed with the current speed of time, forcing",
-                            "crop, tree, and grass growth to occur at baseRandomTickSpeed multiplied by the current time-speed.",
-                            "When set to SLEEPING, randomTickSpeed is set to baseRandomTickSpeed unless at least one player is sleeping in a dimension.",
-                            "More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick",
-                            "WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,",
-                            "use the baseRandomTickSpeed setting instead of changing the game rule directly.",
-                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
-                            "This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0.")
-                    .defineEnum("randomTickEffect", EffectCondition.NEVER);
+                    getTranslation("randomtickeffect"),
+                    getTranslation("randomtickeffect.comment")
+                )
+                .defineEnum("randomTickEffect", EffectCondition.NEVER);
 
-            baseRandomTickSpeed = builder
-                    .comment("The base random tick speed used by the randomTickEffect time effect.")
-                    .defineInRange("baseRandomTickSpeed", 3, 0, Integer.MAX_VALUE);
+            baseRandomTickSpeed = builder.comment(getTranslation("baserandomtickspeed"))
+                .defineInRange("baseRandomTickSpeed", 3, 0, Integer.MAX_VALUE);
 
             potionEffect = builder.comment(
-                            "When applied, this effect progresses potion effects to match the rate of the current time-speed.",
-                            "This effect does not apply if time speed is 1.0 or less.",
-                            "THIS MAY HAVE A NEGATIVE IMPACT ON PERFORMANCE IN SERVERS WITH MANY PLAYERS.",
-                            "When set to ALWAYS, this effect applies to all players in the dimension, day or night.",
-                            "When set to SLEEPING, this effect only applies to players who are sleeping.",
-                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.")
-                    .defineEnum("potionEffect", EffectCondition.NEVER);
+                    getTranslation("potioneffect"),
+                    getTranslation("potioneffect.comment")
+                )
+                .defineEnum("potionEffect", EffectCondition.NEVER);
 
             hungerEffect = builder.comment(
-                            "When applied, this effect progresses player hunger effects to match the rate of the current time-speed.",
-                            "This results in faster healing when food level is full, and faster harm when food level is too low.",
-                            "This effect does not apply if time speed is 1.0 or less.",
-                            "When set to ALWAYS, this effect applies to all players in the dimension, day or night. Not recommended on higher difficulty settings",
-                            "When set to SLEEPING, this effect only applies to players who are sleeping.")
-                    .defineEnum("hungerEffect", EffectCondition.NEVER);
+                    getTranslation("hungereffect"),
+                    getTranslation("hungereffect.comment")
+                )
+                .defineEnum("hungerEffect", EffectCondition.NEVER);
 
             blockEntityEffect = builder.comment(
-                            "When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.",
-                            "WARNING: This time-effect has a significant impact on performance.",
-                            "This effect does not apply if time speed is 1.0 or less.",
-                            "When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.",
-                            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.")
-                    .defineEnum("blockEntityEffect", EffectCondition.NEVER);
+                    getTranslation("blockentityeffect"),
+                    getTranslation("blockentityeffect.comment")
+                )
+                .defineEnum("blockEntityEffect", EffectCondition.NEVER);
 
             builder.pop(); // time.effects
             builder.pop(); // time
 
             builder.push("sleep"); // sleep
 
-            enableSleepFeature = builder.comment(
-                            "Enables or disables the sleep feature of this mod. Enabling this setting will modify the vanilla sleep functionality",
-                            "and may conflict with other sleep mods. If disabled, all settings in the sleep section will not apply.")
-                    .define("enableSleepFeature", true);
+            enableSleepFeature = builder.comment(getTranslation("enablesleepfeature"))
+                .define("enableSleepFeature", true);
 
-            sleepSpeedMax = builder.comment(
-                            "## THIS SETTING DEFINES THE SLEEP TIME-SPEED IN SINGLE-PLAYER GAMES ###",
-                            "The maximum speed at which time passes when all players are sleeping.",
-                            "A value of 110 is nearly equal to the time it takes to sleep in vanilla.")
-                    .defineInRange("sleepSpeedMax", 110D, 0D, Time.DAY_LENGTH.doubleValue());
+            sleepSpeedMax = builder.comment(getTranslation("sleepspeedmax"))
+                .defineInRange("sleepSpeedMax", 110D, 0D, Time.DAY_LENGTH.doubleValue());
 
-            sleepSpeedMin = builder
-                    .comment("The minimum speed at which time passes when only 1 player is sleeping in a full server.")
-                    .defineInRange("sleepSpeedMin", 1D, 0D, Time.DAY_LENGTH.doubleValue());
+            sleepSpeedMin = builder.comment(getTranslation("sleepspeedmin"))
+                .defineInRange("sleepSpeedMin", 1D, 0D, Time.DAY_LENGTH.doubleValue());
 
-            sleepSpeedAll = builder.comment(
-                            "The speed at which time passes when all players are sleeping.",
-                            "Set to -1 to disable this feature (sleepSpeedMax will be used when all players are sleeping).")
-                    .defineInRange("sleepSpeedAll", -1.0D, -1.0D, Time.DAY_LENGTH.doubleValue());
+            sleepSpeedAll = builder.comment(getTranslation("sleepspeedall"))
+                .defineInRange("sleepSpeedAll", -1.0D, -1.0D, Time.DAY_LENGTH.doubleValue());
 
             sleepSpeedCurve = builder.comment(
-                            "This parameter defines the curvature of the interpolation function that translates the sleeping player percentage into time-speed.",
-                            "The function used is a Normalized Tunable Sigmoid Function.",
-                            "A value of 0.5 represents a linear relationship.",
-                            "Smaller values bend the curve toward the X axis, while greater values bend it toward the Y axis.",
-                            "This graph may be used as a reference for tuning the curve: https://www.desmos.com/calculator/w8gntxzfow",
-                            "Credit to Dino Dini for the function: https://dinodini.wordpress.com/2010/04/05/normalized-tunable-sigmoid-functions/",
-                            "Credit to SmoothSleep for the idea: https://www.spigotmc.org/resources/smoothsleep.32043/")
-                    .defineInRange("sleepSpeedCurve", 0.3D, 0D, 1D);
+                    getTranslation("sleepspeedcurve"),
+                    getTranslation("sleepspeedcurve.comment")
+                )
+                .defineInRange("sleepSpeedCurve", 0.3D, 0D, 1D);
 
-            clearWeatherOnWake = builder.comment(
-                            "Set to 'true' for the weather to clear when players wake up in the morning as it does in vanilla.",
-                            "Set to 'false' to force weather to pass naturally. Adds realism when accelerateWeather is enabled.",
-                            "Note: This setting is ignored if game rule doWeatherCycle is false.")
-                    .define("clearWeatherOnWake", true);
+            clearWeatherOnWake = builder.comment(getTranslation("clearweatheronwake"))
+                .define("clearWeatherOnWake", true);
 
-            allowDaySleep = builder.comment(
-                            "When true, players are allowed to sleep at all times of day in dimensions controlled by Better Days.",
-                            "Note: Other mods may override this ability.")
-                    .define("allowDaySleep", false);
+            allowDaySleep = builder.comment(getTranslation("allowdaysleep"))
+                .define("allowDaySleep", false);
 
-            displayBedClock = builder
-                    .comment("When true, a clock is displayed in the sleep interface.")
-                    .define("displayBedClock", true);
+            displayBedClock = builder.comment(getTranslation("displaybedclock"))
+                .define("displayBedClock", true);
 
-            ratioPlayersForSleep = builder
-                    .comment(
-                            "The ratio of players in a dimension that must be sleeping to skip to morning.",
-                            "A value of 1 means all players must be sleeping, 0.5 means half the players must be sleeping, etc.",
-                            "A value of 0 effectively disables this feature.")
-                    .defineInRange("ratioPlayersForSleep", 0.0D, 0D, 1D);
+            ratioPlayersForSleep = builder.comment(getTranslation("ratioplayersforsleep"))
+                .defineInRange("ratioPlayersForSleep", 0.0D, 0D, 1D);
 
             // sleep.messages
             builder.comment(
-                            "This section defines settings for notification messages.",
-                            "All messages support Minecraft formatting codes (https://minecraft.wiki/w/Formatting_codes).",
-                            "All messages have variables that can be inserted using the following format: ${variableName}",
-                            "The type option controls where the message appears:",
-                            "\tSYSTEM: Appears as a message in the chat. (e.g., \"Respawn point set\")",
-                            "\tGAME_INFO: Game information that appears above the hotbar (e.g., \"You may not rest now, the bed is too far away\").",
-                            "The target option controls to whom the message is sent:",
-                            "\tALL: Sends the message to all players on the server.",
-                            "\tDIMENSION: Sends the message to all players in the current dimension.",
-                            "\tSLEEPING: Sends the message to all players in the current dimension who are sleeping.")
-                    .push("messages");
+                getTranslation("messages"),
+                getTranslation("messages.comment")
+            ).push("messages");
 
             // sleep.messages.morning
-            builder.comment("This message is sent after a sleep cycle has completed.").push("morning");
-            morningMessage = builder.comment(
-                            "Available variables:",
-                            "sleepingPlayers -> the number of players in the current dimension who were sleeping.",
-                            "totalPlayers -> the number of players in the current dimension (spectators are not counted).",
-                            "sleepingPercentage -> the percentage of players in the current dimension who were sleeping (does not include % symbol).")
-                    .define("message", "\u00A7e\u00A7oTempus fugit!");
-            morningMessageType = builder.comment("Sets where this message appears.")
-                    .defineEnum("type", ChatTypeOptions.GAME_INFO);
-            morningMessageTarget = builder.comment(
-                            "Sets to whom this message is sent.",
-                            "A target of 'SLEEPING' will send the message to all players who just woke up.")
-                    .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
+            builder.comment(getTranslation("morning")).push("morning");
+
+            morningMessage = builder
+                .comment(getTranslation("message", "", "were", "were"))
+                .define("message", "§e§oTempus fugit!");
+            morningMessageType = builder.comment(getTranslation("type"))
+                .defineEnum("type", ChatTypeOptions.GAME_INFO);
+            morningMessageTarget = builder
+                .comment(getTranslation("target", getTranslation("target.morning")))
+                .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
+
             builder.pop(); // sleep.messages.morning
 
             // sleep.messages.enterBed
-            builder.comment("This message is sent when a player enters their bed.").push("enterBed");
-            enterBedMessage = builder.comment(
-                            "Available variables:",
-                            "player -> the player who started sleeping.",
-                            "sleepingPlayers -> the number of players in the current dimension who are sleeping.",
-                            "totalPlayers -> the number of players in the current dimension (spectators are not counted).",
-                            "sleepingPercentage -> the percentage of players in the current dimension who are sleeping (does not include % symbol).")
-                    .define("message", "${player} is now sleeping. [${sleepingPlayers}/${totalPlayers}]");
-            enterBedMessageType = builder.comment("Sets where this message appears.")
-                    .defineEnum("type", ChatTypeOptions.GAME_INFO);
-            enterBedMessageTarget = builder.comment("Sets to whom this message is sent.")
-                    .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
+            builder.comment(getTranslation("enterbed")).push("enterBed");
+
+            enterBedMessage = builder.comment(getTranslation("message", getTranslation("message.enterbed"), "are", "are"))
+                .define("message", "${player} is now sleeping. [${sleepingPlayers}/${totalPlayers}]");
+            enterBedMessageType = builder.comment(getTranslation("type"))
+                .defineEnum("type", ChatTypeOptions.GAME_INFO);
+            enterBedMessageTarget = builder.comment(getTranslation("target", ""))
+                .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
+
             builder.pop(); // sleep.messages.enterBed
 
             // sleep.messages.leaveBed
-            builder.comment("This message is sent when a player leaves their bed (without being woken up naturally by morning).").push("leaveBed");
-            leaveBedMessage = builder.comment(
-                            "Available variables:",
-                            "player -> the player who left their bed.",
-                            "sleepingPlayers -> the number of players in the current dimension who are sleeping.",
-                            "totalPlayers -> the number of players in the current dimension (spectators are not counted).",
-                            "sleepingPercentage -> the percentage of players in the current dimension who are sleeping (does not include % symbol).")
-                    .define("message", "${player} has left their bed. [${sleepingPlayers}/${totalPlayers}]");
-            leaveBedMessageType = builder.comment("Sets where this message appears.")
-                    .defineEnum("type", ChatTypeOptions.GAME_INFO);
-            leaveBedMessageTarget = builder.comment("Sets to whom this message is sent. ")
-                    .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
-            builder.pop(); // sleep.messages.leaveBed
+            builder.comment(getTranslation("leavebed")).push("leaveBed");
 
+            leaveBedMessage = builder.comment(getTranslation("message", getTranslation("message.leavebed"), "are", "are"))
+                .define("message", "${player} has left their bed. [${sleepingPlayers}/${totalPlayers}]");
+            leaveBedMessageType = builder.comment(getTranslation("type"))
+                .defineEnum("type", ChatTypeOptions.GAME_INFO);
+            leaveBedMessageTarget = builder.comment(getTranslation("target", ""))
+                .defineEnum("target", TemplateMessage.MessageTarget.DIMENSION);
+
+            builder.pop(); // sleep.messages.leaveBed
             builder.pop(); // sleep.messages
             builder.pop(); // sleep
         }
@@ -498,7 +403,7 @@ public class ConfigHandler {
 
         public static boolean enableSleepFeature() {
             boolean sleepModLoaded = Services.PLATFORM.isModLoaded("sleepwarp")
-                    || Services.PLATFORM.isModLoaded("sleep_tight");
+                || Services.PLATFORM.isModLoaded("sleep_tight");
 
             return !sleepModLoaded ? COMMON.enableSleepFeature.get() : false;
         }
@@ -572,18 +477,27 @@ public class ConfigHandler {
         }
 
         private static final Function<List<? extends String>, List<Pair<Integer, Double>>> pairTransformer =
-                list -> list.stream()
-                        .map(entry -> {
-                            String[] parts = entry.split(",");
-                            if (parts.length == 2) {
-                                try {
-                                    int first = Integer.parseInt(parts[0].trim());
-                                    double second = Double.parseDouble(parts[1].trim());
-                                    return Pair.of(first, second);
-                                } catch (NumberFormatException ignored) { }
-                            }
-                            return null;
-                        })
-                        .collect(Collectors.toList());
+            list -> list.stream()
+                    .map(entry -> {
+                        String[] parts = entry.split(",");
+                        if (parts.length == 2) {
+                            try {
+                                int first = Integer.parseInt(parts[0].trim());
+                                double second = Double.parseDouble(parts[1].trim());
+                                return Pair.of(first, second);
+                            } catch (NumberFormatException ignored) { }
+                        }
+                        return null;
+                    })
+                    .collect(Collectors.toList());
     }
+
+    private static String getTranslation(String key) {
+        return Translations.get(key);
+    }
+
+    private static String getTranslation(String key, String... values) {
+        return Translations.get(key, values);
+    }
+
 }

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion = "${neoforge_loader_version_range}"
+loaderVersion="${neoforge_loader_version_range}"
 license="${license}"
 issueTrackerURL="https://github.com/${mod_author}/${mod_name}/issues"
 [[mods]]
@@ -24,5 +24,11 @@ issueTrackerURL="https://github.com/${mod_author}/${mod_name}/issues"
     modId="minecraft"
     type="required"
     versionRange="${neoforge_mc_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="whitenoise"
+    type="required"
+    versionRange="${whitenoise_range}"
     ordering="NONE"
     side="BOTH"

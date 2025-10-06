@@ -1,0 +1,3 @@
+#!/bin/bash
+
+DATA_GEN=all ./gradlew :Fabric:runCommonDatagen || exit 1

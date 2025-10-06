@@ -115,7 +115,9 @@ ext.expandProps = [
     'neoforge_mc_version_range': neoforge_mc_version_range,
     'mod_credits': mod_credits,
     'curseforge_slug': curseforge_slug,
-    'pack_format': pack_format
+    'pack_format': pack_format,
+    'fabric_whitenoise_range': fabric_whitenoise_range,
+    'whitenoise_range': whitenoise_range
 ]
 
 processResources {
