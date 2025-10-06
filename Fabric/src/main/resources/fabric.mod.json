@@ -25,6 +25,9 @@
     "client": [
       "${mod_id}.${mod_name}ClientFabric"
     ],
+    "fabric-datagen": [
+      "${mod_id}.data.FabricDatagenInitializer"
+    ],
     "whitenoise-config": [
       "${mod_id}.FabricConfigInitializer"
     ]
@@ -36,6 +39,7 @@
     "fabricloader": "${fabric_loader_min_version}",
     "fabric": "*",
     "minecraft": ${fabric_mc_version_range},
+    "whitenoise": ${fabric_whitenoise_range},
     "java": ">=${java_version}"
   }
 }

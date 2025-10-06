@@ -24,6 +24,10 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-common", version: "${whitenoise_version}"
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 configurations {
     commonJava {
         canBeResolved = false
