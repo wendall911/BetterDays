@@ -1,12 +1,10 @@
 package betterdays.common;
 
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import betterdays.BetterDays;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
+
 import org.slf4j.helpers.MessageFormatter;
 
 public class Translations {
