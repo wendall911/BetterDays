@@ -105,7 +105,7 @@ public class BetterDaysMessages {
 
         new TemplateMessage().setTemplate(templateMessage)
                 .setOverlay(ConfigHandler.Common.enterBedMessageType().isOverlay())
-                .setVariable("player", player.get().getGameProfile().getName())
+                .setVariable("player", player.get().getGameProfile().name())
                 .setVariable("totalPlayers", Integer.toString(sleepStatus.amountActive()))
                 .setVariable("sleepingPlayers", Integer.toString(sleepStatus.amountSleeping()))
                 .setVariable("sleepingPercentage", Integer.toString(sleepStatus.percentage()))
@@ -129,7 +129,7 @@ public class BetterDaysMessages {
 
         new TemplateMessage().setTemplate(templateMessage)
                 .setOverlay(ConfigHandler.Common.leaveBedMessageType().isOverlay())
-                .setVariable("player", player.get().getGameProfile().getName())
+                .setVariable("player", player.get().getGameProfile().name())
                 .setVariable("totalPlayers", Integer.toString(sleepStatus.amountActive()))
                 .setVariable("sleepingPlayers", Integer.toString(sleepStatus.amountSleeping() - 1))
                 .setVariable("sleepingPercentage", Integer.toString(sleepStatus.percentage()))

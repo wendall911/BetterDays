@@ -11,7 +11,7 @@ version = "${version}-${modLoader}"
 neoForge {
     version = neoforge_version
     parchment {
-        minecraftVersion = minecraft_version
+        minecraftVersion = mappings_minecraft_version
         mappingsVersion = mappings_version
     }
     runs {

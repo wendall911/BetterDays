@@ -3,7 +3,6 @@ package betterdays.mixin;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.screens.ReceivingLevelScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
@@ -31,7 +30,7 @@ public abstract class MinecraftClientMixin {
     @Shadow private volatile boolean running;
 
     @Inject(method = "setLevel", at = @At("HEAD"))
-    private void $betterdaysInjectSetLevel(ClientLevel level, ReceivingLevelScreen.Reason reason, CallbackInfo ci) {
+    private void $betterdaysInjectSetLevel(ClientLevel clientLevel, CallbackInfo ci) {
         if (this.level != null) {
             TimeInterpolator.onWorldLoad(this.level);
         }
