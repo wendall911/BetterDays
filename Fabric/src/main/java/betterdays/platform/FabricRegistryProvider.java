@@ -35,7 +35,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import betterdays.registry.RegistryObject;
 import betterdays.registry.RegistryProvider;
-import betterdays.registry.TimeEffectsRegistry;
 import betterdays.platform.services.IRegistryFactory;
 
 public class FabricRegistryProvider implements IRegistryFactory {
@@ -65,7 +64,7 @@ public class FabricRegistryProvider implements IRegistryFactory {
             this.makeRegistry = makeRegistry;
 
             if (makeRegistry) {
-                var reg = FabricRegistryBuilder.createSimple(TimeEffectsRegistry.class, key.location()).buildAndRegister();
+                var reg = FabricRegistryBuilder.createSimple(key.registryKey()).buildAndRegister();
 
                 registry = (Registry<T>) reg;
             }
