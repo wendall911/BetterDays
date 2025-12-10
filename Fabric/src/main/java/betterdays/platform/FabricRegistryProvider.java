@@ -32,7 +32,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import betterdays.registry.RegistryObject;
 import betterdays.registry.RegistryProvider;
@@ -66,18 +66,18 @@ public class FabricRegistryProvider implements IRegistryFactory {
             this.makeRegistry = makeRegistry;
 
             if (makeRegistry) {
-                var reg = FabricRegistryBuilder.createSimple(TimeEffectsRegistry.class, key.location()).buildAndRegister();
+                var reg = FabricRegistryBuilder.createSimple(TimeEffectsRegistry.class, key.identifier()).buildAndRegister();
 
                 registry = (Registry<T>) reg;
             }
             else {
-                var reg = BuiltInRegistries.REGISTRY.get(key.location());
+                var reg = BuiltInRegistries.REGISTRY.get(key.identifier());
 
                 if (reg.isPresent()) {
                     registry = (Registry<T>) reg.get().value();
                 }
                 else {
-                    throw new RuntimeException("Registry with name " + key.location() + " was not found!");
+                    throw new RuntimeException("Registry with name " + key.identifier() + " was not found!");
                 }
             }
         }
@@ -91,7 +91,7 @@ public class FabricRegistryProvider implements IRegistryFactory {
         @Override
         @SuppressWarnings("unchecked")
         public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
-            final var rl = ResourceLocation.fromNamespaceAndPath(modId, name);
+            final var rl = Identifier.fromNamespaceAndPath(modId, name);
             final var obj = Registry.register(registry, rl, supplier.get());
             final var ro = new RegistryObject<I>() {
                 final ResourceKey<I> key =
@@ -103,7 +103,7 @@ public class FabricRegistryProvider implements IRegistryFactory {
                 }
 
                 @Override
-                public ResourceLocation getId() {
+                public Identifier getId() {
                     return rl;
                 }
 
@@ -120,7 +120,7 @@ public class FabricRegistryProvider implements IRegistryFactory {
                         return (Holder<I>) optionalReference.get();
                     }
                     else {
-                        throw new RuntimeException("Registry with name " + key.location() + " was not found!");
+                        throw new RuntimeException("Registry with name " + key.identifier() + " was not found!");
                     }
                 }
             };

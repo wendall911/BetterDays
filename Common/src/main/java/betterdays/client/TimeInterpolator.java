@@ -74,7 +74,7 @@ public class TimeInterpolator {
         if (!minecraft.isPaused()
                 && instance != null
                 && instance.level.get().equals(minecraft.level)
-                && !ConfigHandler.Client.getBlacklistDimensions().contains(instance.level.get().dimension().location())) {
+                && !ConfigHandler.Client.getBlacklistDimensions().contains(instance.level.get().dimension().identifier())) {
             instance.partialTick(renderTickTime);
         }
     }

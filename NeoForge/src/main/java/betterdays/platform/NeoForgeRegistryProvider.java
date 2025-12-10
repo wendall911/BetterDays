@@ -32,7 +32,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import betterdays.registry.RegistryObject;
 import betterdays.registry.RegistryProvider;
@@ -97,7 +97,7 @@ public class NeoForgeRegistryProvider implements IRegistryFactory {
                 }
 
                 @Override
-                public ResourceLocation getId() {
+                public Identifier getId() {
                     return obj.getId();
                 }
 

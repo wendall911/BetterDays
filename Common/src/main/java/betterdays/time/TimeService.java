@@ -141,7 +141,7 @@ public class TimeService {
         }
 
         BetterDays.LOGGER.debug("Sleep cycle complete on dimension: {}.",
-                level.get().dimension().location());
+                level.get().dimension().identifier());
     }
 
     /**

@@ -26,9 +26,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.ServerLevelData;
 
@@ -66,12 +66,12 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
 
     /** {@return true if the 'daylight cycle' game rule is enabled in this level} */
     public boolean daylightRuleEnabled() {
-        return this.get().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+        return this.get().getGameRules().get(GameRules.ADVANCE_TIME);
     }
 
     /** {@return true if the 'weather cycle' game rule is enabled in this level} */
     public boolean weatherRuleEnabled() {
-        return this.get().getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE);
+        return this.get().getGameRules().get(GameRules.ADVANCE_WEATHER);
     }
 
     /**
@@ -79,8 +79,7 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
      * @param speed  the new random tick speed
      */
     public void setRandomTickSpeed(int speed) {
-        this.get().getGameRules().getRule(GameRules.RULE_RANDOMTICKING)
-                .set(speed, this.get().getServer());
+        this.get().getGameRules().set(GameRules.RANDOM_TICK_SPEED, speed, this.get().getServer());
     }
 
     /**

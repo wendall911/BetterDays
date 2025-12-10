@@ -22,7 +22,6 @@
 package betterdays.wrappers;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LevelAccessor;
 
 /**

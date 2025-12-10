@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -45,7 +45,7 @@ import betterdays.message.TemplateMessage;
 import betterdays.time.effects.EffectCondition;
 import betterdays.time.Time;
 
-import static net.minecraft.resources.ResourceLocation.tryParse;
+import static net.minecraft.resources.Identifier.tryParse;
 
 public class ConfigHandler {
 
@@ -82,7 +82,7 @@ public class ConfigHandler {
         private static final String[] defaultBlacklistDimensions = new String[] {
             "aether:the_aether"
         };
-        private static final Set<ResourceLocation> blacklistDimensionsSet = Sets.newHashSet();
+        private static final Set<Identifier> blacklistDimensionsSet = Sets.newHashSet();
         private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
             && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
@@ -127,7 +127,7 @@ public class ConfigHandler {
             return CLIENT.preventClockWobble.get();
         }
 
-        public static Set<ResourceLocation> getBlacklistDimensions() {
+        public static Set<Identifier> getBlacklistDimensions() {
             return blacklistDimensionsSet;
         }
 

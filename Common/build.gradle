@@ -6,14 +6,10 @@ plugins {
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
-archivesBaseName = "${mod_id}-common"
+def identifier = "${mod_id}-${minecraft_version}-common"
 
 neoForge {
     neoFormVersion = neo_form_version
-    parchment {
-        minecraftVersion = mappings_minecraft_version
-        mappingsVersion = mappings_version
-    }
 }
 
 dependencies {
@@ -67,3 +63,22 @@ def updates = tasks.register("generateUpdates", Copy) {
 tasks.generateUpdates.mustRunAfter('jar')
 
 tasks.build.dependsOn('changelog', 'generateUpdates')
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId identifier
+            version project.version
+            from components.java
+        }
+    }
+    repositories {
+        if (System.getenv('local_maven') != null) {
+            maven {
+                url 'file://' + System.getenv('local_maven')
+            }
+        }
+    }
+}

@@ -6,8 +6,8 @@ import java.util.function.BooleanSupplier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.SleepStatus;
-import net.minecraft.world.level.GameRules;
 
+import net.minecraft.world.level.gamerules.GameRules;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,8 +26,8 @@ public abstract class ServerLevelMixin {
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void betterdays$SleepFinishedTimeEvent(BooleanSupplier hasTimeLeft, CallbackInfo ci) {
         ServerLevel level = (ServerLevel) (Object) this;
-        int i = level.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-        boolean daylightRule = level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+        int i = level.getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
+        boolean daylightRule = level.getGameRules().get(GameRules.ADVANCE_TIME);
 
         if (sleepStatus.areEnoughSleeping(i) && sleepStatus.areEnoughDeepSleeping(i, players) && daylightRule) {
             BetterDaysMessages.onSleepFinishedEvent(level);

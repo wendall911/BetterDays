@@ -3,6 +3,7 @@ plugins {
     id 'fabric-loom'
 }
 
+def identifier = "${mod_id}-${minecraft_version}-fabric"
 def modLoader = "${project.name}".toUpperCase()
 version = "${version}-${modLoader}"
 
@@ -10,9 +11,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${mappings_minecraft_version}:${mappings_version}@zip")
     })
-
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
@@ -32,6 +31,7 @@ loom {
         accessWidenerPath.set(aw)
     }
     mixin {
+        useLegacyMixinAp = true
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
@@ -58,7 +58,7 @@ loom {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
-def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${archivesBaseName}-${version}.jar"
+def publishFile = project(":").projectDir.toString() + "/Fabric/build/libs/${identifier}-${version}.jar"
 def display_name = "${project.name} ${minecraft_version}-${version}"
 def display_version = "${minecraft_version}-${version}"
 
@@ -118,6 +118,24 @@ publishMods {
             username = "${mod_author}"
             content = changelog.map {
                 "# A new version of ${mod_display_name} for Fabric ${minecraft_version} has been released! \n" + it
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId identifier
+            version project.version
+            from components.java
+        }
+    }
+    repositories {
+        if (System.getenv('local_maven') != null) {
+            maven {
+                url 'file://' + System.getenv('local_maven')
             }
         }
     }
