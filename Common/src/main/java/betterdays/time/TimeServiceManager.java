@@ -68,11 +68,13 @@ public class TimeServiceManager {
      * @param level current player level
      */
     public static boolean onSleepingCheckEvent(Level level) {
-        if (service != null && service.level.get().equals(level)) {
+        if (!ConfigHandler.Common.enableSleepFeature()) {
+            return true;
+        }
+        else if (service != null && service.level.get().equals(level)) {
             Time time = service.getDayTime().timeOfDay();
-            return ConfigHandler.Common.enableSleepFeature()
-                    && (time.compareTo(VANILLA_SLEEP_END) >= 0
-                    || ConfigHandler.Common.allowDaySleep());
+
+            return time.compareTo(VANILLA_SLEEP_END) >= 0 || ConfigHandler.Common.allowDaySleep();
         }
 
         return false;

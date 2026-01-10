@@ -30,13 +30,10 @@ import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
 import betterdays.platform.Services;
 import betterdays.time.effects.EffectCondition;
-import betterdays.time.effects.RandomTickSleepEffect;
 import betterdays.time.effects.TimeEffect;
 import betterdays.utils.MathUtils;
 import betterdays.wrappers.ServerLevelWrapper;
 import betterdays.wrappers.TimePacketWrapper;
-
-import static betterdays.time.effects.EffectCondition.SLEEPING;
 
 /**
  * Handles the Better Days time and sleep functionality for a level.
