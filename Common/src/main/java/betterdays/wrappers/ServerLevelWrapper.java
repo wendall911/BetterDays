@@ -29,6 +29,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.saveddata.WeatherData;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.ServerLevelData;
 
@@ -95,10 +96,12 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
      * to the methods that do this in vanilla.
      */
     public void stopWeather() {
-        levelData.setRainTime(0);
-        levelData.setRaining(false);
-        levelData.setThunderTime(0);
-        levelData.setThundering(false);
+        WeatherData weatherData = this.get().getWeatherData();
+
+        weatherData.setRainTime(0);
+        weatherData.setRaining(false);
+        weatherData.setThunderTime(0);
+        weatherData.setThundering(false);
     }
 
     /**

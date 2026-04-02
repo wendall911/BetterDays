@@ -5,7 +5,10 @@ import java.lang.reflect.Method;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.world.clock.ServerClockManager;
+
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.common.util.ClockAdjustment;
 import net.neoforged.neoforge.event.EventHooks;
 
 import betterdays.platform.services.IPlatform;
@@ -15,7 +18,7 @@ public class NeoForgePlatform implements IPlatform {
 
     @Override
     public void onSleepFinished(ServerLevelWrapper levelWrapper, long time) {
-        EventHooks.onSleepFinished(levelWrapper.get(), time, time);
+        EventHooks.onSleepFinished(levelWrapper.get(), new ClockAdjustment.Absolute(time));
     }
 
     @Override
@@ -49,7 +52,9 @@ public class NeoForgePlatform implements IPlatform {
 
     @Override
     public void setTimeSpeed(ServerLevelWrapper level, float speed) {
-        level.get().setDayTimePerTick(speed);
+        ServerClockManager clockManager = level.get().clockManager();
+
+        level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
     }
 
 }

@@ -21,6 +21,8 @@
 
 package betterdays.wrappers;
 
+import java.util.Map;
+
 import net.minecraft.network.protocol.game.ClientboundSetTimePacket;
 
 /**
@@ -41,12 +43,15 @@ public class TimePacketWrapper extends Wrapper<ClientboundSetTimePacket> {
      *
      * @param level  the wrapped level for which to create a time-packet
      * @return the new wrapped time-packet
+     * TODO Check if this is correct. It is only setting gameTime now. Might need a custom packet. Or need to move to how
+     * NeoForge does this.
      */
     public static TimePacketWrapper create(ServerLevelWrapper level) {
         long gameTime = level.get().getGameTime();
-        long dayTime = level.get().getDayTime();
+        long dayTime = level.get().getDefaultClockTime();
         boolean ruleDaylight = level.daylightRuleEnabled();
-        ClientboundSetTimePacket packet = new ClientboundSetTimePacket(gameTime, dayTime, ruleDaylight);
+        ClientboundSetTimePacket packet = new ClientboundSetTimePacket(gameTime, Map.of());
+
         return new TimePacketWrapper(packet);
     }
 

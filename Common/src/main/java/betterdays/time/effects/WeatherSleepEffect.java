@@ -22,6 +22,7 @@
 package betterdays.time.effects;
 
 import com.google.common.primitives.Ints;
+import net.minecraft.world.level.saveddata.WeatherData;
 
 import betterdays.config.ConfigHandler;
 import betterdays.time.TimeContext;
@@ -54,9 +55,11 @@ public class WeatherSleepEffect extends AbstractTimeEffect {
      */
     private void progressWeather(TimeContext context) {
         ServerLevelWrapper level = context.getLevel();
-        int clearWeatherTime = level.levelData.getClearWeatherTime();
-        int thunderTime = level.levelData.getThunderTime();
-        int rainTime = level.levelData.getRainTime();
+        WeatherData weatherData = level.get().getWeatherData();
+
+        int clearWeatherTime = weatherData.getClearWeatherTime();
+        int thunderTime = weatherData.getThunderTime();
+        int rainTime = weatherData.getRainTime();
 
         // Subtract 1 from weather speed to account for vanilla's weather progression of 1 per tick.
         int weatherSpeed = Ints.saturatedCast(context.getTimeDelta().longValue() - 1);
@@ -64,11 +67,11 @@ public class WeatherSleepEffect extends AbstractTimeEffect {
         if (clearWeatherTime <= 0) {
             if (thunderTime > 0) {
                 thunderTime = Math.max(1, thunderTime - weatherSpeed);
-                level.levelData.setThunderTime(thunderTime);
+                weatherData.setThunderTime(thunderTime);
             }
             if (rainTime > 0) {
                 rainTime = Math.max(1, rainTime - weatherSpeed);
-                level.levelData.setRainTime(rainTime);
+                weatherData.setRainTime(rainTime);
             }
         }
     }

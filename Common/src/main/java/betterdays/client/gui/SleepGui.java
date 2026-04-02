@@ -21,7 +21,7 @@
 
 package betterdays.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,7 +38,7 @@ public class SleepGui {
     /**
      * Event listener that is called during GUI rendering. Renders additional GUI elements.
      */
-    public static void onGuiEvent(Screen screen, GuiGraphics guiGraphics) {
+    public static void onGuiEvent(Screen screen, GuiGraphicsExtractor guiGraphics) {
         if (clockEnabled()) {
             renderSleepInterface(screen, guiGraphics);
         }
@@ -47,7 +47,7 @@ public class SleepGui {
     /**
      * Renders the interface that displays extra information over the sleep screen.
      */
-    public static void renderSleepInterface(Screen screen, GuiGraphics guiGraphics) {
+    public static void renderSleepInterface(Screen screen, GuiGraphicsExtractor guiGraphics) {
         float x, y;
         int scale = ConfigHandler.Client.clockScale();
         int margin = ConfigHandler.Client.clockMargin();
@@ -83,13 +83,13 @@ public class SleepGui {
     /**
      * Renders a clock on the screen.
      */
-    public static void renderClock(GuiGraphics guiGraphics, float x, float y, float scale) {
+    public static void renderClock(GuiGraphicsExtractor guiGraphics, float x, float y, float scale) {
         scale /= 16F;
 
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate(x, y);
         guiGraphics.pose().scale(scale, scale);
-        guiGraphics.renderItem(clock, 0, 0);
+        guiGraphics.item(clock, 0, 0);
         guiGraphics.pose().popMatrix();
     }
 

@@ -13,7 +13,7 @@ public class ClientEventListener {
     public static void setup() {
         ScreenEvents.AFTER_INIT.register((minecraft, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof InBedChatScreen) {
-                ScreenEvents.afterRender(screen).register(((renderScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
+                ScreenEvents.afterExtract(screen).register(((renderScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
                     SleepGui.onGuiEvent(renderScreen, guiGraphics);
                 }));
             }

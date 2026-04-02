@@ -21,8 +21,14 @@
 
 package betterdays.client;
 
+import java.util.Optional;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.LevelAccessor;
+import org.jspecify.annotations.Nullable;
 
 import betterdays.config.ConfigHandler;
 import betterdays.time.Time;
@@ -106,7 +112,7 @@ public class TimeInterpolator {
      * Initializes variables that need to be set after ticks have started processing.
      */
     private void init() {
-        long time = level.get().getDayTime();
+        long time = level.get().getDefaultClockTime();
         this.targetTime = time;
         this.lastTime = time;
         this.initialized = true;
@@ -150,7 +156,7 @@ public class TimeInterpolator {
      *                       Measured in fractions of ticks.
      */
     private void interpolateTime(final float tickTimeDelta) {
-        long time = level.get().getDayTime();
+        long time = level.get().getDefaultClockTime();
 
         final float duration = 1f; // Interpolate over 1 tick.
         final float omega = 2F / duration;
@@ -181,10 +187,12 @@ public class TimeInterpolator {
      * method jumps to same day as the interpolation target and interpolates from there.
      */
     private void updateTargetTime() {
-        long time = level.get().getDayTime();
+        long time = level.get().getDefaultClockTime();
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
+        MinecraftServer server = level.get().getServer();
 
         // Packet received, update interpolation target and reset current time.
-        if (time != lastTime) {
+        if (server != null && time != lastTime) {
             targetTime = time;
 
             // Prevent large interpolation distances
@@ -195,7 +203,7 @@ public class TimeInterpolator {
                 lastTime = time - newTimeOfDay + oldTimeOfDay;
             }
 
-            level.get().getLevelData().setDayTime(lastTime);
+            clockHolder.ifPresent(worldClockHolder -> server.clockManager().setTotalTicks(worldClockHolder, lastTime));
         }
     }
 
@@ -206,7 +214,13 @@ public class TimeInterpolator {
      * @param time  the time of day to set
      */
     private void setDayTime(long time) {
-        level.get().getLevelData().setDayTime(time);
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
+        MinecraftServer server = level.get().getServer();
+
+        if (server != null) {
+            clockHolder.ifPresent(worldClockHolder -> server.clockManager().setTotalTicks(worldClockHolder, lastTime));
+        }
+
         lastTime = time;
     }
 
@@ -215,8 +229,11 @@ public class TimeInterpolator {
      * this method at the end of every tick to undo this.
      */
     private void undoVanillaTimeTicks() {
-        if (level.daylightRuleEnabled()) {
-            level.get().getLevelData().setDayTime(level.get().getDayTime() - 1);
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
+        MinecraftServer server = level.get().getServer();
+
+        if (level.daylightRuleEnabled() && server != null) {
+            clockHolder.ifPresent(worldClockHolder -> server.clockManager().addTicks(worldClockHolder, -1));
         }
     }
 

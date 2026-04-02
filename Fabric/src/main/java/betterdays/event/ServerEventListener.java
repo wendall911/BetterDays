@@ -1,8 +1,8 @@
 package betterdays.event;
 
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 import net.minecraft.world.entity.player.Player;
 
@@ -36,15 +36,15 @@ public class ServerEventListener {
             }
         }));
 
-        ServerWorldEvents.LOAD.register((server, level) -> {
+        ServerLevelEvents.LOAD.register((server, level) -> {
             TimeServiceManager.onWorldLoad(level);
         });
 
-        ServerWorldEvents.UNLOAD.register((server, level) -> {
+        ServerLevelEvents.UNLOAD.register((server, level) -> {
             TimeServiceManager.onWorldUnload(level);
         });
 
-        ServerTickEvents.START_WORLD_TICK.register(TimeServiceManager::onWorldTick);
+        ServerTickEvents.START_LEVEL_TICK.register(TimeServiceManager::onWorldTick);
     }
 
 }

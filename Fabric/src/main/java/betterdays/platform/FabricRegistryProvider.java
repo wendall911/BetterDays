@@ -66,7 +66,7 @@ public class FabricRegistryProvider implements IRegistryFactory {
             this.makeRegistry = makeRegistry;
 
             if (makeRegistry) {
-                var reg = FabricRegistryBuilder.createSimple(TimeEffectsRegistry.class, key.identifier()).buildAndRegister();
+                var reg = FabricRegistryBuilder.create(TimeEffectsRegistry.class, key.identifier()).buildAndRegister();
 
                 registry = (Registry<T>) reg;
             }

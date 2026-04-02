@@ -22,6 +22,10 @@
 package betterdays.time;
 
 import java.util.Collection;
+import java.util.Optional;
+
+import net.minecraft.core.Holder;
+import net.minecraft.world.clock.WorldClock;
 
 import betterdays.BetterDays;
 import betterdays.platform.ModLoader;
@@ -127,7 +131,7 @@ public class TimeService {
     }
 
     private void handleMorning() {
-        long time = level.get().getDayTime();
+        long time = level.get().getDefaultClockTime();
 
         Services.PLATFORM.onSleepFinished(level, time);
         sleepStatus.removeAllSleepers();
@@ -150,7 +154,9 @@ public class TimeService {
      * this vanilla progression.
      */
     private void vanillaTimeCompensation() {
-        level.get().setDayTime(level.get().getDayTime() - 1);
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
+
+        clockHolder.ifPresent(worldClockHolder -> level.get().getServer().clockManager().addTicks(worldClockHolder, -1));
     }
 
     /**
@@ -158,10 +164,11 @@ public class TimeService {
      * lunar cycle.
      */
     private void preventTimeOverflow() {
-        long time = level.get().getDayTime();
+        long time = level.get().getDefaultClockTime();
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
 
-        if (time > OVERFLOW_THRESHOLD) {
-            level.get().setDayTime(time - OVERFLOW_THRESHOLD);
+        if (time > OVERFLOW_THRESHOLD && clockHolder.isPresent()) {
+            level.get().getServer().clockManager().addTicks(clockHolder.get(), -OVERFLOW_THRESHOLD);
         }
     }
 
@@ -272,7 +279,7 @@ public class TimeService {
      * {@return this level's time as an instance of {@link Time}}
      */
     public Time getDayTime() {
-        return new Time(level.get().getDayTime(), timeDecimalAccumulator);
+        return new Time(level.get().getDefaultClockTime(), timeDecimalAccumulator);
     }
 
     /**
@@ -281,8 +288,11 @@ public class TimeService {
      * @return the new time
      */
     public Time setDayTime(Time time) {
+        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
+
         timeDecimalAccumulator = time.fractionalValue();
-        level.get().setDayTime(time.longValue());
+        clockHolder.ifPresent(worldClockHolder -> level.get().getServer().clockManager().setTotalTicks(worldClockHolder, time.longValue()));
+
         return time;
     }
 

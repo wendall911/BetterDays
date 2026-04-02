@@ -25,8 +25,6 @@ public abstract class MinecraftClientMixin {
 
     @Shadow @Final private DeltaTracker.Timer deltaTracker;
 
-    @Shadow public boolean noRender;
-
     @Shadow private volatile boolean running;
 
     @Inject(method = "setLevel", at = @At("HEAD"))
