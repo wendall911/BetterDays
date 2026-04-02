@@ -1,10 +1,10 @@
 plugins {
     // see https://fabricmc.net/develop/ for new versions
-    id 'fabric-loom' version '1.14-SNAPSHOT' apply false
+    id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
-    id 'net.neoforged.moddev' version '2.0.123' apply false
+    id 'net.neoforged.moddev' version '2.0.141' apply false
     // https://plugins.gradle.org/plugin/se.bjurr.gitchangelog.git-changelog-gradle-plugin
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.7' apply(false)
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2' apply(false)
     // https://plugins.gradle.org/plugin/me.modmuss50.mod-publish-plugin
     id 'me.modmuss50.mod-publish-plugin' version '1.1.0' apply(false)
 }
