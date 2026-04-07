@@ -13,14 +13,6 @@ public class ServerEventListener {
 
     public static void setup() {
         EntitySleepEvents.ALLOW_RESETTING_TIME.register(((player) -> {
-            if (TimeServiceManager.onDaySleepCheck(player.level())) {
-                return true;
-            }
-
-            return false;
-        }));
-
-        EntitySleepEvents.ALLOW_RESETTING_TIME.register(((player) -> {
             BetterDaysMessages.onSleepingCheckEvent(player);
 
             if (TimeServiceManager.onSleepingCheckEvent(player.level())) {

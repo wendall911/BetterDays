@@ -169,7 +169,6 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedAll;
         private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedCurve;
         private final WhiteNoiseConfigSpec.BooleanValue clearWeatherOnWake;
-        private final WhiteNoiseConfigSpec.BooleanValue allowDaySleep;
         private final WhiteNoiseConfigSpec.BooleanValue displayBedClock;
         private final WhiteNoiseConfigSpec.DoubleValue ratioPlayersForSleep;
 
@@ -278,9 +277,6 @@ public class ConfigHandler {
 
             clearWeatherOnWake = builder.comment(getTranslation("clearweatheronwake"))
                 .define("clearWeatherOnWake", true);
-
-            allowDaySleep = builder.comment(getTranslation("allowdaysleep"))
-                .define("allowDaySleep", false);
 
             displayBedClock = builder.comment(getTranslation("displaybedclock"))
                 .define("displayBedClock", true);
@@ -426,10 +422,6 @@ public class ConfigHandler {
 
         public static boolean clearWeatherOnWake() {
             return COMMON.clearWeatherOnWake.get();
-        }
-
-        public static boolean allowDaySleep() {
-            return COMMON.allowDaySleep.get();
         }
 
         public static boolean displayBedClock() {

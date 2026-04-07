@@ -28,7 +28,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.LevelAccessor;
-import org.jspecify.annotations.Nullable;
 
 import betterdays.config.ConfigHandler;
 import betterdays.time.Time;
@@ -82,19 +81,6 @@ public class TimeInterpolator {
                 && instance.level.get().equals(minecraft.level)
                 && !ConfigHandler.Client.getBlacklistDimensions().contains(instance.level.get().dimension().identifier())) {
             instance.partialTick(renderTickTime);
-        }
-    }
-
-    /**
-     * Event listener that is called on every tick. This event continues to
-     * be dispatched while a player is in the main or pause menu.
-     */
-    public static void onClientTickEvent(Minecraft minecraft) {
-        if (!minecraft.isPaused()
-                && instance != null
-                && instance.level.get().equals(minecraft.level)) {
-
-            instance.undoVanillaTimeTicks();
         }
     }
 
@@ -222,19 +208,6 @@ public class TimeInterpolator {
         }
 
         lastTime = time;
-    }
-
-    /**
-     * The vanilla client increments time every tick, which messes with our time interpolation. Call
-     * this method at the end of every tick to undo this.
-     */
-    private void undoVanillaTimeTicks() {
-        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
-        MinecraftServer server = level.get().getServer();
-
-        if (level.daylightRuleEnabled() && server != null) {
-            clockHolder.ifPresent(worldClockHolder -> server.clockManager().addTicks(worldClockHolder, -1));
-        }
     }
 
 }

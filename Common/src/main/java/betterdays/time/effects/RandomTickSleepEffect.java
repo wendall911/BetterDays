@@ -25,7 +25,6 @@ import betterdays.config.ConfigHandler;
 import betterdays.time.SleepStatus;
 import betterdays.time.TimeContext;
 
-import static betterdays.time.effects.EffectCondition.ALWAYS;
 import static betterdays.time.effects.EffectCondition.SLEEPING;
 
 /**
@@ -52,7 +51,7 @@ public class RandomTickSleepEffect extends AbstractTimeEffect {
 
         int speed = ConfigHandler.Common.baseRandomTickSpeed();
         SleepStatus sleepStatus = context.getTimeService().sleepStatus;
-        if (condition == ALWAYS || (condition == SLEEPING && !sleepStatus.allAwake())) {
+        if (condition == SLEEPING && !sleepStatus.allAwake()) {
             long timeDelta = context.getTimeDelta().longValue();
 
             if (timeDelta > 1) {

@@ -28,7 +28,6 @@ import betterdays.config.ConfigHandler;
 import betterdays.time.TimeContext;
 import betterdays.wrappers.ServerLevelWrapper;
 
-import static betterdays.time.effects.EffectCondition.ALWAYS;
 import static betterdays.time.effects.EffectCondition.SLEEPING;
 
 /**
@@ -42,8 +41,8 @@ public class WeatherSleepEffect extends AbstractTimeEffect {
         ServerLevelWrapper level = context.getLevel();
         EffectCondition condition = ConfigHandler.Common.weatherEffect();
         boolean allAwake = context.getTimeService().sleepStatus.allAwake();
-        if (level.weatherCycleEnabled()
-                && (condition == ALWAYS || (condition == SLEEPING && !allAwake))) {
+
+        if (level.weatherCycleEnabled() && (condition == SLEEPING && !allAwake)) {
             progressWeather(context);
         }
     }

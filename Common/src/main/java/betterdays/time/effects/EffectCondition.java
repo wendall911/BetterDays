@@ -30,8 +30,6 @@ public enum EffectCondition {
 
     /** Do not apply the effect. */
     NEVER,
-    /** Always apply the effect. */
-    ALWAYS,
     /** Only apply the effect while players are sleeping. */
     SLEEPING
 

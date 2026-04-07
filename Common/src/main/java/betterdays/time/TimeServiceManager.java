@@ -38,27 +38,6 @@ public class TimeServiceManager {
     public static final Time VANILLA_SLEEP_END = new Time(23460);
 
     /**
-     * Modifies permitted sleep times to allow players to sleep during the day. Only applies to
-     * players in levels controlled by Better Days while sleep feature is enabled.
-     *
-     * <p>Called once per tick for every player who is currently sleeping. Event result determines
-     * if sleep is allowed at the current time.
-     *
-     * @param level current player level
-     */
-    public static boolean onDaySleepCheck(Level level) {
-        if (service != null
-                && service.level.get().equals(level)
-                && ConfigHandler.Common.enableSleepFeature()
-                && ConfigHandler.Common.allowDaySleep()) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Modifies permitted sleep times to allow players to sleep through dawn until day-time 0
      * while the sleep feature is enabled.
      *
@@ -74,7 +53,7 @@ public class TimeServiceManager {
         else if (service != null && service.level.get().equals(level)) {
             Time time = service.getDayTime().timeOfDay();
 
-            return time.compareTo(VANILLA_SLEEP_END) >= 0 || ConfigHandler.Common.allowDaySleep();
+            return time.compareTo(VANILLA_SLEEP_END) >= 0;
         }
 
         return false;

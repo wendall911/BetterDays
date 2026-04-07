@@ -168,10 +168,6 @@ public class Translations {
             "Set to 'false' to force weather to pass naturally. Adds realism when accelerateWeather is enabled.",
             "Note: This setting is ignored if game rule doWeatherCycle is false."
         ));
-        translations.put("allowdaysleep", joiner(
-            "When true, players are allowed to sleep at all times of day in dimensions controlled by Better Days.",
-            "Note: Other mods may override this ability."
-        ));
         translations.put("displaybedclock", "When true, a clock is displayed in the sleep interface.");
         translations.put("ratioplayersforsleep", joiner(
             "The ratio of players in a dimension that must be sleeping to skip to morning.",
