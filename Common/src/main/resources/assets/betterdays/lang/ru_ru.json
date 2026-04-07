@@ -1,6 +1,4 @@
 {
-  "betterdays.configuration.allowdaysleep.description": "Если включено, игрокам разрешается спать в любое время суток в измерениях, контролируемых Better Days.\nПримечание: другие моды могут переопределить эту возможность.",
-  "betterdays.configuration.allowdaysleep.name": "Разрешить сон днём",
   "betterdays.configuration.baserandomtickspeed.description": "Базовая скорость случайных тактов, используемая эффектом времени «эффекта случайных тактов».",
   "betterdays.configuration.baserandomtickspeed.name": "Базовая скорость случайных тактов",
   "betterdays.configuration.blacklistdimensions.description": "Этот параметр добавляет измерения в чёрный список для отображения неба. Например, в Эфире при использовании\nкоманды '/time set' небо дёргается. Добавление в чёрный список предотвращает это поведение.",

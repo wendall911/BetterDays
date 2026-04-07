@@ -1,7 +1,4 @@
 {
-  "betterdays.configuration.allowdaysleep.description": "Si cette option est activée, les joueurs peuvent dormir à tout moment de la journée dans les dimensions gérées par Better Days.\nNote : D'autres mods peuvent remplacer ce comportement.",
-  "betterdays.configuration.allowdaysleep.name": "Autoriser le Sommeil de Jour",
-
   "betterdays.configuration.baserandomtickspeed.description": "La vitesse de tick aléatoire de base utilisée par l'effet de temps randomTickEffect.",
   "betterdays.configuration.baserandomtickspeed.name": "Vitesse de Tick Aléatoire de Base",
 

@@ -1,6 +1,4 @@
 {
-  "betterdays.configuration.allowdaysleep.description": "When true, players are allowed to sleep at all times of day in dimensions controlled by Better Days.\nNote: Other mods may override this ability.",
-  "betterdays.configuration.allowdaysleep.name": "Allow Day Sleep",
   "betterdays.configuration.baserandomtickspeed.description": "The base random tick speed used by the randomTickEffect time effect.",
   "betterdays.configuration.baserandomtickspeed.name": "Base Random Tick Speed",
   "betterdays.configuration.blacklistdimensions.description": "This setting blacklists the sky rendering for specific dimensions. Like in the Aether if using \n/time set command, the sky jitters. Adding to the blacklist will prevent this behavior.",
