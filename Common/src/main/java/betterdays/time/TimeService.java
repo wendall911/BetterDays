@@ -82,33 +82,23 @@ public class TimeService {
      * Performs all time, sleep, and weather calculations. Should run once per tick.
      */
     public void tick() {
-        TimeContext context;
-
         if (!level.daylightRuleEnabled()) {
             return;
         }
 
-        if (Services.PLATFORM.getModLoader() == ModLoader.NEOFORGE && sleepStatus.allAwake()) {
-            Time time = getDayTime();
-            double speed = getTimeSpeed(time);
-            context = new TimeContext(this, time, time);
+        Time oldTime = getDayTime();
+        double speed = getTimeSpeed(oldTime);
 
-            /*
-             * TODO: Figure out how to not need this with Fabric.
-             * Without patching, not entirely sure how do do with only Mixins.
-             * This is implemented in NeoForge here:
-             * https://github.com/neoforged/NeoForge/pull/1318
-             */
-            Services.PLATFORM.setTimeSpeed(level, (float) speed);
+        Services.PLATFORM.setTimeSpeed(level, (float) speed);
 
+        if (sleepStatus.allAwake()) {
             // This is needed to reset if using sleep effect
             tryResetRandomTickSpeed();
         }
         else {
-            Time oldTime = getDayTime();
             Time deltaTime = tickTime();
             Time time = getDayTime();
-            context = new TimeContext(this, time, deltaTime);
+            TimeContext context = new TimeContext(this, time, deltaTime);
 
             getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 

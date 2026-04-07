@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import net.fabricmc.loader.api.FabricLoader;
 
+import net.minecraft.world.clock.ServerClockManager;
+
 import betterdays.message.BetterDaysMessages;
 import betterdays.platform.services.IPlatform;
 import betterdays.wrappers.ServerLevelWrapper;
@@ -50,7 +52,9 @@ public class FabricPlatform implements IPlatform {
 
     @Override
     public void setTimeSpeed(ServerLevelWrapper level, float speed) {
-        // NO-OP
+        ServerClockManager clockManager = level.get().clockManager();
+
+        level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
     }
 
 }
