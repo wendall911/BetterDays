@@ -33,6 +33,8 @@ public class BetterDaysLanguageProvider extends FabricLanguageProvider {
         addTranslationDescription(builder, "blacklistdimensions");
         addTranslationName(builder, "time", "Time Settings"); // Section
         addTranslationDescription(builder, "time");
+        addTranslationName(builder, "speedmethod", "Speed Method");
+        addTranslationDescription(builder, "speedmethod");
         addTranslationName(builder, "dayspeed", "Day Speed");
         addTranslationDescription(builder, "dayspeed");
         addTranslationName(builder, "nightspeed", "Night Speed");
@@ -41,8 +43,10 @@ public class BetterDaysLanguageProvider extends FabricLanguageProvider {
         addTranslationDescription(builder, "dayspeedminutes");
         addTranslationName(builder, "nightspeedminutes", "Night Speed (Minutes)");
         addTranslationDescription(builder, "nightspeedminutes");
-        addTranslationName(builder, "speedmethod", "Speed Method");
-        addTranslationDescription(builder, "speedmethod");
+        addTranslationName(builder, "seasondayminutes", "Season Day Total Minutes");
+        addTranslationDescription(builder, "seasondayminutes");
+        addTranslationName(builder, "seasonlatitude", "Season Latitude");
+        addTranslationDescription(builder, "seasonlatitude");
         addTranslationName(builder, "daystart", "Day Start Time Tick");
         addTranslationDescription(builder, "daystart");
         addTranslationName(builder, "nightstart", "Night Start Time Tick");

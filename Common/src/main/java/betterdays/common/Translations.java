@@ -39,7 +39,8 @@ public class Translations {
             "Determines which method is used to set day and night speed.",
             "RATIO: Uses daySpeed and nightSpeed settings.",
             "MINUTES: Uses daySpeedMinutes and nightSpeedMinutes settings.",
-            "REALTIME: Sets day and night to 12 real-world hours each."
+            "REALTIME: Sets day and night to 12 real-world hours each.",
+            "SEASON: Uses seasonDayMinutes and seasonLatitude settings."
         ));
         translations.put("dayspeed", joiner(
             "The speed at which time passes during the day.",
@@ -64,6 +65,15 @@ public class Translations {
             "If both are set, speedMethod (see above) determines which setting is used.",
             "This setting defines the length of the night in real-world minutes.",
             "Vanilla length: 10.0 minutes"
+        ));
+        translations.put("seasondayminutes", joiner(
+            "An alternative way to set day and night speed. This setting is mutually exclusive with seasonLatitude.",
+            "This is the total number of minutes in a Minecraft day, including day and night.",
+            "If a compatible seasons mod is used, the day / night speed will change depending on the season.",
+            "If no compatible seasons mod is detected, the season is set to Early Spring by default."
+        ));
+        translations.put("seasonlatitude", joiner(
+            "The latitude to use for calculating the day/night offset based on the current season."
         ));
         translations.put("daystart", joiner(
             "The time to start day. This is configurable within the time the sun appears and day starts.",

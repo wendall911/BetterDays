@@ -33,6 +33,7 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.resources.Identifier;
 
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Pair;
 
 import technology.roughness.whitenoise.config.WhiteNoiseConfigSpec;
@@ -44,6 +45,7 @@ import betterdays.message.ChatTypeOptions;
 import betterdays.message.TemplateMessage;
 import betterdays.time.effects.EffectCondition;
 import betterdays.time.Time;
+import betterdays.utils.SeasonHelper;
 
 import static net.minecraft.resources.Identifier.tryParse;
 
@@ -143,6 +145,8 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue nightSpeed;
         private final WhiteNoiseConfigSpec.DoubleValue daySpeedMinutes;
         private final WhiteNoiseConfigSpec.DoubleValue nightSpeedMinutes;
+        private final WhiteNoiseConfigSpec.DoubleValue seasonDayMinutes;
+        private final WhiteNoiseConfigSpec.DoubleValue seasonLatitude;
         private final WhiteNoiseConfigSpec.DoubleValue dayStart;
         private final WhiteNoiseConfigSpec.DoubleValue nightStart;
 
@@ -201,6 +205,12 @@ public class ConfigHandler {
 
             nightSpeedMinutes = builder.comment(getTranslation("nightspeedminutes"))
                 .defineInRange("nightSpeedMinutes", 10D, 0.1D, 10000D);
+
+            seasonDayMinutes = builder.comment(getTranslation("seasondayminutes"))
+                .defineInRange("seasonDayMinutes", 20D, 0.1D, 10000D);
+
+            seasonLatitude = builder.comment(getTranslation("seasonlatitude"))
+                .defineInRange("seasonLatitude", 48D, -90D, 90D);
 
             dayStart = builder.comment(getTranslation("daystart"))
                 .defineInRange("dayStart", 23500D, 22300D, 24000D);
@@ -331,23 +341,29 @@ public class ConfigHandler {
             builder.pop(); // sleep
         }
 
-        public static double daySpeed() {
+        public static double daySpeed(Level level) {
             if (COMMON.speedMethod.get() == SpeedMethod.MINUTES) {
                 return (100F / COMMON.daySpeedMinutes.get()) / 10F;
             }
             else if (COMMON.speedMethod.get() == SpeedMethod.REALTIME) {
                 return (100F / 720F) / 10F;
             }
+            else if (COMMON.speedMethod.get() == SpeedMethod.SEASON) {
+                return (100F / (COMMON.seasonDayMinutes.get() * SeasonHelper.getDayRatio(level, COMMON.seasonLatitude.get()))) / 10F;
+            }
 
             return COMMON.daySpeed.get();
         }
 
-        public static double nightSpeed() {
+        public static double nightSpeed(Level level) {
             if (COMMON.speedMethod.get() == SpeedMethod.MINUTES) {
                 return (100F / COMMON.nightSpeedMinutes.get()) / 10F;
             }
             else if (COMMON.speedMethod.get() == SpeedMethod.REALTIME) {
                 return (100F / 720F) / 10F;
+            }
+            else if (COMMON.speedMethod.get() == SpeedMethod.SEASON) {
+                return (100F / (COMMON.seasonDayMinutes.get() * SeasonHelper.getNightRatio(level, COMMON.seasonLatitude.get()))) / 10F;
             }
 
             return COMMON.nightSpeed.get();

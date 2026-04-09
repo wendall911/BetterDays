@@ -25,10 +25,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 import net.minecraft.core.Holder;
+import net.minecraft.world.clock.ServerClockManager;
 import net.minecraft.world.clock.WorldClock;
 
 import betterdays.BetterDays;
-import betterdays.platform.ModLoader;
 import betterdays.registry.TimeEffectsRegistry;
 import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
@@ -87,9 +87,11 @@ public class TimeService {
         }
 
         Time oldTime = getDayTime();
-        double speed = getTimeSpeed(oldTime);
+        float speed = (float) getTimeSpeed(oldTime);
 
-        Services.PLATFORM.setTimeSpeed(level, (float) speed);
+        ServerClockManager clockManager = level.get().clockManager();
+
+        level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
 
         if (sleepStatus.allAwake()) {
             // This is needed to reset if using sleep effect
@@ -214,7 +216,7 @@ public class TimeService {
             // morning transition
             Time timeUntilMorning = Time.DAY_LENGTH.subtract(timeOfDay);
             if (timeUntilMorning.compareTo(timeDelta) < 0) {
-                double nextTimeSpeed = ConfigHandler.Common.daySpeed();
+                double nextTimeSpeed = ConfigHandler.Common.daySpeed(level.get());
                 double breakpointRatio = 1 - timeUntilMorning.divide(timeDelta);
 
                 return timeUntilMorning.add(nextTimeSpeed * breakpointRatio);
@@ -244,9 +246,10 @@ public class TimeService {
                 return monotonicInterpolator.evaluate(time.timeOfDay().longValue());
             }
             if (time.equals(DAY_START) || time.timeOfDay().betweenMod(DAY_START, NIGHT_START)) {
-                return ConfigHandler.Common.daySpeed();
-            } else {
-                return ConfigHandler.Common.nightSpeed();
+                return ConfigHandler.Common.daySpeed(level.get());
+            }
+            else {
+                return ConfigHandler.Common.nightSpeed(level.get());
             }
         }
 

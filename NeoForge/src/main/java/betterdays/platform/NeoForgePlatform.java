@@ -3,15 +3,18 @@ package betterdays.platform;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
-import net.minecraft.world.clock.ServerClockManager;
-
+import net.minecraft.world.level.Level;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.common.util.ClockAdjustment;
 import net.neoforged.neoforge.event.EventHooks;
 
+import technology.roughness.whitenoise.platform.Services;
+
 import betterdays.platform.services.IPlatform;
+import betterdays.utils.HomeostaticSeasonsHelper;
+import betterdays.utils.SeasonHelper;
 import betterdays.wrappers.ServerLevelWrapper;
 
 public class NeoForgePlatform implements IPlatform {
@@ -22,7 +25,7 @@ public class NeoForgePlatform implements IPlatform {
     }
 
     @Override
-    public @NotNull Field findField(@NotNull Class<?> clazz, @NotNull String name) throws NoSuchFieldException {
+    public @NonNull Field findField(@NonNull Class<?> clazz, @NonNull String name) throws NoSuchFieldException {
         try {
             final Field field = ObfuscationReflectionHelper.findField(clazz, name);
             field.setAccessible(true);
@@ -34,7 +37,7 @@ public class NeoForgePlatform implements IPlatform {
     }
 
     @Override
-    public @NotNull Method findMethod(@NotNull Class<?> clazz, @NotNull String name, Class<?> @NotNull ... parameters) throws NoSuchMethodException {
+    public @NonNull Method findMethod(@NonNull Class<?> clazz, @NonNull String name, Class<?> @NonNull ... parameters) throws NoSuchMethodException {
         try {
             final Method method = ObfuscationReflectionHelper.findMethod(clazz, name);
             method.setAccessible(true);
@@ -51,10 +54,14 @@ public class NeoForgePlatform implements IPlatform {
     }
 
     @Override
-    public void setTimeSpeed(ServerLevelWrapper level, float speed) {
-        ServerClockManager clockManager = level.get().clockManager();
+    public int getSeasonDay(Level level) {
+        int day = SeasonHelper.days[0];
 
-        level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
+        if (Services.PLATFORM.isModLoaded("homeostaticseasons") && HomeostaticSeasonsHelper.isDimensionWhitelisted(level.dimension())) {
+            day = HomeostaticSeasonsHelper.getSeasonDay(level);
+        }
+
+        return day;
     }
 
 }

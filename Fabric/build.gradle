@@ -15,6 +15,8 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
+    implementation group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-fabric", version: "${homeostaticseasons_version}"
+
     runtimeOnly group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
 
     // Testing Mods

@@ -2,6 +2,6 @@ package betterdays.config;
 
 public enum SpeedMethod {
 
-    RATIO, MINUTES, REALTIME
+    RATIO, MINUTES, REALTIME, SEASON
 
 }

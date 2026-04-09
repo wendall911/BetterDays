@@ -1,123 +1,87 @@
 {
   "betterdays.configuration.baserandomtickspeed.description": "La vitesse de tick aléatoire de base utilisée par l'effet de temps randomTickEffect.",
   "betterdays.configuration.baserandomtickspeed.name": "Vitesse de Tick Aléatoire de Base",
-
   "betterdays.configuration.blacklistdimensions.description": "Ce paramètre désactive le rendu du ciel pour certaines dimensions. Par exemple, dans l'Aether, si vous utilisez la commande \n/time set, le ciel peut trembler. Ajouter une dimension à la liste noire empêche ce comportement.",
   "betterdays.configuration.blacklistdimensions.name": "Dimensions en Liste Noire",
-
   "betterdays.configuration.blockentityeffect.description": "Lorsque cet effet est activé, les entités de blocs comme les fours, entonnoirs ou spawners progressent selon la vitesse actuelle du temps.",
   "betterdays.configuration.blockentityeffect.name": "Effet sur les Entités de Blocs",
-
   "betterdays.configuration.clearweatheronwake.description": "Définir sur 'true' pour que le temps soit dégagé au réveil, comme en vanilla.\nDéfinir sur 'false' pour laisser la météo évoluer naturellement. Ajoute du réalisme lorsque accelerateWeather est activé.\nNote : Ignoré si la règle de jeu doWeatherCycle est désactivée.",
   "betterdays.configuration.clearweatheronwake.name": "Ciel Dégagé au Réveil",
-
   "betterdays.configuration.clockalignment.description": "Définit l’alignement de l’horloge affichée au lit.",
   "betterdays.configuration.clockalignment.name": "Alignement de l’Horloge",
-
   "betterdays.configuration.clockmargin.description": "Définit la distance entre l’horloge et le bord de l’écran.\nInutilisé si clockAlignment est CENTER_CENTER.",
   "betterdays.configuration.clockmargin.name": "Marge de l’Horloge",
-
   "betterdays.configuration.clockscale.description": "Définit l’échelle de l’horloge du lit.",
   "betterdays.configuration.clockscale.name": "Échelle de l’Horloge",
-
   "betterdays.configuration.dayspeed.description": "La vitesse à laquelle le temps passe durant la journée.\nLa journée correspond à tout moment entre dayStart et nightStart le jour suivant.\nIl s’agit du RAPPORT par rapport à la vitesse vanilla.\nVitesse vanilla : 1.0",
   "betterdays.configuration.dayspeed.name": "Vitesse du Jour",
-
   "betterdays.configuration.dayspeedminutes.description": "Une autre manière de régler la vitesse du jour. Ce paramètre est exclusif avec daySpeed.\nSi les deux sont définis, speedMethod détermine lequel est utilisé.\nCe paramètre définit la durée du jour en minutes réelles.\nDurée vanilla : 10,0 minutes",
   "betterdays.configuration.dayspeedminutes.name": "Vitesse du Jour (Minutes)",
-
   "betterdays.configuration.daystart.description": "L’heure de début du jour. Configurable tant que le soleil apparaît et que la journée commence.\nPar défaut : 23500",
   "betterdays.configuration.daystart.name": "Tick de Début du Jour",
-
   "betterdays.configuration.displaybedclock.description": "Si activé, une horloge s’affiche dans l’interface de sommeil.",
   "betterdays.configuration.displaybedclock.name": "Afficher l’Horloge au Lit",
-
   "betterdays.configuration.effects.description": "Cette section définit les paramètres des effets de temps.\nCes effets modifient divers mécanismes du jeu pour correspondre à la vitesse actuelle du temps.\nIls peuvent avoir un impact notable sur les performances, surtout sur les serveurs.",
   "betterdays.configuration.effects.name": "Paramètres des Effets",
-
   "betterdays.configuration.enableinterpolatedtime.description": "Active la possibilité de définir un nombre infini de vitesses de temps sous forme de paires :\n(currentTick, desiredSpeed)\noù une interpolation par courbes de Bézier est effectuée entre chaque valeur.\nLes deux paires par défaut (0 et 24000) sont indispensables mais leurs valeurs peuvent être modifiées.",
   "betterdays.configuration.enableinterpolatedtime.name": "Activer le Temps Interpolé",
-
   "betterdays.configuration.enablesleepfeature.description": "Active ou désactive les fonctionnalités de sommeil du mod. L’activer modifie le comportement vanilla\net peut entrer en conflit avec d’autres mods de sommeil. Si désactivé, tous les paramètres de sommeil sont ignorés.",
   "betterdays.configuration.enablesleepfeature.name": "Activer la Fonction de Sommeil",
-
   "betterdays.configuration.enterbed.description": "Message envoyé lorsqu’un joueur entre dans son lit.",
   "betterdays.configuration.enterbed.name": "Message d’Entrée dans le Lit",
-
   "betterdays.configuration.gui.description": "Cette section définit les paramètres des éléments visuels côté client.",
   "betterdays.configuration.gui.name": "Interface (GUI)",
-
   "betterdays.configuration.hungereffect.description": "Lorsque cet effet est activé, la faim des joueurs progresse selon la vitesse actuelle du temps.",
   "betterdays.configuration.hungereffect.name": "Effet de Faim",
-
   "betterdays.configuration.interpolatedtimelist.description": "Ce sont les paires définissant la vitesse du temps au tick spécifié.\nLes deux paires par défaut doivent exister, mais leurs valeurs peuvent être modifiées.",
   "betterdays.configuration.interpolatedtimelist.name": "Liste des Vitesses Interpolées",
-
   "betterdays.configuration.interpolatedtimesmoothingfactor.description": "Valeur déterminant le facteur de lissage de l’algorithme d’interpolation.\nUne valeur élevée produit une transition plus douce.\nUne valeur basse rend la transition plus anguleuse.",
   "betterdays.configuration.interpolatedtimesmoothingfactor.name": "Facteur de Lissage de l’Interpolation",
-
   "betterdays.configuration.leavebed.description": "Message envoyé lorsqu’un joueur quitte son lit (sans être réveillé naturellement).",
   "betterdays.configuration.leavebed.name": "Message de Sortie du Lit",
-
   "betterdays.configuration.message.description": "Message formaté à envoyer. Voir la documentation dans le fichier de configuration pour plus de détails.",
   "betterdays.configuration.message.name": "Message",
-
   "betterdays.configuration.messages.description": "Cette section définit les paramètres des messages de notification.",
   "betterdays.configuration.messages.name": "Paramètres des Messages",
-
   "betterdays.configuration.morning.description": "Message envoyé après la fin d’un cycle de sommeil.",
   "betterdays.configuration.morning.name": "Message du Matin",
-
   "betterdays.configuration.nightspeed.description": "La vitesse à laquelle le temps passe durant la nuit.\nLa nuit correspond à tout moment entre nightStart et dayStart.\nIl s’agit du RAPPORT par rapport à la vitesse vanilla.\nVitesse vanilla : 1.0",
   "betterdays.configuration.nightspeed.name": "Vitesse de la Nuit",
-
   "betterdays.configuration.nightspeedminutes.description": "Une autre manière de régler la vitesse de la nuit. Ce paramètre est exclusif avec nightSpeed.\nSi les deux sont définis, speedMethod détermine lequel est utilisé.\nCe paramètre définit la durée de la nuit en minutes réelles.\nDurée vanilla : 10,0 minutes",
   "betterdays.configuration.nightspeedminutes.name": "Vitesse de la Nuit (Minutes)",
-
   "betterdays.configuration.nightstart.description": "L’heure de début de la nuit. Configurable entre le début du coucher de soleil et le début de la nuit.\nPar défaut : 12500",
   "betterdays.configuration.nightstart.name": "Tick de Début de Nuit",
-
   "betterdays.configuration.potioneffect.description": "Lorsque cet effet est activé, les effets de potions progressent selon la vitesse actuelle du temps.",
   "betterdays.configuration.potioneffect.name": "Effet de Potion",
-
   "betterdays.configuration.preventclockwobble.description": "Empêche le tremblement de l’horloge en actualisant sa position à chaque tick lorsque le joueur est au lit.",
   "betterdays.configuration.preventclockwobble.name": "Empêcher le Tremblement de l’Horloge",
-
   "betterdays.configuration.randomtickeffect.description": "Lorsque cet effet est activé, la vitesse des ticks aléatoires est synchronisée avec la vitesse du temps,\naccélérant (ou ralentissant) la croissance des cultures, arbres et herbe selon baseRandomTickSpeed × vitesse du temps.",
   "betterdays.configuration.randomtickeffect.name": "Effet de Tick Aléatoire",
-
   "betterdays.configuration.ratioplayersforsleep.description": "Pourcentage de joueurs d’une dimension qui doivent dormir pour passer au matin.\n1 = tous les joueurs doivent dormir, 0.5 = la moitié, etc.\n0 désactive effectivement cette fonctionnalité.",
   "betterdays.configuration.ratioplayersforsleep.name": "Ratio de Joueurs Nécessaires pour Dormir",
-
+  "betterdays.configuration.seasondayminutes.description": "An alternative way to set day and night speed. This setting is mutually exclusive with seasonLatitude.\nThis is the total number of minutes in a Minecraft day, including day and night.\nIf a compatible seasons mod is used, the day / night speed will change depending on the season.\nIf no compatible seasons mod is detected, the season is set to Early Spring by default.",
+  "betterdays.configuration.seasondayminutes.name": "Season Day Total Minutes",
+  "betterdays.configuration.seasonlatitude.description": "The latitude to use for calculating the day/night offset based on the current season.",
+  "betterdays.configuration.seasonlatitude.name": "Season Latitude",
   "betterdays.configuration.sleep.description": "Cette section définit les paramètres de la fonctionnalité de sommeil.\nSi un autre mod de sommeil est installé, il est recommandé de désactiver celle de Better Days.",
   "betterdays.configuration.sleep.name": "Paramètres du Sommeil",
-
   "betterdays.configuration.sleepspeedall.description": "Vitesse du temps lorsque tous les joueurs dorment.\nMettre -1 pour désactiver (sleepSpeedMax sera alors utilisé).",
   "betterdays.configuration.sleepspeedall.name": "Vitesse de Sommeil — Tous",
-
   "betterdays.configuration.sleepspeedcurve.description": "Définit la courbe d’interpolation reliant le pourcentage de joueurs endormis à la vitesse du temps.",
   "betterdays.configuration.sleepspeedcurve.name": "Courbe de Vitesse de Sommeil",
-
   "betterdays.configuration.sleepspeedmax.description": "## CE PARAMÈTRE DÉFINIT LA VITESSE DE SOMMEIL EN SOLO ###\nLa vitesse maximale lorsque tous les joueurs dorment.\nUne valeur de 110 correspond presque au temps vanilla nécessaire pour dormir.",
   "betterdays.configuration.sleepspeedmax.name": "Vitesse de Sommeil Max",
-
   "betterdays.configuration.sleepspeedmin.description": "La vitesse minimale lorsque seulement un joueur dort sur un serveur complet.",
   "betterdays.configuration.sleepspeedmin.name": "Vitesse de Sommeil Min",
-
   "betterdays.configuration.speedmethod.description": "Détermine la méthode utilisée pour régler la vitesse du jour et de la nuit.\nRATIO : utilise daySpeed et nightSpeed.\nMINUTES : utilise daySpeedMinutes et nightSpeedMinutes.\nREALTIME : fixe le jour et la nuit à 12 heures réelles chacun.",
   "betterdays.configuration.speedmethod.name": "Méthode de Vitesse",
-
   "betterdays.configuration.target.description": "Définit à qui ce message est envoyé.",
   "betterdays.configuration.target.name": "Cible du Message",
-
   "betterdays.configuration.time.description": "Cette section définit les paramètres de manipulation du temps.\nVous pouvez régler indépendamment les vitesses du jour et de la nuit,\nou définir une vitesse évoluant dynamiquement pendant le cycle.",
   "betterdays.configuration.time.name": "Paramètres du Temps",
-
   "betterdays.configuration.title": "Better Days",
-
   "betterdays.configuration.type.description": "Définit où ce message apparaît.",
   "betterdays.configuration.type.name": "Type de Message",
-
   "betterdays.configuration.weathereffect.description": "Lorsque cet effet est activé, la progression de la météo est synchronisée avec la vitesse du temps.",
   "betterdays.configuration.weathereffect.name": "Effet Météo"
 }

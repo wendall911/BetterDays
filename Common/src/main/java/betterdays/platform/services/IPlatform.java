@@ -3,7 +3,9 @@ package betterdays.platform.services;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
+import net.minecraft.world.level.Level;
 
 import betterdays.platform.ModLoader;
 
@@ -13,12 +15,12 @@ public interface IPlatform {
 
     void onSleepFinished(ServerLevelWrapper levelWrapper, long time);
 
-    @NotNull Field findField(final @NotNull Class<?> clazz, final @NotNull String name) throws NoSuchFieldException;
+    @NonNull Field findField(final @NonNull Class<?> clazz, final @NonNull String name) throws NoSuchFieldException;
 
-    @NotNull Method findMethod(final @NotNull Class<?> clazz, final @NotNull String name, final Class<?> @NotNull ... parameters) throws NoSuchMethodException;
+    @NonNull Method findMethod(final @NonNull Class<?> clazz, final @NonNull String name, final Class<?> @NonNull ... parameters) throws NoSuchMethodException;
 
     ModLoader getModLoader();
 
-    void setTimeSpeed(ServerLevelWrapper level, float speed);
+    int getSeasonDay(Level level);
 
 }
