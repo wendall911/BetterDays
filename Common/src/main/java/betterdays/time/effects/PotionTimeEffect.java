@@ -24,6 +24,7 @@ package betterdays.time.effects;
 import java.util.stream.Stream;
 
 import betterdays.config.ConfigHandler;
+import betterdays.platform.Services;
 import betterdays.time.SleepStatus;
 import betterdays.time.TimeContext;
 import betterdays.wrappers.ServerLevelWrapper;
@@ -61,7 +62,7 @@ public class PotionTimeEffect extends AbstractTimeEffect {
     /** Ticks all effects on {@code player} {@code ticks} times, then sends client update. */
     private static void tickEffects(ServerPlayerWrapper player, long ticks) {
         for (int i = 0; i < ticks; i++) {
-            player.tickEffects();
+            Services.PLATFORM.tickEffects(player);
         }
         player.sendMobEffectUpdatePackets();
     }

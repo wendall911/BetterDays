@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import betterdays.platform.ModLoader;
 
 import betterdays.wrappers.ServerLevelWrapper;
+import betterdays.wrappers.ServerPlayerWrapper;
 
 public interface IPlatform {
 
@@ -22,5 +23,7 @@ public interface IPlatform {
     ModLoader getModLoader();
 
     int getSeasonDay(Level level);
+
+    void tickEffects(ServerPlayerWrapper playerWrapper);
 
 }

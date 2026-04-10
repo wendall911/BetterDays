@@ -10,6 +10,12 @@ version = "${version}-${modLoader}"
 
 neoForge {
     version = neoforge_version
+    validateAccessTransformers = true
+    // Automatically enable neoforge AccessTransformers if the file exists
+    def at = project(':Common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)

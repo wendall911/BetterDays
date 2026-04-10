@@ -7,6 +7,8 @@ import java.util.HashMap;
 import org.jspecify.annotations.NonNull;
 
 import net.fabricmc.loader.api.FabricLoader;
+
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 import technology.roughness.whitenoise.platform.Services;
@@ -16,6 +18,7 @@ import betterdays.platform.services.IPlatform;
 import betterdays.utils.HomeostaticSeasonsHelper;
 import betterdays.utils.SeasonHelper;
 import betterdays.wrappers.ServerLevelWrapper;
+import betterdays.wrappers.ServerPlayerWrapper;
 
 public class FabricPlatform implements IPlatform {
 
@@ -62,6 +65,11 @@ public class FabricPlatform implements IPlatform {
         }
 
         return day;
+    }
+
+    @Override
+    public void tickEffects(ServerPlayerWrapper playerWrapper) {
+        playerWrapper.get().tickEffects();
     }
 
 }

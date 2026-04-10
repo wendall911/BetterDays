@@ -4,8 +4,6 @@
   "package": "betterdays.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LevelMixin",
-    "LivingEntityMixin",
     "ServerLevelMixin"
   ],
   "injectors": {

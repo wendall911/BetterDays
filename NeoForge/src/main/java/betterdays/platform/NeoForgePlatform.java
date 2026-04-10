@@ -16,6 +16,7 @@ import betterdays.platform.services.IPlatform;
 import betterdays.utils.HomeostaticSeasonsHelper;
 import betterdays.utils.SeasonHelper;
 import betterdays.wrappers.ServerLevelWrapper;
+import betterdays.wrappers.ServerPlayerWrapper;
 
 public class NeoForgePlatform implements IPlatform {
 
@@ -62,6 +63,11 @@ public class NeoForgePlatform implements IPlatform {
         }
 
         return day;
+    }
+
+    @Override
+    public void tickEffects(ServerPlayerWrapper playerWrapper) {
+        playerWrapper.get().tickEffects();
     }
 
 }

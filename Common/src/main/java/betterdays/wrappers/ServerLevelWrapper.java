@@ -21,21 +21,14 @@
 
 package betterdays.wrappers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.saveddata.WeatherData;
 import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.ServerLevelData;
 
-import betterdays.BetterDays;
 import betterdays.time.SleepStatus;
-import betterdays.utils.ReflectionUtil;
 
 /**
  * This class acts as a wrapper for {@link ServerLevel} to increase consistency between Minecraft
@@ -111,14 +104,7 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
      * @param newStatus  the new sleep status
      */
     public void setSleepStatus(SleepStatus newStatus) {
-        try {
-            Field sleepStatus = ReflectionUtil.findField(ServerLevel.class, "sleepStatus");
-
-            sleepStatus.set(this.get(), newStatus);
-        }
-        catch (IllegalAccessException | NoSuchFieldException e) {
-            BetterDays.LOGGER.error("Error settings sleep status.", e);
-        }
+        wrapped.sleepStatus = newStatus;
     }
 
     /**
@@ -126,20 +112,14 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
      */
     public void wakeUpAllPlayers() {
         this.get().players().stream()
-                .map(player -> new ServerPlayerWrapper(player))
+                .map(ServerPlayerWrapper::new)
                 .filter(ServerPlayerWrapper::isSleeping)
                 .forEach(player -> player.get().stopSleepInBed(false, false));
     }
 
     /** Ticks all loaded block entities in this level. */
     public void tickBlockEntities() {
-        try {
-            Method tickBlockEntitiesMethod = ReflectionUtil.findMethod(Level.class, "tickBlockEntities");
-
-            tickBlockEntitiesMethod.invoke(get());
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            BetterDays.LOGGER.error("Error ticking block entities.", e);
-        }
+        wrapped.tickBlockEntities();
     }
 
     /**
