@@ -1,6 +1,6 @@
 package betterdays.mixin;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -34,7 +34,7 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    @Inject(method = "disconnect", at = @At("HEAD"))
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;ZZ)V", at = @At("HEAD"))
     private void $betterdaysInjectDisconnect(CallbackInfo ci) {
         if (this.level != null) {
             TimeInterpolator.onWorldLoad(this.level);

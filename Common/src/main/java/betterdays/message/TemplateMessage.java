@@ -24,7 +24,7 @@ package betterdays.message;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import org.apache.logging.log4j.core.lookup.MapLookup;
 import org.apache.logging.log4j.core.lookup.StrSubstitutor;
@@ -136,13 +136,14 @@ public class TemplateMessage {
      * @param level  the level to send targeted message to, if applicable
      */
     public void send(MessageTarget target, @Nullable ServerLevelWrapper level) {
-        if (target != MessageTarget.ALL && level == null) {
-            throw new IllegalArgumentException("Level must be specified unless target is MessageTarget.ALL.");
+        if (level == null) {
+            throw new IllegalArgumentException("Level must be specified.");
         }
 
         if (target == MessageTarget.ALL) {
             level.get().getServer().getPlayerList().broadcastSystemMessage(this.message.get(), overlay);
-        } else {
+        }
+        else {
             Stream<ServerPlayerWrapper> playerStream = level.get().players().stream()
                 .map(ServerPlayerWrapper::new);
 
