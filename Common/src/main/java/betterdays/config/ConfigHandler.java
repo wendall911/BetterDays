@@ -414,8 +414,8 @@ public class ConfigHandler {
         }
 
         public static boolean enableSleepFeature() {
-            boolean sleepModLoaded = Services.PLATFORM.isModLoaded("sleepwarp")
-                || Services.PLATFORM.isModLoaded("sleep_tight");
+            boolean sleepModLoaded = Services.WN_PLATFORM.isModLoaded("sleepwarp")
+                || Services.WN_PLATFORM.isModLoaded("sleep_tight");
 
             return !sleepModLoaded ? COMMON.enableSleepFeature.get() : false;
         }

@@ -57,7 +57,7 @@ public class FabricPlatform implements IPlatform {
     public int getSeasonDay(Level level) {
         int day = SeasonHelper.days[0];
 
-        if (Services.PLATFORM.isModLoaded("homeostaticseasons") && HomeostaticSeasonsHelper.isDimensionWhitelisted(level.dimension())) {
+        if (Services.WN_PLATFORM.isModLoaded("homeostaticseasons") && HomeostaticSeasonsHelper.isDimensionWhitelisted(level.dimension())) {
             day = HomeostaticSeasonsHelper.getSeasonDay(level);
         }
 

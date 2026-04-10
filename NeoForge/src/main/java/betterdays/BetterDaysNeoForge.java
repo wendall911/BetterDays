@@ -16,7 +16,7 @@ public class BetterDaysNeoForge {
         BetterDays.init();
         BetterDays.initConfig();
 
-        if (Services.PLATFORM.isPhysicalClient()) {
+        if (Services.WN_PLATFORM.isPhysicalClient()) {
             BetterDaysClientNeoForge.init(eventBus);
         }
 
