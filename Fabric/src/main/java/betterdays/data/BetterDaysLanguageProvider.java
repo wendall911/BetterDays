@@ -61,10 +61,6 @@ public class BetterDaysLanguageProvider extends FabricLanguageProvider {
         addTranslationDescription(builder, "effects");
         addTranslationName(builder, "weathereffect", "Weather Effect");
         addTranslationDescription(builder, "weathereffect");
-        addTranslationName(builder, "randomtickeffect", "Random Tick Effect");
-        addTranslationDescription(builder, "randomtickeffect");
-        addTranslationName(builder, "baserandomtickspeed", "Base Random Tick Speed");
-        addTranslationDescription(builder, "baserandomtickspeed");
         addTranslationName(builder, "potioneffect", "Potion Effect");
         addTranslationDescription(builder, "potioneffect");
         addTranslationName(builder, "hungereffect", "Hunger Effect");
@@ -83,12 +79,8 @@ public class BetterDaysLanguageProvider extends FabricLanguageProvider {
         addTranslationDescription(builder, "sleepspeedall");
         addTranslationName(builder, "sleepspeedcurve", "Sleep Speed Curve");
         addTranslationDescription(builder, "sleepspeedcurve");
-        addTranslationName(builder, "clearweatheronwake", "Clear Weather On Wake");
-        addTranslationDescription(builder, "clearweatheronwake");
         addTranslationName(builder, "displaybedclock", "Display Bed Clock");
         addTranslationDescription(builder, "displaybedclock");
-        addTranslationName(builder, "ratioplayersforsleep", "Ratio of Players required for Sleep");
-        addTranslationDescription(builder, "ratioplayersforsleep");
         addTranslationName(builder, "messages", "Message Settings"); // Section
         addTranslationDescription(builder, "messages");
         addTranslationName(builder, "morning", "Morning Message Settings"); // Subsection

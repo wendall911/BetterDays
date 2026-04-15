@@ -111,19 +111,6 @@ public class Translations {
             "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
             "Note: This setting is not applicable if game rule doWeatherCycle is false."
         ));
-        translations.put("randomtickeffect", joiner(
-            "When applied, this effect syncs the random tick speed with the current speed of time, forcing",
-            "crop, tree, and grass growth to occur at baseRandomTickSpeed multiplied by the current time-speed."
-        ));
-        translations.put("randomtickeffect.comment", joiner(
-            "When set to SLEEPING, randomTickSpeed is set to baseRandomTickSpeed unless at least one player is sleeping in a dimension.",
-            "More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick",
-            "WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,",
-            "use the baseRandomTickSpeed setting instead of changing the game rule directly.",
-            "Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.",
-            "This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0."
-        ));
-        translations.put("baserandomtickspeed", "The base random tick speed used by the randomTickEffect time effect.");
         translations.put("potioneffect", "When applied, this effect progresses potion effects to match the rate of the current time-speed.");
         translations.put("potioneffect.comment", joiner(
             "This effect does not apply if time speed is 1.0 or less.",

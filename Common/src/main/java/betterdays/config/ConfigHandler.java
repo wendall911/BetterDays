@@ -161,8 +161,6 @@ public class ConfigHandler {
             && ((String) s).matches("\\d+,\\d*\\.?\\d+");
 
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> weatherEffect;
-        private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> randomTickEffect;
-        private final WhiteNoiseConfigSpec.IntValue baseRandomTickSpeed;
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> potionEffect;
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> hungerEffect;
         private final WhiteNoiseConfigSpec.EnumValue<EffectCondition> blockEntityEffect;
@@ -172,7 +170,6 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedMax;
         private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedAll;
         private final WhiteNoiseConfigSpec.DoubleValue sleepSpeedCurve;
-        private final WhiteNoiseConfigSpec.BooleanValue clearWeatherOnWake;
         private final WhiteNoiseConfigSpec.BooleanValue displayBedClock;
         private final WhiteNoiseConfigSpec.DoubleValue ratioPlayersForSleep;
 
@@ -235,15 +232,6 @@ public class ConfigHandler {
                 )
                 .defineEnum("weatherEffect", EffectCondition.SLEEPING);
 
-            randomTickEffect = builder.comment(
-                    getTranslation("randomtickeffect"),
-                    getTranslation("randomtickeffect.comment")
-                )
-                .defineEnum("randomTickEffect", EffectCondition.NEVER);
-
-            baseRandomTickSpeed = builder.comment(getTranslation("baserandomtickspeed"))
-                .defineInRange("baseRandomTickSpeed", 3, 0, Integer.MAX_VALUE);
-
             potionEffect = builder.comment(
                     getTranslation("potioneffect"),
                     getTranslation("potioneffect.comment")
@@ -284,9 +272,6 @@ public class ConfigHandler {
                     getTranslation("sleepspeedcurve.comment")
                 )
                 .defineInRange("sleepSpeedCurve", 0.3D, 0D, 1D);
-
-            clearWeatherOnWake = builder.comment(getTranslation("clearweatheronwake"))
-                .define("clearWeatherOnWake", true);
 
             displayBedClock = builder.comment(getTranslation("displaybedclock"))
                 .define("displayBedClock", true);
@@ -393,14 +378,6 @@ public class ConfigHandler {
             return COMMON.weatherEffect.get();
         }
 
-        public static EffectCondition randomTickEffect() {
-            return COMMON.randomTickEffect.get();
-        }
-
-        public static int baseRandomTickSpeed() {
-            return COMMON.baseRandomTickSpeed.get();
-        }
-
         public static EffectCondition potionEffect() {
             return COMMON.potionEffect.get();
         }
@@ -434,10 +411,6 @@ public class ConfigHandler {
 
         public static double sleepSpeedCurve() {
             return COMMON.sleepSpeedCurve.get();
-        }
-
-        public static boolean clearWeatherOnWake() {
-            return COMMON.clearWeatherOnWake.get();
         }
 
         public static boolean displayBedClock() {

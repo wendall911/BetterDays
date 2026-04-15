@@ -26,10 +26,13 @@ import net.minecraft.world.level.LevelAccessor;
 
 import betterdays.config.ConfigHandler;
 import betterdays.time.SleepStatus;
+import betterdays.time.Time;
 import betterdays.time.TimeService;
 import betterdays.time.TimeServiceManager;
 import betterdays.wrappers.ServerLevelWrapper;
 import betterdays.wrappers.ServerPlayerWrapper;
+
+import static betterdays.time.TimeService.DAY_START;
 
 /** This class listens for events and sends out BetterDays chat notifications. */
 public class BetterDaysMessages {
@@ -42,7 +45,7 @@ public class BetterDaysMessages {
         TimeService service = TimeServiceManager.service;
 
         if (ConfigHandler.Common.enableSleepFeature()
-                && player.getSleepTimer() == 2
+                && (player.getSleepTimer() == 2 || player.getSleepTimer() == 0)
                 && player.getClass() == ServerPlayerWrapper.playerClass
                 && service != null
                 && service.level.get().equals(player.level())
@@ -63,6 +66,7 @@ public class BetterDaysMessages {
         if (ConfigHandler.Common.enableSleepFeature()
                 && player.getClass() == ServerPlayerWrapper.playerClass
                 && service != null
+                && !Time.crossedMorning(DAY_START, service.getDayTime())
                 && service.level.get().equals(player.level())
                 && service.level.get().players().size() > 1
                 && service.level.daylightRuleEnabled()) {

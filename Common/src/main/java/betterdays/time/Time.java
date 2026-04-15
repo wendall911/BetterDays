@@ -197,7 +197,7 @@ public class Time extends Number implements Comparable<Time> {
      * @param b  the second time to check
      */
     public static boolean crossedMorning(Time a, Time b) {
-        return a.getDay() != b.getDay();
+        return (a.getDayTime() < b.getDayTime()) && b.getDayTime() < DAY_TICKS;
     }
 
     /**
@@ -208,6 +208,10 @@ public class Time extends Number implements Comparable<Time> {
      */
     public long getDay() {
         return this.longPart / DAY_TICKS;
+    }
+
+    public long getDayTime() {
+        return this.longPart % DAY_TICKS;
     }
 
     /**

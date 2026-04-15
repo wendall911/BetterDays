@@ -22,22 +22,17 @@
 package betterdays.time;
 
 import java.util.Collection;
-import java.util.Optional;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.clock.ServerClockManager;
-import net.minecraft.world.clock.WorldClock;
 
 import betterdays.BetterDays;
 import betterdays.registry.TimeEffectsRegistry;
 import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
 import betterdays.platform.Services;
-import betterdays.time.effects.EffectCondition;
 import betterdays.time.effects.TimeEffect;
 import betterdays.utils.MathUtils;
 import betterdays.wrappers.ServerLevelWrapper;
-import betterdays.wrappers.TimePacketWrapper;
 
 /**
  * Handles the Better Days time and sleep functionality for a level.
@@ -46,6 +41,9 @@ public class TimeService {
 
     /** Time of day when the sun rises above the horizon. */
     public static final Time DAY_START = new Time(ConfigHandler.Common.dayStart());
+
+    /** Time of day players are awake */
+    public static final Time WAKEUP = new Time(23450);
 
     /** Time of day when the sun sets below the horizon. */
     public static final Time NIGHT_START = new Time(ConfigHandler.Common.nightStart());
@@ -86,82 +84,32 @@ public class TimeService {
             return;
         }
 
-        Time oldTime = getDayTime();
-        float speed = (float) getTimeSpeed(oldTime);
+        Time time = getDayTime();
+        float speed = (float) getTimeSpeed(time);
 
         ServerClockManager clockManager = level.get().clockManager();
 
         level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
 
-        if (sleepStatus.allAwake()) {
-            // This is needed to reset if using sleep effect
-            tryResetRandomTickSpeed();
-        }
-        else {
+        if (!sleepStatus.allAwake()) {
             Time deltaTime = tickTime();
-            Time time = getDayTime();
             TimeContext context = new TimeContext(this, time, deltaTime);
 
             getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 
-            preventTimeOverflow();
-            broadcastTime();
-            vanillaTimeCompensation();
-
-            if (ConfigHandler.Common.enableSleepFeature() && !sleepStatus.allAwake() && Time.crossedMorning(oldTime, time)) {
+            if (ConfigHandler.Common.enableSleepFeature() && Time.crossedMorning(WAKEUP, time)) {
                 handleMorning();
             }
         }
     }
 
-    private void tryResetRandomTickSpeed() {
-        EffectCondition condition = ConfigHandler.Common.randomTickEffect();
-
-        if (condition != EffectCondition.NEVER) {
-            level.setRandomTickSpeed(ConfigHandler.Common.baseRandomTickSpeed());
-        }
-    }
-
-    private void handleMorning() {
+    public void handleMorning() {
         long time = level.get().getDefaultClockTime();
 
         Services.PLATFORM.onSleepFinished(level, time);
-        sleepStatus.removeAllSleepers();
-        level.wakeUpAllPlayers();
-
-        if (level.weatherRuleEnabled() && ConfigHandler.Common.clearWeatherOnWake()) {
-            level.stopWeather();
-        }
 
         BetterDays.LOGGER.debug("Sleep cycle complete on dimension: {}.",
                 level.get().dimension().identifier());
-    }
-
-    /**
-     * This method compensates for time changes made by the vanilla server every tick.
-     *
-     * The vanilla server increments time at a rate of 1 every tick. Since this functionality
-     * conflicts with this mod's time changes, and this functionality cannot be prevented, this
-     * method should be called at the end of the {@code START} phase of every world tick to undo
-     * this vanilla progression.
-     */
-    private void vanillaTimeCompensation() {
-        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
-
-        clockHolder.ifPresent(worldClockHolder -> level.get().getServer().clockManager().addTicks(worldClockHolder, -1));
-    }
-
-    /**
-     * Prevents time value from getting too large by essentially keeping it modulo a multiple of the
-     * lunar cycle.
-     */
-    private void preventTimeOverflow() {
-        long time = level.get().getDefaultClockTime();
-        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
-
-        if (time > OVERFLOW_THRESHOLD && clockHolder.isPresent()) {
-            level.get().getServer().clockManager().addTicks(clockHolder.get(), -OVERFLOW_THRESHOLD);
-        }
     }
 
     /**
@@ -173,57 +121,7 @@ public class TimeService {
     private Time tickTime() {
         Time time = getDayTime();
 
-        Time timeDelta = new Time(getTimeSpeed(time));
-        timeDelta = correctForOvershoot(time, timeDelta);
-
-        setDayTime(time.add(timeDelta));
-
-        return timeDelta;
-    }
-
-    /**
-     * Checks to see if the time-speed will change after elapsing time by {@code timeDelta}, and
-     * correct for any overshooting (or undershooting) based on the new speed.
-     *
-     * @param time  the current time
-     * @param timeDelta  the proposed amount of time to elapse
-     * @return the adjusted amount of time to elapse
-     */
-    private Time correctForOvershoot(Time time, Time timeDelta) {
-        Time nextTime = time.add(timeDelta);
-        Time timeOfDay = time.timeOfDay();
-        Time nextTimeOfDay = nextTime.timeOfDay();
-
-        if (sleepStatus.allAwake()) {
-            // day to night transition
-            if (NIGHT_START.betweenMod(timeOfDay, nextTimeOfDay)) {
-                double nextTimeSpeed = getTimeSpeed(nextTime);
-                Time timeUntilBreakpoint = NIGHT_START.subtract(timeOfDay);
-                double breakpointRatio = 1 - timeUntilBreakpoint.divide(timeDelta);
-
-                return timeUntilBreakpoint.add(nextTimeSpeed * breakpointRatio);
-            }
-
-            // day to night transition
-            if (DAY_START.betweenMod(timeOfDay, nextTimeOfDay)) {
-                double nextTimeSpeed = getTimeSpeed(nextTime);
-                Time timeUntilBreakpoint = DAY_START.subtract(timeOfDay);
-                double breakpointRatio = 1 - timeUntilBreakpoint.divide(timeDelta);
-
-                return timeUntilBreakpoint.add(nextTimeSpeed * breakpointRatio);
-            }
-        } else {
-            // morning transition
-            Time timeUntilMorning = Time.DAY_LENGTH.subtract(timeOfDay);
-            if (timeUntilMorning.compareTo(timeDelta) < 0) {
-                double nextTimeSpeed = ConfigHandler.Common.daySpeed(level.get());
-                double breakpointRatio = 1 - timeUntilMorning.divide(timeDelta);
-
-                return timeUntilMorning.add(nextTimeSpeed * breakpointRatio);
-            }
-        }
-
-        return timeDelta;
+        return new Time(getTimeSpeed(time));
     }
 
     /**
@@ -273,49 +171,6 @@ public class TimeService {
      */
     public Time getDayTime() {
         return new Time(level.get().getDefaultClockTime(), timeDecimalAccumulator);
-    }
-
-    /**
-     * Sets this level's 'daytime' to the integer component of {@code time}.
-     * @param time  the time to set
-     * @return the new time
-     */
-    public Time setDayTime(Time time) {
-        Optional<Holder<WorldClock>> clockHolder = level.get().dimensionType().defaultClock();
-
-        timeDecimalAccumulator = time.fractionalValue();
-        clockHolder.ifPresent(worldClockHolder -> level.get().getServer().clockManager().setTotalTicks(worldClockHolder, time.longValue()));
-
-        return time;
-    }
-
-    /**
-     * Broadcasts the current time to all players who observe it.
-     */
-    public void broadcastTime() {
-        TimePacketWrapper timePacket = TimePacketWrapper.create(level);
-        level.get().getServer().getPlayerList().getPlayers().stream()
-                .filter(player -> managesLevel(new ServerLevelWrapper(player.level())))
-                .forEach(player -> player.connection.send(timePacket.get()));
-    }
-
-    /**
-     * Returns true if {@code levelToCheck} has its time managed by this object, or false otherwise.
-     * If this object is managing the overworld, this method will return true for all derived
-     * levels.
-     *
-     * @param levelToCheck  the level to check
-     * @return true if {@code levelToCheck} has its time managed by this object, or false otherwise.
-     */
-    public boolean managesLevel(ServerLevelWrapper levelToCheck) {
-        if (level.get().equals(levelToCheck.get())) {
-            return true;
-        } else if (level.get().equals(level.get().getServer().overworld())
-                && ServerLevelWrapper.isDerived(levelToCheck.get())) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private Collection<RegistryObject<TimeEffect>> getActiveTimeEffects() {

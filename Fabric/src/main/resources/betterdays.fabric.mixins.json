@@ -4,13 +4,11 @@
   "package": "betterdays.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ServerLevelMixin"
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "ClientLevelMixin",
-    "MinecraftClientMixin"
   ]
 }

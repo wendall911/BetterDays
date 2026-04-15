@@ -28,7 +28,6 @@ import betterdays.BetterDays;
 import betterdays.time.effects.BlockEntityTimeEffect;
 import betterdays.time.effects.HungerTimeEffect;
 import betterdays.time.effects.PotionTimeEffect;
-import betterdays.time.effects.RandomTickSleepEffect;
 import betterdays.time.effects.TimeEffect;
 import betterdays.time.effects.WeatherSleepEffect;
 
@@ -46,14 +45,12 @@ public class TimeEffectsRegistry {
     public static final RegistryProvider<TimeEffect> TIME_EFFECT_REGISTRY = RegistryProvider.get(KEY, BetterDays.MODID, true);
 
     public static final RegistryObject<TimeEffect> WEATHER_EFFECT;
-    public static final RegistryObject<TimeEffect> RANDOM_TICK_EFFECT;
     public static final RegistryObject<TimeEffect> POTION_EFFECT;
     public static final RegistryObject<TimeEffect> HUNGER_EFFECT;
     public static final RegistryObject<TimeEffect> BLOCK_ENTITY_EFFECT;
 
     static {
         WEATHER_EFFECT = TIME_EFFECT_REGISTRY.register("weather", WeatherSleepEffect::new);
-        RANDOM_TICK_EFFECT = TIME_EFFECT_REGISTRY.register("random_tick", RandomTickSleepEffect::new);
         POTION_EFFECT = TIME_EFFECT_REGISTRY.register("potion", PotionTimeEffect::new);
         HUNGER_EFFECT = TIME_EFFECT_REGISTRY.register("hunger", HungerTimeEffect::new);
         BLOCK_ENTITY_EFFECT = TIME_EFFECT_REGISTRY.register("block_entity", BlockEntityTimeEffect::new);
