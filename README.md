@@ -128,6 +128,13 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 
 ```toml
 [time]
+	#Determines which method is used to set day and night speed.
+	#RATIO: Uses daySpeed and nightSpeed settings.
+	#MINUTES: Uses daySpeedMinutes and nightSpeedMinutes settings.
+	#REALTIME: Sets day and night to 12 real-world hours each.
+	#SEASON: Uses seasonDayMinutes and seasonLatitude settings.
+	#Allowed Values: RATIO, MINUTES, REALTIME, SEASON
+	speedMethod = "MINUTES"
 	#The speed at which time passes during the day.
 	#Day is defined as any time between dayStart (see below) and nightStart (see below) the next day.
 	#This is the RATIO of time passing relative to vanilla.
@@ -141,23 +148,17 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#Range: 0.0 ~ 24000.0
 	nightSpeed = 1.0
 	#An alternative way to set day speed. This setting is mutually exclusive with daySpeed.
-	#If both are set, speedMethod (see below) determines which setting is used.
+	#If both are set, speedMethod (see above) determines which setting is used.
 	#This setting defines the length of the day in real-world minutes.
 	#Vanilla length: 10.0 minutes
 	#Range: 0.1 ~ 10000.0
 	daySpeedMinutes = 10.0
 	#An alternative way to set night speed. This setting is mutually exclusive with nightSpeed.
-	#If both are set, speedMethod (see below) determines which setting is used.
+	#If both are set, speedMethod (see above) determines which setting is used.
 	#This setting defines the length of the night in real-world minutes.
 	#Vanilla length: 10.0 minutes
 	#Range: 0.1 ~ 10000.0
 	nightSpeedMinutes = 10.0
-	#Determines which method is used to set day and night speed.
-	#RATIO: Uses daySpeed and nightSpeed settings.
-	#MINUTES: Uses daySpeedMinutes and nightSpeedMinutes settings.
-	#REALTIME: Sets day and night to 12 real-world hours each.
-	#Allowed Values: RATIO, MINUTES, REALTIME
-	speedMethod = "RATIO"
 	#The time to start day. This is configurable within the time the sun appears and day starts.
 	#Default: 23500
 	#Range: 22300.0 ~ 24000.0
@@ -180,6 +181,15 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#These are the pairs that define what speed time should run at, at the specified day/night tick
 	#The two default pairs need to exist, but their time speed values can be modified
 	interpolatedTimeList = ["0,1.0", "24000,1.0"]
+	#An alternative way to set day and night speed. This setting is mutually exclusive with seasonLatitude.
+	#This is the total number of minutes in a Minecraft day, including day and night.
+	#If a compatible seasons mod is used, the day / night speed will change depending on the season.
+	#If no compatible seasons mod is detected, the season is set to Early Spring by default.
+	#Range: 0.1 ~ 10000.0
+	seasonDayMinutes = 20.0
+	#The latitude to use for calculating the day/night offset based on the current season.
+	#Range: -90.0 ~ 90.0
+	seasonLatitude = 48.0
 
 	[time.effects]
 		#When applied, this effect syncs the passage of weather with the current speed of time.
@@ -187,42 +197,29 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 		#When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.
 		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
 		#Note: This setting is not applicable if game rule doWeatherCycle is false.
-		#Allowed Values: NEVER, ALWAYS, SLEEPING
+		#Allowed Values: NEVER, SLEEPING
 		weatherEffect = "SLEEPING"
-		#When applied, this effect syncs the random tick speed with the current speed of time, forcing
-		#crop, tree, and grass growth to occur at baseRandomTickSpeed multiplied by the current time-speed.
-		#When set to SLEEPING, randomTickSpeed is set to baseRandomTickSpeed unless at least one player is sleeping in a dimension.
-		#More information on the effects of random tick speed can be found here: https://minecraft.wiki/w/Tick#Random_tick
-		#WARNING: This setting overwrites the randomTickSpeed game rule. To modify the base random tick speed,
-		#use the baseRandomTickSpeed setting instead of changing the game rule directly.
-		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
-		#This effect has a minimum randomTickSpeed of 1 if time speed is less than 1.0.
-		#Allowed Values: NEVER, ALWAYS, SLEEPING
-		randomTickEffect = "NEVER"
-		#The base random tick speed used by the randomTickEffect time effect.
-		#Range: > 0
-		baseRandomTickSpeed = 3
 		#When applied, this effect progresses potion effects to match the rate of the current time-speed.
 		#This effect does not apply if time speed is 1.0 or less.
 		#THIS MAY HAVE A NEGATIVE IMPACT ON PERFORMANCE IN SERVERS WITH MANY PLAYERS.
 		#When set to ALWAYS, this effect applies to all players in the dimension, day or night.
 		#When set to SLEEPING, this effect only applies to players who are sleeping.
 		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
-		#Allowed Values: NEVER, ALWAYS, SLEEPING
+		#Allowed Values: NEVER, SLEEPING
 		potionEffect = "NEVER"
 		#When applied, this effect progresses player hunger effects to match the rate of the current time-speed.
 		#This results in faster healing when food level is full, and faster harm when food level is too low.
 		#This effect does not apply if time speed is 1.0 or less.
 		#When set to ALWAYS, this effect applies to all players in the dimension, day or night. Not recommended on higher difficulty settings
 		#When set to SLEEPING, this effect only applies to players who are sleeping.
-		#Allowed Values: NEVER, ALWAYS, SLEEPING
+		#Allowed Values: NEVER, SLEEPING
 		hungerEffect = "NEVER"
 		#When applied, this effect progresses block entities like furnaces, hoppers, and spawners to match the rate of the current time-speed.
 		#WARNING: This time-effect has a significant impact on performance.
 		#This effect does not apply if time speed is 1.0 or less.
 		#When set to SLEEPING, this effect only applies when at least one player is sleeping in a dimension.
 		#Note: On NeoForge 1.21.1+ this is already handled by the platform. SLEEPING will still work as intended.
-		#Allowed Values: NEVER, ALWAYS, SLEEPING
+		#Allowed Values: NEVER, SLEEPING
 		blockEntityEffect = "NEVER"
 
 [sleep]
@@ -250,13 +247,6 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#Credit to SmoothSleep for the idea: https://www.spigotmc.org/resources/smoothsleep.32043/
 	#Range: 0.0 ~ 1.0
 	sleepSpeedCurve = 0.3
-	#Set to 'true' for the weather to clear when players wake up in the morning as it does in vanilla.
-	#Set to 'false' to force weather to pass naturally. Adds realism when accelerateWeather is enabled.
-	#Note: This setting is ignored if game rule doWeatherCycle is false.
-	clearWeatherOnWake = true
-	#When true, players are allowed to sleep at all times of day in dimensions controlled by Better Days.
-	#Note: Other mods may override this ability.
-	allowDaySleep = false
 	#When true, a clock is displayed in the sleep interface.
 	displayBedClock = true
 	#The ratio of players in a dimension that must be sleeping to skip to morning.
@@ -268,21 +258,23 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 	#This section defines settings for notification messages.
 	#All messages support Minecraft formatting codes (https://minecraft.wiki/w/Formatting_codes).
 	#All messages have variables that can be inserted using the following format: ${variableName}
+	#Any message can be disabled by setting it to an empty string.
 	#The type option controls where the message appears:
-	#	SYSTEM: Appears as a message in the chat. (e.g., "Respawn point set")
-	#	GAME_INFO: Game information that appears above the hotbar (e.g., "You may not rest now, the bed is too far away").
+	#    SYSTEM: Appears as a message in the chat. (e.g., "Respawn point set")
+	#    GAME_INFO: Game information that appears above the hotbar (e.g., "You may not rest now, the bed is too far away").
 	#The target option controls to whom the message is sent:
-	#	ALL: Sends the message to all players on the server.
-	#	DIMENSION: Sends the message to all players in the current dimension.
-	#	SLEEPING: Sends the message to all players in the current dimension who are sleeping.
+	#    ALL: Sends the message to all players on the server.
+	#    DIMENSION: Sends the message to all players in the current dimension.
+	#    SLEEPING: Sends the message to all players in the current dimension who are sleeping.
 	[sleep.messages]
 
 		#This message is sent after a sleep cycle has completed.
 		[sleep.messages.morning]
 			#Available variables:
+			#
 			#sleepingPlayers -> the number of players in the current dimension who were sleeping.
 			#totalPlayers -> the number of players in the current dimension (spectators are not counted).
-			#sleepingPercentage -> the percentage of players in the current dimension who were sleeping (does not include % symbol).
+			#sleepingPercentage -> the percentage of players in the current dimension who are sleeping (does not include % symbol).
 			message = "§e§oTempus fugit!"
 			#Sets where this message appears.
 			#Allowed Values: SYSTEM, GAME_INFO
@@ -304,6 +296,7 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 			#Allowed Values: SYSTEM, GAME_INFO
 			type = "GAME_INFO"
 			#Sets to whom this message is sent.
+			#
 			#Allowed Values: ALL, DIMENSION, SLEEPING
 			target = "DIMENSION"
 
@@ -318,7 +311,8 @@ Location relative to Minecraft folder: `./config/betterdays-common.toml`
 			#Sets where this message appears.
 			#Allowed Values: SYSTEM, GAME_INFO
 			type = "GAME_INFO"
-			#Sets to whom this message is sent. 
+			#Sets to whom this message is sent.
+			#
 			#Allowed Values: ALL, DIMENSION, SLEEPING
 			target = "DIMENSION"
 ```
