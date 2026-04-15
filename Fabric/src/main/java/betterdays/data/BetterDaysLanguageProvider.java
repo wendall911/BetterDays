@@ -81,6 +81,8 @@ public class BetterDaysLanguageProvider extends FabricLanguageProvider {
         addTranslationDescription(builder, "sleepspeedcurve");
         addTranslationName(builder, "displaybedclock", "Display Bed Clock");
         addTranslationDescription(builder, "displaybedclock");
+        addTranslationName(builder, "ratioplayersforsleep", "Ratio of Players required for Sleep");
+        addTranslationDescription(builder, "ratioplayersforsleep");
         addTranslationName(builder, "messages", "Message Settings"); // Section
         addTranslationDescription(builder, "messages");
         addTranslationName(builder, "morning", "Morning Message Settings"); // Subsection
