@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player.BedSleepingProblem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import betterdays.message.BetterDaysMessages;
@@ -23,6 +24,15 @@ public abstract class ServerPlayerMixin {
 
         if (cir.getReturnValue().right().isPresent()) {
             BetterDaysMessages.onSleepingCheckEvent(player);
+        }
+    }
+
+    @Inject(method = "stopSleepInBed", at = @At(value = "HEAD"))
+    private void betterdays$stopSleepInBed(boolean forcefulWakeUp, boolean updateLevelList, CallbackInfo ci) {
+        if (updateLevelList) {
+            ServerPlayer player = (ServerPlayer) (Object) this;
+
+            BetterDaysMessages.onPlayerWakeUpEvent(player);
         }
     }
 

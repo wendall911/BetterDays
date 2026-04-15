@@ -91,13 +91,13 @@ public class TimeService {
 
         level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
 
-        if (!sleepStatus.allAwake()) {
+        if (!sleepStatus.allAwake() && ConfigHandler.Common.enableSleepFeature()) {
             Time deltaTime = tickTime();
             TimeContext context = new TimeContext(this, time, deltaTime);
 
             getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 
-            if (ConfigHandler.Common.enableSleepFeature() && Time.crossedMorning(WAKEUP, time)) {
+            if (Time.crossedMorning(WAKEUP, time)) {
                 handleMorning();
             }
         }
