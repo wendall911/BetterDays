@@ -43,13 +43,10 @@ public class TimeService {
     public static final Time DAY_START = new Time(ConfigHandler.Common.dayStart());
 
     /** Time of day players are awake */
-    public static final Time WAKEUP = new Time(23450);
+    public static final Time WAKEUP = new Time(23000);
 
     /** Time of day when the sun sets below the horizon. */
     public static final Time NIGHT_START = new Time(ConfigHandler.Common.nightStart());
-
-    // The largest number of lunar cycles that can be stored in an int
-    private static final int OVERFLOW_THRESHOLD = 11184 * Time.LUNAR_CYCLE_TICKS;
 
     private static MonotonicInterpolator monotonicInterpolator;
 
