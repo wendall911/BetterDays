@@ -88,6 +88,7 @@ publishMods {
             optional('creeper-fireworks')
             optional('homeostatic')
             optional('homeostatic-seasons')
+            optional('mobchampions')
             optional('simpletextoverlay')
             optional('ready-player-fun')
             optional('fabric-seasons')
