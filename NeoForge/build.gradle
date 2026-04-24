@@ -77,8 +77,9 @@ publishMods {
             optional('homeostatic')
             optional('homeostatic-seasons')
             optional('magical-psi-revival')
-            optional('simpletextoverlay')
+            optional('mobchampions')
             optional('ready-player-fun')
+            optional('simpletextoverlay')
             optional('survivalist-essentials')
             optional('tinkersurvival')
             optional('configured')
@@ -100,8 +101,9 @@ publishMods {
             optional('homeostatic')
             optional('homeostatic-seasons')
             optional('magical-psi-revival')
-            optional('simpletextoverlay')
+            optional('mobchampions')
             optional('ready-player-fun')
+            optional('simpletextoverlay')
             optional('survivalist-essentials')
             optional('tinkersurvival')
             optional('serene-seasons')
@@ -130,13 +132,6 @@ publishing {
             version project.version
             // This gives us the built version NeoForge requires
             artifact jar
-        }
-    }
-    repositories {
-        if (System.getenv('local_maven') != null) {
-            maven {
-                url 'file://' + System.getenv('local_maven')
-            }
         }
     }
 }

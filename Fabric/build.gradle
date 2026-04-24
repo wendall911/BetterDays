@@ -84,8 +84,10 @@ publishMods {
             optional('creeper-fireworks')
             optional('homeostatic')
             optional('homeostatic-seasons')
-            optional('simpletextoverlay')
+            optional('mobchampions')
             optional('ready-player-fun')
+            optional('simpletextoverlay')
+            optional('survivalist-essentials')
             optional('fabric-seasons')
             incompatible('immersive-snow')
             incompatible('stevesrealisticsleep')
@@ -102,8 +104,10 @@ publishMods {
             optional('creeper-fireworks-mod')
             optional('homeostatic')
             optional('homeostatic-seasons')
-            optional('simpletextoverlay')
+            optional('mobchampions')
             optional('ready-player-fun')
+            optional('simpletextoverlay')
+            optional('survivalist-essentials')
             optional('fabric-seasons')
             incompatible('immersive-snow')
             incompatible('stevesrealisticsleep')
@@ -128,13 +132,6 @@ publishing {
             artifactId "${mod_id}-${minecraft_version}-fabric"
             version project.version
             from components.java
-        }
-    }
-    repositories {
-        if (System.getenv('local_maven') != null) {
-            maven {
-                url 'file://' + System.getenv('local_maven')
-            }
         }
     }
 }
