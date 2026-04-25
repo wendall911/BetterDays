@@ -60,7 +60,7 @@ public class SleepGui {
         } else if (alignment == ScreenAlignment.TOP_CENTER
                 || alignment == ScreenAlignment.CENTER_CENTER
                 || alignment == ScreenAlignment.BOTTOM_CENTER) {
-            x = screen.width / 2 - scale / 2;
+            x = (float) screen.width / 2 - (float) scale / 2;
         } else {
             x = screen.width - scale - margin;
         }
@@ -72,7 +72,7 @@ public class SleepGui {
         } else if (alignment == ScreenAlignment.CENTER_LEFT
                 || alignment == ScreenAlignment.CENTER_CENTER
                 || alignment == ScreenAlignment.CENTER_RIGHT) {
-            y = screen.height / 2 - scale / 2;
+            y = (float) screen.height / 2 - (float) scale / 2;
         } else {
             y = screen.height - scale - margin;
         }

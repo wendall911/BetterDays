@@ -24,6 +24,8 @@ package betterdays.time;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 
+import org.jspecify.annotations.NonNull;
+
 /**
  * A time or duration in Minecraft.
  *
@@ -106,7 +108,8 @@ public class Time extends Number implements Comparable<Time> {
             if (longPart > 0) {
                 longPart--;
                 fractionPart++;
-            } else {
+            }
+            else {
                 longPart++;
                 fractionPart--;
             }
@@ -181,33 +184,12 @@ public class Time extends Number implements Comparable<Time> {
     }
 
     /**
-     * Returns the time-of-day of {@code time}, between 0 (inclusive) and
-     * {@link #DAY_TICKS} (not inclusive).
-     *
-     * @param time  the time calculate
-     * @return the time-of-day
-     */
-    public static long timeOfDay(long time) {
-        return time % DAY_TICKS;
-    }
-
-    /**
      * {@return true if a new day has started between {@code a} and {@code b}}
      * @param a  the first time to check
      * @param b  the second time to check
      */
     public static boolean crossedMorning(Time a, Time b) {
         return (a.getDayTime() < b.getDayTime()) && b.getDayTime() < DAY_TICKS;
-    }
-
-    /**
-     * Returns {@code this} time's corresponding Overworld day, with the first day returning 1.
-     * Days are counted every {@link #DAY_TICKS} ticks.
-     *
-     * @return {@code this} time's corresponding Overworld day
-     */
-    public long getDay() {
-        return this.longPart / DAY_TICKS;
     }
 
     public long getDayTime() {
@@ -239,74 +221,6 @@ public class Time extends Number implements Comparable<Time> {
     }
 
     /**
-     * {@return a new {@link Time} object with a value of {@code this - val}}
-     * @param val  the value to be subtracted from {@code this}
-     */
-    public Time subtract(Time val) {
-        return new Time(this.longPart - val.longPart, this.fractionPart - val.fractionPart);
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value of {@code this - val}}
-     * @param val  the value to be subtracted from {@code this}
-     */
-    public Time subtract(long val) {
-        return new Time(this.longPart - val, this.fractionPart);
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value of {@code this - val}}
-     * @param val  the value to be subtracted from {@code this}
-     */
-    public Time subtract(double val) {
-        return subtract(new Time(val));
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value value of {@code this / val}}
-     * A loss of precision may occur do to conversion from {@code long} to {@code double}.
-     *
-     * @param val  the denominator
-     */
-    public double divide(Time val) {
-        return this.doubleValue() / val.doubleValue();
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value value of {@code this / val}}
-     * A loss of precision may occur do to conversion from {@code long} to {@code double}.
-     *
-     * @param val  the denominator
-     */
-    public double divide(double val) {
-        return this.doubleValue() / val;
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value value of {@code this / val}}
-     * A loss of precision may occur do to conversion from {@code long} to {@code double}.
-     *
-     * @param val  the denominator
-     */
-    public double divide(long val) {
-        return this.doubleValue() / val;
-    }
-
-    /**
-     * {@return a new {@link Time} object with a value of {@code -this}}
-     */
-    public Time negate() {
-        return new Time(-longPart, -fractionPart);
-    }
-
-    /**
-     * {@return a {@link Time} object whose value is the absolute value of {@code this}}
-     */
-    public Time abs() {
-        return compareTo(new Time(0, 0)) < 0 ? negate() : this;
-    }
-
-    /**
      * {@return a {@link Time} whose value is {@code this modulo val}}
      * @param val  the divisor
      */
@@ -316,7 +230,6 @@ public class Time extends Number implements Comparable<Time> {
 
     /**
      * Checks if {@code this} time is between {@code a} and {@code b} in modular arithmetic.
-     *
      * All three times <b>must</b> be reduced before using this method.
      *
      * @param a  the earlier time
@@ -326,9 +239,11 @@ public class Time extends Number implements Comparable<Time> {
     public boolean betweenMod(Time a, Time b) {
         if (a.equals(b)) {
             return false;
-        } else if (a.compareTo(b) < 0) {
+        }
+        else if (a.compareTo(b) < 0) {
             return this.compareTo(a) > 0 && this.compareTo(b) < 0;
-        } else {
+        }
+        else {
             return this.compareTo(a) > 0 || this.compareTo(b) < 0;
         }
     }
@@ -340,11 +255,11 @@ public class Time extends Number implements Comparable<Time> {
      * @return -1 if {@code this < other}, 0 if {@code this == other}, or 1 if {@code this > other}
      */
     @Override
-    public int compareTo(Time other) {
+    public int compareTo(@NonNull Time other) {
         return Comparator
-                .comparingLong((Time time) -> time.longPart)
-                .thenComparingDouble((Time time) -> time.fractionPart)
-                .compare(this, other);
+            .comparingLong((Time time) -> time.longPart)
+            .thenComparingDouble((Time time) -> time.fractionPart)
+            .compare(this, other);
     }
 
     /** {@return a hash code for this {@code Time}} */
@@ -353,8 +268,10 @@ public class Time extends Number implements Comparable<Time> {
         final int prime = 31;
         int result = 1;
         long fractionBits = Double.doubleToLongBits(fractionPart);
-        result = prime * result + (int) (longPart ^ (longPart >>> 32));
-        result = prime * result + (int) (fractionBits ^ (fractionBits >>> 32));
+
+        result = prime * result + Long.hashCode(longPart);
+        result = prime * result + Long.hashCode(fractionBits);
+
         return result;
     }
 
@@ -368,18 +285,23 @@ public class Time extends Number implements Comparable<Time> {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        else if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        else if (getClass() != obj.getClass()) {
             return false;
+        }
+
         Time other = (Time) obj;
-        if (Double.doubleToLongBits(fractionPart) != Double.doubleToLongBits(other.fractionPart))
+
+        if (Double.doubleToLongBits(fractionPart) != Double.doubleToLongBits(other.fractionPart)) {
             return false;
-        if (longPart != other.longPart)
-            return false;
-        return true;
+        }
+
+        return longPart == other.longPart;
     }
 
     /**
@@ -398,12 +320,14 @@ public class Time extends Number implements Comparable<Time> {
     public String toString() {
         if (fractionPart == 0) {
             return Long.toString(longPart);
-        } else if (longPart == 0) {
+        }
+        else if (longPart == 0) {
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(6);
             df.setMinimumIntegerDigits(1);
             return df.format(fractionPart);
-        } else {
+        }
+        else {
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(6);
             df.setMaximumIntegerDigits(0);

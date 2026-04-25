@@ -22,6 +22,8 @@ package betterdays.time;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.server.level.ServerPlayer;
 
 import betterdays.wrappers.ServerPlayerWrapper;
@@ -50,6 +52,10 @@ public class SleepStatus extends net.minecraft.server.players.SleepStatus {
      * functionality should be blocked, false otherwise.
      */
     public SleepStatus(Supplier<Boolean> preventSleepSupplier) {
+        this.preventSleepSupplier = preventSleepSupplier;
+    }
+
+    public void updatePreventSleep(Supplier<Boolean> preventSleepSupplier) {
         this.preventSleepSupplier = preventSleepSupplier;
     }
 
@@ -146,7 +152,8 @@ public class SleepStatus extends net.minecraft.server.players.SleepStatus {
     public boolean areEnoughSleeping(int percentageRequired) {
         if (preventSleepSupplier.get()) {
             return false;
-        } else {
+        }
+        else {
             return sleepingPlayerCount >= sleepersNeeded(percentageRequired);
         }
     }
@@ -163,15 +170,15 @@ public class SleepStatus extends net.minecraft.server.players.SleepStatus {
      *
      * @param percentageRequired  percentage on which to calculate required sleeping player count
      */
-    public boolean areEnoughDeepSleeping(int percentageRequired, List<ServerPlayer> playerList) {
+    public boolean areEnoughDeepSleeping(int percentageRequired, @NonNull List<ServerPlayer> playerList) {
         if (preventSleepSupplier.get()) {
             return false;
         }
 
         long deepSleepers = playerList.stream()
-                .map(ServerPlayerWrapper::new)
-                .filter(ServerPlayerWrapper::isSleepingLongEnough)
-                .count();
+            .map(ServerPlayerWrapper::new)
+            .filter(ServerPlayerWrapper::isSleepingLongEnough)
+            .count();
 
         return deepSleepers >= sleepersNeeded(percentageRequired);
     }
@@ -186,7 +193,7 @@ public class SleepStatus extends net.minecraft.server.players.SleepStatus {
      *
      * @param playerList  the list of players to count
      */
-    public boolean update(List<ServerPlayer> playerList) {
+    public boolean update(@NonNull List<ServerPlayer> playerList) {
         int oldActiveCount = activePlayerCount;
         int oldSleepingCount = sleepingPlayerCount;
 
@@ -194,7 +201,8 @@ public class SleepStatus extends net.minecraft.server.players.SleepStatus {
 
         if (preventSleepSupplier.get()) {
             return false;
-        } else {
+        }
+        else {
             boolean noSleepers = oldSleepingCount == 0 && sleepingPlayerCount == 0;
             boolean valueChanged = oldActiveCount != activePlayerCount || oldSleepingCount != sleepingPlayerCount;
             return !noSleepers && valueChanged;

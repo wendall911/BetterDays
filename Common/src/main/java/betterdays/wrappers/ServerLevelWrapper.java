@@ -24,8 +24,6 @@ package betterdays.wrappers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gamerules.GameRules;
-import net.minecraft.world.level.saveddata.WeatherData;
-import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.ServerLevelData;
 
 import betterdays.time.SleepStatus;
@@ -44,7 +42,6 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
     // Store classes at the top to minimize file changes between Minecraft versions.
     private static final Class<ServerLevel> levelClass = ServerLevel.class;
     private static final Class<ServerLevelData> levelDataClass = ServerLevelData.class;
-    private static final Class<DerivedLevelData> derivedLevelDataClass = DerivedLevelData.class;
 
     /** The level-data of this level. */
     public final ServerLevelData levelData;
@@ -69,32 +66,11 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
     }
 
     /**
-     * Sets the 'random tick speed' game rule for this level.
-     * @param speed  the new random tick speed
-     */
-    public void setRandomTickSpeed(int speed) {
-        this.get().getGameRules().set(GameRules.RANDOM_TICK_SPEED, speed, this.get().getServer());
-    }
-
-    /**
      * Convenience method that returns true if the weather cycle is progressing in this level.
      * @return true if the weather cycle is progressing in this level
      */
     public boolean weatherCycleEnabled() {
         return weatherRuleEnabled() && this.get().dimensionType().hasSkyLight();
-    }
-
-    /**
-     * Emulates the vanilla functionality for stopping weather, as access modifiers prevent calls
-     * to the methods that do this in vanilla.
-     */
-    public void stopWeather() {
-        WeatherData weatherData = this.get().getWeatherData();
-
-        weatherData.setRainTime(0);
-        weatherData.setRaining(false);
-        weatherData.setThunderTime(0);
-        weatherData.setThundering(false);
     }
 
     /**
@@ -107,27 +83,9 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
         wrapped.sleepStatus = newStatus;
     }
 
-    /**
-     * Performs vanilla morning wakeup functionality to wake up all sleeping players.
-     */
-    public void wakeUpAllPlayers() {
-        this.get().players().stream()
-                .map(ServerPlayerWrapper::new)
-                .filter(ServerPlayerWrapper::isSleeping)
-                .forEach(player -> player.get().stopSleepInBed(false, false));
-    }
-
     /** Ticks all loaded block entities in this level. */
     public void tickBlockEntities() {
         wrapped.tickBlockEntities();
-    }
-
-    /**
-     * {@return true if {@code level} is a derived level}
-     * @param level  the level to check
-     */
-    public static boolean isDerived(LevelAccessor level) {
-        return level != null && level.getLevelData().getClass() == derivedLevelDataClass;
     }
 
     /**

@@ -21,10 +21,8 @@
 
 package betterdays.time;
 
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-import betterdays.config.ConfigHandler;
 import betterdays.wrappers.ServerLevelWrapper;
 
 /**
@@ -34,30 +32,6 @@ public class TimeServiceManager {
 
     /** The Overworld {@code TimeService} object. null if Overworld not loaded. */
     public static TimeService service;
-    /** The earliest time at which players are no longer allowed to sleep in vanilla. */
-    public static final Time VANILLA_SLEEP_END = new Time(23460);
-
-    /**
-     * Modifies permitted sleep times to allow players to sleep through dawn until day-time 0
-     * while the sleep feature is enabled.
-     *
-     * <p>Called once per tick for every player who is currently sleeping. Event result determines
-     * if sleep is allowed at the current time.
-     *
-     * @param level current player level
-     */
-    public static boolean onSleepingCheckEvent(Level level) {
-        if (!ConfigHandler.Common.enableSleepFeature()) {
-            return true;
-        }
-        else if (service != null && service.level.get().equals(level)) {
-            Time time = service.getDayTime().timeOfDay();
-
-            return time.compareTo(VANILLA_SLEEP_END) >= 0;
-        }
-
-        return false;
-    }
 
     /**
      * Event listener that is called when a new level is loaded.

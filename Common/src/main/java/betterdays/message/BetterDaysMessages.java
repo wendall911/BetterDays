@@ -32,7 +32,7 @@ import betterdays.time.TimeServiceManager;
 import betterdays.wrappers.ServerLevelWrapper;
 import betterdays.wrappers.ServerPlayerWrapper;
 
-import static betterdays.time.TimeService.WAKEUP;
+import static betterdays.time.TimeService.SUNRISE;
 
 /** This class listens for events and sends out BetterDays chat notifications. */
 public class BetterDaysMessages {
@@ -66,7 +66,7 @@ public class BetterDaysMessages {
                 && player.getClass() == ServerPlayerWrapper.playerClass
                 && service != null
                 && service.sleepStatus.amountSleeping() - 1 > 0
-                && !Time.crossedMorning(WAKEUP, service.getDayTime())
+                && !Time.crossedMorning(SUNRISE, service.getDayTime())
                 && service.level.get().equals(player.level())
                 && service.level.get().players().size() > 1
                 && service.level.daylightRuleEnabled()) {

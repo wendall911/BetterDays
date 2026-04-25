@@ -26,10 +26,10 @@ import java.util.Collection;
 import net.minecraft.world.clock.ServerClockManager;
 
 import betterdays.BetterDays;
+import betterdays.message.BetterDaysMessages;
 import betterdays.registry.TimeEffectsRegistry;
 import betterdays.registry.RegistryObject;
 import betterdays.config.ConfigHandler;
-import betterdays.platform.Services;
 import betterdays.time.effects.TimeEffect;
 import betterdays.utils.MathUtils;
 import betterdays.wrappers.ServerLevelWrapper;
@@ -42,8 +42,8 @@ public class TimeService {
     /** Time of day when the sun rises above the horizon. */
     public static final Time DAY_START = new Time(ConfigHandler.Common.dayStart());
 
-    /** Time of day players are awake */
-    public static final Time WAKEUP = new Time(23000);
+    /** Time of day that sunrise cycle occurs */
+    public static final Time SUNRISE = new Time(23000);
 
     /** Time of day when the sun sets below the horizon. */
     public static final Time NIGHT_START = new Time(ConfigHandler.Common.nightStart());
@@ -55,7 +55,7 @@ public class TimeService {
     /** The {@code SleepStatus} object for this level. */
     public final SleepStatus sleepStatus;
 
-    private double timeDecimalAccumulator = 0;
+    private boolean morningHandled = false;
 
     /**
      * Creates a new instance.
@@ -64,8 +64,8 @@ public class TimeService {
      */
     public TimeService(ServerLevelWrapper level) {
         this.level = level;
-        this.sleepStatus = new SleepStatus(ConfigHandler.Common::enableSleepFeature);
 
+        this.sleepStatus = new SleepStatus(ConfigHandler.Common::enableSleepFeature);
         this.level.setSleepStatus(this.sleepStatus);
 
         if (ConfigHandler.Common.enableInterpolatedTime()) {
@@ -88,25 +88,30 @@ public class TimeService {
 
         level.get().dimensionType().defaultClock().ifPresent(defaultClock -> clockManager.setRate(defaultClock, speed));
 
-        if (!sleepStatus.allAwake() && ConfigHandler.Common.enableSleepFeature()) {
-            Time deltaTime = tickTime();
-            TimeContext context = new TimeContext(this, time, deltaTime);
+        if (ConfigHandler.Common.enableSleepFeature()) {
+            if (!sleepStatus.allAwake()) {
+                Time deltaTime = tickTime();
+                TimeContext context = new TimeContext(this, time, deltaTime);
 
-            getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
+                getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 
-            if (Time.crossedMorning(WAKEUP, time)) {
-                handleMorning();
+                if (Time.crossedMorning(SUNRISE, time)) {
+                    handleMorning();
+                }
+            }
+            else if (morningHandled) {
+                morningHandled = false;
+                sleepStatus.updatePreventSleep(ConfigHandler.Common::enableSleepFeature);
             }
         }
     }
 
     public void handleMorning() {
-        long time = level.get().getDefaultClockTime();
-
-        Services.PLATFORM.onSleepFinished(level, time);
-
+        BetterDaysMessages.onSleepFinishedEvent(level.get());
+        sleepStatus.updatePreventSleep(() -> false);
+        morningHandled = true;
         BetterDays.LOGGER.debug("Sleep cycle complete on dimension: {}.",
-                level.get().dimension().identifier());
+            level.get().dimension().identifier());
     }
 
     /**
@@ -134,18 +139,18 @@ public class TimeService {
      * @return the time-speed
      */
     public double getTimeSpeed(Time time) {
-        if (!ConfigHandler.Common.enableSleepFeature()
-                || sleepStatus.allAwake()
+        if (!ConfigHandler.Common.enableSleepFeature() || morningHandled) {
+            return internalGetTimeSpeed(time);
+        }
+        else {
+            return getSleepTimeSpeed(time);
+        }
+    }
+
+    public double getSleepTimeSpeed(Time time) {
+        if (sleepStatus.allAwake()
                 || (sleepStatus.ratio() < ConfigHandler.Common.percentPlayersForSleep())) {
-            if (ConfigHandler.Common.enableInterpolatedTime()) {
-                return monotonicInterpolator.evaluate(time.timeOfDay().longValue());
-            }
-            if (time.equals(DAY_START) || time.timeOfDay().betweenMod(DAY_START, NIGHT_START)) {
-                return ConfigHandler.Common.daySpeed(level.get());
-            }
-            else {
-                return ConfigHandler.Common.nightSpeed(level.get());
-            }
+            return internalGetTimeSpeed(time);
         }
 
         if (sleepStatus.allAsleep() && ConfigHandler.Common.sleepSpeedAll() >= 0) {
@@ -155,19 +160,30 @@ public class TimeService {
         double sleepRatio = sleepStatus.ratio();
         double curve = ConfigHandler.Common.sleepSpeedCurve();
         double speedRatio = MathUtils.normalizedTunableSigmoid(sleepRatio, curve);
-
         double sleepSpeedMin = ConfigHandler.Common.sleepSpeedMin();
         double sleepSpeedMax = ConfigHandler.Common.sleepSpeedMax();
-        double multiplier = MathUtils.lerp(speedRatio, sleepSpeedMin, sleepSpeedMax);
 
-        return multiplier;
+        // Return Multiplier
+        return MathUtils.lerp(speedRatio, sleepSpeedMin, sleepSpeedMax);
+    }
+
+    private double internalGetTimeSpeed(Time time) {
+        if (ConfigHandler.Common.enableInterpolatedTime()) {
+            return monotonicInterpolator.evaluate(time.timeOfDay().longValue());
+        }
+        if (time.equals(DAY_START) || time.timeOfDay().betweenMod(DAY_START, NIGHT_START)) {
+            return ConfigHandler.Common.daySpeed(level.get());
+        }
+        else {
+            return ConfigHandler.Common.nightSpeed(level.get());
+        }
     }
 
     /**
      * {@return this level's time as an instance of {@link Time}}
      */
     public Time getDayTime() {
-        return new Time(level.get().getDefaultClockTime(), timeDecimalAccumulator);
+        return new Time(level.get().getDefaultClockTime());
     }
 
     private Collection<RegistryObject<TimeEffect>> getActiveTimeEffects() {
