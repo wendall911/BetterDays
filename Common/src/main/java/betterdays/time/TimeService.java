@@ -24,6 +24,7 @@ package betterdays.time;
 import java.util.Collection;
 
 import net.minecraft.world.clock.ServerClockManager;
+import net.minecraft.world.level.gamerules.GameRules;
 
 import betterdays.BetterDays;
 import betterdays.message.BetterDaysMessages;
@@ -45,6 +46,9 @@ public class TimeService {
     /** Time of day that sunrise cycle occurs */
     public static final Time SUNRISE = new Time(23000);
 
+    /** Beginning of Minecraft Day **/
+    public static final Time SUNRISE_END = new Time(0);
+
     /** Time of day when the sun sets below the horizon. */
     public static final Time NIGHT_START = new Time(ConfigHandler.Common.nightStart());
 
@@ -56,6 +60,7 @@ public class TimeService {
     public final SleepStatus sleepStatus;
 
     private boolean morningHandled = false;
+    private final int defaultPlayersSleepingPercent;
 
     /**
      * Creates a new instance.
@@ -67,6 +72,7 @@ public class TimeService {
 
         this.sleepStatus = new SleepStatus(ConfigHandler.Common::enableSleepFeature);
         this.level.setSleepStatus(this.sleepStatus);
+        this.defaultPlayersSleepingPercent = level.get().getGameRules().get(GameRules.PLAYERS_SLEEPING_PERCENTAGE);
 
         if (ConfigHandler.Common.enableInterpolatedTime()) {
             monotonicInterpolator = new MonotonicInterpolator(ConfigHandler.Common.interpolatedTimePairs(), ConfigHandler.Common.interpolatedTimeSmoothingFactor());
@@ -99,8 +105,9 @@ public class TimeService {
                     handleMorning();
                 }
             }
-            else if (morningHandled) {
+            else if (morningHandled && Time.crossedMorning(SUNRISE_END, time)) {
                 morningHandled = false;
+                level.get().getGameRules().set(GameRules.PLAYERS_SLEEPING_PERCENTAGE, defaultPlayersSleepingPercent, level.get().getServer());
                 sleepStatus.updatePreventSleep(ConfigHandler.Common::enableSleepFeature);
             }
         }
@@ -108,6 +115,7 @@ public class TimeService {
 
     public void handleMorning() {
         BetterDaysMessages.onSleepFinishedEvent(level.get());
+        level.get().getGameRules().set(GameRules.PLAYERS_SLEEPING_PERCENTAGE, 0, level.get().getServer());
         sleepStatus.updatePreventSleep(() -> false);
         morningHandled = true;
         BetterDays.LOGGER.debug("Sleep cycle complete on dimension: {}.",
