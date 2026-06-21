@@ -85,7 +85,10 @@ public class ServerLevelWrapper extends Wrapper<ServerLevel> {
 
     /** Ticks all loaded block entities in this level. */
     public void tickBlockEntities() {
-        wrapped.tickBlockEntities();
+        try {
+            wrapped.tickBlockEntities();
+        }
+        catch (Exception _) {}
     }
 
     /**
