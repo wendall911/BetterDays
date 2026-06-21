@@ -1,10 +1,14 @@
 # gradle
 build
+build-ide
 .gradle
 run
 
 # IntelliJ
 .idea
+
+# VS Code
+.vscode
 
 # Minecraft datagen
 .cache
