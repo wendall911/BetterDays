@@ -11,7 +11,7 @@
   "betterdays.configuration.clockscale.name": "时钟缩放", 
   "betterdays.configuration.dayspeed.description": "白天时间流逝的速度. \n白天定义为从 白天开始时间刻 (见下文) 到当日 夜间开始时间刻 (见下文) 之间的时间. \n这是相对于原版时间流逝的比率. \n原版速度:1.0", 
   "betterdays.configuration.dayspeed.name": "白天速度 (比率) ", 
-  "betterdays.configuration.dayspeedminutes.description": "设置白天速度的另一种方式. 此设置与 白天速度 (比率)  冲突. \n如果两者都设置, 则由 速度设置方法 (见上文) 决定使用哪个设置. \n此设置使用现实世界中的分钟单位. \n原版长度:10.0 分钟", 
+  "betterdays.configuration.dayspeedminutes.description": "设置白天速度的另一种方式. 此设置与 白天速度 (比率)  冲突. \n如果两者都设置, 则由 速度设置方法 (见上文) 决定使用哪个设置. \n此设置定义白天在现实世界中的分钟长度. \n原版长度:10.0 分钟", 
   "betterdays.configuration.dayspeedminutes.name": "白天速度 (分钟) ", 
   "betterdays.configuration.daystart.description": "白天开始的时间刻. 在太阳出现, 白天开始的时间. \n默认值:23500", 
   "betterdays.configuration.daystart.name": "白天开始时间刻", 
