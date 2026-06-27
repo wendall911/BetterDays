@@ -44,7 +44,7 @@ dependencies {
     // Testing mods
     //runtimeOnly "curse.maven:configured-457570:4462837"
     //runtimeOnly "curse.maven:catalogue-459701:4590890"
-    runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
+    //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
