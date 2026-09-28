@@ -5,7 +5,10 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
+import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.entity.player.Player.BedSleepingProblem;
+import net.minecraft.world.level.block.AbstractBedBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +22,7 @@ import betterdays.message.BetterDaysMessages;
 public abstract class ServerPlayerMixin {
 
     @Inject(method = "startSleepInBed", at = @At(value = "RETURN"))
-    private void betterdays$startSleeping(BlockPos pos, CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
+    private void betterdays$startSleeping(AbstractBedBlock bedBlock, BlockState bedBlockState, BedRule rule, BlockPos pos, CallbackInfoReturnable<Either<BedSleepingProblem, Unit>> cir) {
         ServerPlayer player = (ServerPlayer) (Object) this;
 
         if (cir.getReturnValue().right().isPresent()) {

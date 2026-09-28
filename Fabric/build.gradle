@@ -15,12 +15,12 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
-    compileOnly group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-fabric", version: "${homeostaticseasons_version}"
+    compileOnly group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${homeostaticseasons_minecraft_version}-fabric", version: "${homeostaticseasons_version}"
 
     localRuntime group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
 
     // Testing Mods
-    localRuntime group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-fabric", version: "${homeostaticseasons_version}"
+    //localRuntime group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-fabric", version: "${homeostaticseasons_version}"
     //localRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
     //localRuntime "curse.maven:sleepwarp-579295:4576762"
     //localRuntime "curse.maven:fabricseasons-413523:4576886"

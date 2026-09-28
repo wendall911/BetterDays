@@ -39,11 +39,12 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-neoforge", version: "${whitenoise_version}"
     jarJar group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-neoforge", version: "${whitenoise_version}"
 
-    implementation group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-neoforge", version: "${homeostaticseasons_version}"
+    compileOnly group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${homeostaticseasons_minecraft_version}-neoforge", version: "${homeostaticseasons_version}"
 
     // Testing mods
     //runtimeOnly "curse.maven:configured-457570:4462837"
     //runtimeOnly "curse.maven:catalogue-459701:4590890"
+    //runtimeOnly group: 'com.github.wendall911.homeostaticseasons', name: "homeostaticseasons-${minecraft_version}-neoforge", version: "${homeostaticseasons_version}"
     //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
 }
 
